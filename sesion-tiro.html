@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sesión de Tiro</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--orange:#F4611A;--dark:#0F0F0F;--card:#181818;--card2:#1E1E1E;--border:#2A2A2A;--text:#E8E8E8;--muted:#777;--green:#4CAF6A;--yellow:#F4C11A}
+body{font-family:'DM Sans',sans-serif;background:var(--dark);color:var(--text);min-height:100vh;padding:24px 16px 48px}
+body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");pointer-events:none;z-index:0;opacity:0.4}
+.wrap{max-width:520px;margin:0 auto;position:relative;z-index:1}
+.header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:28px;animation:fadeUp .5s ease both}
+.label{font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:var(--orange);font-weight:500;margin-bottom:4px}
+h1{font-family:'Bebas Neue',sans-serif;font-size:52px;line-height:.9;color:#fff}
+h1 span{color:var(--orange)}
+.meta{margin-top:8px;font-size:12px;color:var(--muted);display:flex;gap:12px}
+.ball-icon{width:54px;height:54px;background:var(--orange);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0;animation:pulse 3s ease-in-out infinite}
+@keyframes pulse{0%,100%{box-shadow:0 0 20px rgba(244,97,26,.3)}50%{box-shadow:0 0 40px rgba(244,97,26,.55)}}
+.summary{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:24px;animation:fadeUp .5s .1s ease both}
+.stat{background:var(--card);padding:14px 16px;text-align:center}
+.stat-val{font-family:'Bebas Neue',sans-serif;font-size:28px;color:#fff;line-height:1}
+.stat-val span{font-size:14px;color:var(--muted)}
+.stat-label{font-size:10px;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-top:3px}
+.block{border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:14px;animation:fadeUp .5s ease both}
+.block:nth-child(1){animation-delay:.15s}.block:nth-child(2){animation-delay:.2s}.block:nth-child(3){animation-delay:.25s}.block:nth-child(4){animation-delay:.3s}
+.block-header{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;background:var(--card);border-bottom:1px solid var(--border)}
+.phase-badge{font-family:'Bebas Neue',sans-serif;font-size:11px;letter-spacing:.1em;padding:3px 8px;border-radius:4px;background:var(--border);color:var(--muted);display:inline-block;margin-bottom:4px}
+.block-title{font-weight:600;font-size:14px;color:#fff}
+.block-meta{font-size:11px;color:var(--muted);margin-top:1px}
+.block-time{font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--orange);flex-shrink:0}
+.block-body{background:var(--card2);padding:4px 0}
+.drill{display:flex;align-items:flex-start;gap:14px;padding:12px 16px;border-bottom:1px solid #222;transition:background .15s}
+.drill:last-child{border-bottom:none}
+.drill:hover{background:#232323}
+.drill-num{font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--border);line-height:1;width:22px;flex-shrink:0;padding-top:1px}
+.drill-content{flex:1}
+.drill-name{font-weight:600;font-size:13.5px;color:#fff}
+.drill-desc{font-size:12px;color:var(--muted);margin-top:3px;line-height:1.5}
+.tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:7px}
+.tag{font-size:10px;font-weight:500;padding:2px 7px;border-radius:20px;letter-spacing:.05em}
+.tag-shots{background:rgba(244,97,26,.12);color:var(--orange)}
+.tag-time{background:rgba(76,175,106,.12);color:var(--green)}
+.tag-focus{background:rgba(244,193,26,.10);color:var(--yellow)}
+.tag-zone{background:rgba(255,255,255,.07);color:#ccc;font-family:'Bebas Neue',sans-serif;font-size:11px;letter-spacing:.06em}
+.drill-right{text-align:right;flex-shrink:0}
+.drill-shots{font-family:'Bebas Neue',sans-serif;font-size:24px;color:#fff;line-height:1}
+.drill-shots-label{font-size:10px;color:var(--muted)}
+.court-section{border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:14px;background:var(--card);animation:fadeUp .5s .35s ease both}
+.court-header{padding:12px 16px 8px;border-bottom:1px solid var(--border)}
+.court-sub{font-size:11px;color:var(--muted);margin-top:3px}
+.court-svg-wrap{padding:10px 8px 6px}
+.court-svg-wrap svg,.hm-court-wrap svg{width:100%;display:block}
+.zone-legend{padding:4px 14px 14px;display:flex;flex-wrap:wrap;gap:5px 10px}
+.zl-item{display:flex;align-items:center;gap:5px;font-size:10px;color:var(--muted)}
+.zl-dot{width:18px;height:14px;border-radius:3px;display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:9px;color:rgba(255,255,255,.8);flex-shrink:0}
+.tips{border:1px solid var(--border);border-left:3px solid var(--orange);border-radius:10px;background:var(--card);padding:14px 16px;margin-bottom:14px;animation:fadeUp .5s .4s ease both}
+.tips-title{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--orange);font-weight:600;margin-bottom:10px}
+.tip{font-size:12.5px;color:#aaa;line-height:1.6;display:flex;gap:8px;margin-bottom:5px}
+.tip::before{content:'→';color:var(--orange);flex-shrink:0}
+.tracker{border:1px solid var(--border);border-radius:14px;background:var(--card);padding:16px;margin-bottom:14px;animation:fadeUp .5s .45s ease both}
+.tracker-title{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:600;margin-bottom:14px}
+.tracker-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.tracker-item{background:var(--card2);border:1px solid var(--border);border-radius:8px;padding:10px 12px;display:flex;align-items:center;justify-content:space-between}
+.tracker-name{font-size:12px;color:#aaa}
+.tracker-check{width:22px;height:22px;border-radius:50%;border:2px solid var(--border);cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.tracker-check.done{background:var(--orange);border-color:var(--orange)}
+.tracker-check.done::after{content:'✓';color:#fff;font-weight:700;font-size:12px}
+.heatmap-section{border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:14px;background:var(--card);animation:fadeUp .5s .5s ease both}
+.heatmap-header{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid var(--border)}
+.reset-btn{background:none;border:1px solid var(--border);color:var(--muted);font-family:'DM Sans',sans-serif;font-size:11px;padding:5px 10px;border-radius:6px;cursor:pointer;transition:all .2s}
+.reset-btn:hover{border-color:#e05a5a;color:#e05a5a}
+.hm-legend{display:flex;flex-wrap:wrap;gap:8px;padding:8px 16px;border-bottom:1px solid var(--border)}
+.legend-item{display:flex;align-items:center;gap:5px;font-size:10px;color:var(--muted)}
+.legend-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.hm-court-wrap{padding:10px 8px 4px}
+.zone{fill:#1a1a1a;stroke:#0a0a0a;stroke-width:1.2;cursor:pointer;transition:fill .4s,stroke .2s;opacity:.95}
+.zone:hover{opacity:1;stroke:#666;stroke-width:2}
+.zone.active{stroke:#fff;stroke-width:2.5;opacity:1}
+.zone-pct-txt{font-family:'Bebas Neue',sans-serif;font-size:8px;pointer-events:none;text-anchor:middle;dominant-baseline:middle}
+.zone-panel{margin:0 16px 12px;background:#111;border:1px solid var(--border);border-radius:10px;padding:14px;transition:border-color .3s}
+.zone-panel.sel{border-color:var(--orange)}
+.zone-panel-name{font-weight:600;font-size:13px;color:#fff;margin-bottom:2px}
+.zone-panel-cumul{font-size:11px;color:var(--muted);margin-bottom:12px;min-height:16px}
+.zone-input-row{display:grid;grid-template-columns:1fr 1fr auto;gap:8px;align-items:flex-end}
+.zig label{display:block;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:5px}
+.zig input{background:#1a1a1a;border:1px solid var(--border);border-radius:7px;color:#fff;font-family:'Bebas Neue',sans-serif;font-size:22px;padding:8px 10px;width:100%;text-align:center;outline:none;transition:border-color .2s;-moz-appearance:textfield}
+.zig input::-webkit-outer-spin-button,.zig input::-webkit-inner-spin-button{-webkit-appearance:none}
+.zig input:focus{border-color:var(--orange)}
+.save-btn{background:var(--orange);border:none;color:#fff;font-family:'Bebas Neue',sans-serif;font-size:16px;padding:10px 14px;border-radius:7px;cursor:pointer;transition:background .2s,transform .1s;white-space:nowrap}
+.save-btn:hover{background:#e0541a}
+.save-btn:active{transform:scale(.96)}
+.zone-feedback{font-size:11px;color:var(--green);margin-top:8px;min-height:16px}
+.hm-totals{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.hm-total-item{background:#141414;padding:12px 8px;text-align:center}
+.hm-total-val{font-family:'Bebas Neue',sans-serif;font-size:26px;color:#fff;line-height:1}
+.hm-total-label{font-size:9px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-top:2px}
+.zones-summary{padding:12px 16px;display:flex;flex-direction:column;gap:8px}
+.zone-summary-row{display:flex;align-items:center;gap:12px;background:#111;border:1px solid var(--border);border-radius:8px;padding:10px 14px}
+.zone-sum-icon{font-size:20px}
+.zone-sum-title{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+.zone-sum-val{font-size:13px;color:#fff;font-weight:600;margin-top:2px}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<!-- HEADER -->
+<div class="header">
+  <div>
+    <div class="label">Sesión individual · 1 balón</div>
+    <h1>SESIÓN<br>DE <span>TIRO</span></h1>
+    <div class="meta"><span>⏱ ~75 min</span><span>🏀 ~280 tiros</span><span>📍 Solo</span></div>
+  </div>
+  <div class="ball-icon">🏀</div>
+</div>
+
+<div class="summary">
+  <div class="stat"><div class="stat-val">4</div><div class="stat-label">Bloques</div></div>
+  <div class="stat"><div class="stat-val">75<span>min</span></div><div class="stat-label">Duración</div></div>
+  <div class="stat"><div class="stat-val">~280</div><div class="stat-label">Intentos</div></div>
+</div>
+
+<!-- BLOQUE 1 -->
+<div class="block">
+  <div class="block-header">
+    <div><span class="phase-badge">BLOQUE 01</span><div class="block-title">Activación de mecánica</div><div class="block-meta">Sin fatiga · máxima concentración técnica</div></div>
+    <div class="block-time">15 min</div>
+  </div>
+  <div class="block-body">
+    <div class="drill"><div class="drill-num">1</div><div class="drill-content"><div class="drill-name">Form shooting — 1 mano</div><div class="drill-desc">En zona 1 (área restringida), a 1–1.5 m del aro. Mano dominante únicamente, la otra en la espalda. Foco en salida del balón desde los dedos y follow-through completo.</div><div class="tags"><span class="tag tag-shots">3 × 10</span><span class="tag tag-zone">📍 Z1</span><span class="tag tag-focus">mecánica pura</span></div></div><div class="drill-right"><div class="drill-shots">30</div><div class="drill-shots-label">tiros</div></div></div>
+    <div class="drill"><div class="drill-num">2</div><div class="drill-content"><div class="drill-name">Wall drill — corrección lateral</div><div class="drill-desc">Frente a una pared, dispara rozándola hacia arriba. Si el balón se desvía la mano guía está forzando. Sin zona específica — mecánica pura.</div><div class="tags"><span class="tag tag-shots">2 × 15</span><span class="tag tag-focus">alineación</span></div></div><div class="drill-right"><div class="drill-shots">30</div><div class="drill-shots-label">tiros</div></div></div>
+  </div>
+</div>
+
+<!-- BLOQUE 2 -->
+<div class="block">
+  <div class="block-header">
+    <div><span class="phase-badge">BLOQUE 02</span><div class="block-title">Catch &amp; Shoot — Spots fijos</div><div class="block-meta">Footwork + ritmo piernas-brazos</div></div>
+    <div class="block-time">20 min</div>
+  </div>
+  <div class="block-body">
+    <div class="drill"><div class="drill-num">3</div><div class="drill-content"><div class="drill-name">Ball pickup catch &amp; shoot — Triple</div><div class="drill-desc">Recoge el balón del suelo simulando un pase y dispara en un movimiento fluido. 5 spots de triple en orden: esquina izq (Z10) → ala izq (Z12) → top (Z14) → ala der (Z13) → esquina der (Z11). 10 tiros por zona.</div><div class="tags"><span class="tag tag-shots">5 zonas × 10</span><span class="tag tag-zone">📍 Z10 · Z12 · Z14 · Z13 · Z11</span><span class="tag tag-focus">ritmo y footwork</span></div></div><div class="drill-right"><div class="drill-shots">50</div><div class="drill-shots-label">tiros</div></div></div>
+    <div class="drill"><div class="drill-num">4</div><div class="drill-content"><div class="drill-name">1-2 step into shot — Mid-range</div><div class="drill-desc">Camina hacia el balón, da 2 pasos y tira simulando recibir un pase. 4 spots: codo izq (Z4), codo der (Z6), mid izq (Z7) y mid der (Z8). No perder la alineación al moverte.</div><div class="tags"><span class="tag tag-shots">4 zonas × 10</span><span class="tag tag-zone">📍 Z4 · Z6 · Z7 · Z8</span><span class="tag tag-focus">tiro en movimiento</span></div></div><div class="drill-right"><div class="drill-shots">40</div><div class="drill-shots-label">tiros</div></div></div>
+  </div>
+</div>
+
+<!-- BLOQUE 3 -->
+<div class="block">
+  <div class="block-header">
+    <div><span class="phase-badge">BLOQUE 03</span><div class="block-title">Volumen + presión</div><div class="block-meta">Consistencia bajo algo de fatiga</div></div>
+    <div class="block-time">25 min</div>
+  </div>
+  <div class="block-body">
+    <div class="drill"><div class="drill-num">5</div><div class="drill-content"><div class="drill-name">Mikan drill</div><div class="drill-desc">Bandeja alternada izq/der sin dejar caer el balón. Te mueves entre bloque izq (Z2) y bloque der (Z3) como en el poste bajo. 30 seg de trabajo, 30 seg de descanso.</div><div class="tags"><span class="tag tag-time">3 × 30 seg</span><span class="tag tag-zone">📍 Z2 · Z3</span><span class="tag tag-focus">finishing</span></div></div><div class="drill-right"><div class="drill-shots">~30</div><div class="drill-shots-label">tiros</div></div></div>
+    <div class="drill"><div class="drill-num">6</div><div class="drill-content"><div class="drill-name">5-spot mid-range con conteo</div><div class="drill-desc">10 tiros por zona contando los encestados. Orden: codo izq (Z4) → mid izq (Z7) → high post / centro (Z9) → mid der (Z8) → codo der (Z6). Objetivo: superar 35/50.</div><div class="tags"><span class="tag tag-shots">5 zonas × 10</span><span class="tag tag-zone">📍 Z4 · Z7 · Z9 · Z8 · Z6</span><span class="tag tag-focus">% de acierto</span></div></div><div class="drill-right"><div class="drill-shots">50</div><div class="drill-shots-label">tiros</div></div></div>
+    <div class="drill"><div class="drill-num">7</div><div class="drill-content"><div class="drill-name">Around the world — 7 zonas</div><div class="drill-desc">Encestá en cada zona antes de avanzar. Ruta: Z10 → Z12 → Z14 → Z13 → Z11 → Z7 → Z8. Si fallás 2 seguidos en la misma zona bajá un paso más cerca. 2 vueltas completas.</div><div class="tags"><span class="tag tag-shots">2 vueltas</span><span class="tag tag-zone">📍 Z10→Z12→Z14→Z13→Z11→Z7→Z8</span><span class="tag tag-focus">presión de enceste</span></div></div><div class="drill-right"><div class="drill-shots">~50</div><div class="drill-shots-label">tiros</div></div></div>
+  </div>
+</div>
+
+<!-- BLOQUE 4 -->
+<div class="block">
+  <div class="block-header">
+    <div><span class="phase-badge">BLOQUE 04</span><div class="block-title">Cierre — Competitivo</div><div class="block-meta">Con piernas cargadas, como en partido</div></div>
+    <div class="block-time">15 min</div>
+  </div>
+  <div class="block-body">
+    <div class="drill"><div class="drill-num">8</div><div class="drill-content"><div class="drill-name">Juego del 21</div><div class="drill-desc">Elige un codo (Z4 o Z6). Si entra → 2 puntos, repetís. Si falla → corrés al rebote y tirás bandeja desde el bloque más cercano (Z2 o Z3, vale 1). Primero en llegar a 21. 3 rondas contra tu récord.</div><div class="tags"><span class="tag tag-shots">3 rondas</span><span class="tag tag-zone">📍 Z4 ó Z6 + Z2 ó Z3</span><span class="tag tag-focus">concentración + piernas</span></div></div><div class="drill-right"><div class="drill-shots">~50</div><div class="drill-shots-label">tiros</div></div></div>
+  </div>
+</div>
+
+<!-- MAPA DE SPOTS -->
+<!--
+  Cancha viewBox 0 0 420 380. Baseline y=374. Basket cx=210 cy=330.
+  Paint: x=148..272, y=254..374 (w=124). FT line y=254.
+  Paint divided in 3 cols: left 148..189(w=41), center 189..231(w=42), right 231..272(w=41)
+  Block row: y=314..374 (h=60). Elbow row: y=254..314 (h=60).
+  RA arc: r=34 centered on basket.
+  3pt arc radius ~198 from basket center.
+  Corner 3pt lines: x=26 and x=394, from y=262 to baseline.
+-->
+<div class="court-section">
+  <div class="court-header">
+    <div class="block-title">🗺 Mapa de zonas — vista cenital · 14 zonas</div>
+    <div class="court-sub">Estilo NBA 2K · misma numeración en todos los drills</div>
+  </div>
+  <div class="court-svg-wrap">
+    <svg viewBox="0 0 420 380" xmlns="http://www.w3.org/2000/svg">
+      <rect width="420" height="380" fill="#0d0d0d"/>
+      <!-- Z14 top 3 -->
+      <path fill="#0a1420" d="M126,0 L294,0 L294,152 A198,198 0 0,0 126,152 Z"/>
+      <!-- Z12 left wing 3 -->
+      <path fill="#0a1420" d="M0,0 L126,0 L126,152 A198,198 0 0,0 26,262 L0,262 Z"/>
+      <!-- Z13 right wing 3 -->
+      <path fill="#0a1420" d="M294,0 L420,0 L420,262 L394,262 A198,198 0 0,0 294,152 Z"/>
+      <!-- Z10 left corner 3 -->
+      <rect fill="#080f1c" x="0" y="262" width="26" height="112"/>
+      <!-- Z11 right corner 3 -->
+      <rect fill="#080f1c" x="394" y="262" width="26" height="112"/>
+      <!-- Z7 left mid -->
+      <path fill="#0e1e35" d="M26,374 L26,262 A198,198 0 0,1 148,148 L148,374 Z"/>
+      <!-- Z8 right mid -->
+      <path fill="#0e1e35" d="M272,374 L272,148 A198,198 0 0,1 394,262 L394,374 Z"/>
+      <!-- Z9 high post / FT area -->
+      <path fill="#122030" d="M148,254 L148,148 A198,198 0 0,1 272,148 L272,254 Z"/>
+      <!-- Z4 left elbow -->
+      <rect fill="#182840" x="148" y="254" width="41" height="60"/>
+      <!-- Z5 center paint -->
+      <rect fill="#1c3248" x="189" y="254" width="42" height="60"/>
+      <!-- Z6 right elbow -->
+      <rect fill="#182840" x="231" y="254" width="41" height="60"/>
+      <!-- Z2 left block -->
+      <rect fill="#1c3858" x="148" y="314" width="62" height="60"/>
+      <!-- Z3 right block -->
+      <rect fill="#1c3858" x="210" y="314" width="62" height="60"/>
+      <!-- Z1 restricted area -->
+      <path fill="#22487a" d="M176,330 A34,34 0 0,1 244,330 L244,374 L176,374 Z"/>
+      <!-- Court lines -->
+      <path fill="none" stroke="#363636" stroke-width="1.5" d="M26,374 L26,262 A198,198 0 0,1 394,262 L394,374"/>
+      <rect fill="none" stroke="#363636" stroke-width="1.5" x="148" y="254" width="124" height="120"/>
+      <!-- FT circle top arc solid -->
+      <path fill="none" stroke="#363636" stroke-width="1.2" d="M162,254 A48,48 0 0,1 258,254"/>
+      <!-- FT circle bottom dashed -->
+      <path fill="none" stroke="#282828" stroke-width="1.2" stroke-dasharray="4,3" d="M162,254 A48,48 0 0,0 258,254"/>
+      <!-- RA arc -->
+      <path fill="none" stroke="#363636" stroke-width="1.2" d="M176,330 A34,34 0 0,1 244,330"/>
+      <!-- Paint internal divisions -->
+      <!-- Elbow/block split -->
+      <line x1="148" y1="314" x2="272" y2="314" stroke="#252525" stroke-width="1"/>
+      <!-- Left elbow/center split -->
+      <line x1="189" y1="254" x2="189" y2="374" stroke="#1e1e1e" stroke-width="1"/>
+      <!-- Center/right elbow split -->
+      <line x1="231" y1="254" x2="231" y2="374" stroke="#1e1e1e" stroke-width="1"/>
+      <!-- Block split center -->
+      <line x1="210" y1="314" x2="210" y2="374" stroke="#1e1e1e" stroke-width="1"/>
+      <!-- Baseline -->
+      <line x1="0" y1="374" x2="420" y2="374" stroke="#363636" stroke-width="2"/>
+      <!-- Sidelines -->
+      <line x1="0" y1="0" x2="0" y2="374" stroke="#252525" stroke-width="1.5"/>
+      <line x1="420" y1="0" x2="420" y2="374" stroke="#252525" stroke-width="1.5"/>
+      <!-- Backboard -->
+      <line x1="166" y1="320" x2="254" y2="320" stroke="#555" stroke-width="2.5"/>
+      <!-- Basket rim -->
+      <circle cx="210" cy="330" r="8" fill="none" stroke="#F4611A" stroke-width="2"/>
+      <!-- Low block marks -->
+      <line x1="148" y1="324" x2="162" y2="324" stroke="#444" stroke-width="1.5"/>
+      <line x1="272" y1="324" x2="258" y2="324" stroke="#444" stroke-width="1.5"/>
+      <!-- Zone number badges -->
+      <circle cx="210" cy="72" r="13" fill="rgba(0,0,0,.6)"/><text x="210" y="72" font-family="Bebas Neue" font-size="13" fill="rgba(255,255,255,.55)" text-anchor="middle" dominant-baseline="middle">14</text>
+      <circle cx="50"  cy="132" r="12" fill="rgba(0,0,0,.6)"/><text x="50"  y="132" font-family="Bebas Neue" font-size="13" fill="rgba(255,255,255,.55)" text-anchor="middle" dominant-baseline="middle">12</text>
+      <circle cx="370" cy="132" r="12" fill="rgba(0,0,0,.6)"/><text x="370" y="132" font-family="Bebas Neue" font-size="13" fill="rgba(255,255,255,.55)" text-anchor="middle" dominant-baseline="middle">13</text>
+      <circle cx="13"  cy="318" r="10" fill="rgba(0,0,0,.6)"/><text x="13"  y="318" font-family="Bebas Neue" font-size="10" fill="rgba(255,255,255,.55)" text-anchor="middle" dominant-baseline="middle">10</text>
+      <circle cx="407" cy="318" r="10" fill="rgba(0,0,0,.6)"/><text x="407" y="318" font-family="Bebas Neue" font-size="10" fill="rgba(255,255,255,.55)" text-anchor="middle" dominant-baseline="middle">11</text>
+      <circle cx="72"  cy="300" r="12" fill="rgba(0,0,0,.6)"/><text x="72"  y="300" font-family="Bebas Neue" font-size="13" fill="rgba(255,255,255,.55)" text-anchor="middle" dominant-baseline="middle">7</text>
+      <circle cx="348" cy="300" r="12" fill="rgba(0,0,0,.6)"/><text x="348" y="300" font-family="Bebas Neue" font-size="13" fill="rgba(255,255,255,.55)" text-anchor="middle" dominant-baseline="middle">8</text>
+      <circle cx="210" cy="200" r="13" fill="rgba(0,0,0,.6)"/><text x="210" y="200" font-family="Bebas Neue" font-size="14" fill="rgba(255,255,255,.55)" text-anchor="middle" dominant-baseline="middle">9</text>
+      <circle cx="168" cy="284" r="11" fill="rgba(0,0,0,.6)"/><text x="168" y="284" font-family="Bebas Neue" font-size="12" fill="rgba(255,255,255,.55)" text-anchor="middle" dominant-baseline="middle">4</text>
+      <circle cx="210" cy="284" r="11" fill="rgba(0,0,0,.6)"/><text x="210" y="284" font-family="Bebas Neue" font-size="12" fill="rgba(255,255,255,.55)" text-anchor="middle" dominant-baseline="middle">5</text>
+      <circle cx="252" cy="284" r="11" fill="rgba(0,0,0,.6)"/><text x="252" y="284" font-family="Bebas Neue" font-size="12" fill="rgba(255,255,255,.55)" text-anchor="middle" dominant-baseline="middle">6</text>
+      <circle cx="179" cy="344" r="11" fill="rgba(0,0,0,.6)"/><text x="179" y="344" font-family="Bebas Neue" font-size="12" fill="rgba(255,255,255,.55)" text-anchor="middle" dominant-baseline="middle">2</text>
+      <circle cx="241" cy="344" r="11" fill="rgba(0,0,0,.6)"/><text x="241" y="344" font-family="Bebas Neue" font-size="12" fill="rgba(255,255,255,.55)" text-anchor="middle" dominant-baseline="middle">3</text>
+      <circle cx="210" cy="356" r="11" fill="rgba(0,0,0,.6)"/><text x="210" y="356" font-family="Bebas Neue" font-size="12" fill="rgba(255,255,255,.55)" text-anchor="middle" dominant-baseline="middle">1</text>
+    </svg>
+  </div>
+  <div class="zone-legend">
+    <div class="zl-item"><div class="zl-dot" style="background:#22487a">1</div>Área restringida</div>
+    <div class="zl-item"><div class="zl-dot" style="background:#1c3858">2</div>Bloque izq</div>
+    <div class="zl-item"><div class="zl-dot" style="background:#1c3858">3</div>Bloque der</div>
+    <div class="zl-item"><div class="zl-dot" style="background:#182840">4</div>Codo izq</div>
+    <div class="zl-item"><div class="zl-dot" style="background:#1c3248">5</div>Centro paint</div>
+    <div class="zl-item"><div class="zl-dot" style="background:#182840">6</div>Codo der</div>
+    <div class="zl-item"><div class="zl-dot" style="background:#0e1e35">7</div>Mid-range izq</div>
+    <div class="zl-item"><div class="zl-dot" style="background:#0e1e35">8</div>Mid-range der</div>
+    <div class="zl-item"><div class="zl-dot" style="background:#122030">9</div>Free throw / High post</div>
+    <div class="zl-item"><div class="zl-dot" style="background:#080f1c">10</div>Esquina izq 3</div>
+    <div class="zl-item"><div class="zl-dot" style="background:#080f1c">11</div>Esquina der 3</div>
+    <div class="zl-item"><div class="zl-dot" style="background:#0a1420">12</div>Ala izq 3</div>
+    <div class="zl-item"><div class="zl-dot" style="background:#0a1420">13</div>Ala der 3</div>
+    <div class="zl-item"><div class="zl-dot" style="background:#0a1420">14</div>Top of key 3</div>
+  </div>
+</div>
+
+<!-- TIPS -->
+<div class="tips">
+  <div class="tips-title">⚡ Claves técnicas para hoy</div>
+  <div class="tip">Si sentís que empujás el balón, volvé a Z1 y reseteá la mecánica antes de seguir.</div>
+  <div class="tip">BEEF: Balance → Eyes → Elbow alineado → Follow-through ("sacar la mano del frasco").</div>
+  <div class="tip">Z10 y Z11 (esquinas) son los triples más asequibles — construí confianza ahí primero.</div>
+  <div class="tip">Entre drill y drill: 60–90 seg de descanso. No llenes el tiempo con tiros sin foco.</div>
+</div>
+
+<!-- TRACKER -->
+<div class="tracker">
+  <div class="tracker-title">✅ Tracker de la sesión</div>
+  <div class="tracker-grid">
+    <div class="tracker-item"><span class="tracker-name">Form shooting</span><div class="tracker-check" onclick="this.classList.toggle('done')"></div></div>
+    <div class="tracker-item"><span class="tracker-name">Wall drill</span><div class="tracker-check" onclick="this.classList.toggle('done')"></div></div>
+    <div class="tracker-item"><span class="tracker-name">Catch &amp; shoot</span><div class="tracker-check" onclick="this.classList.toggle('done')"></div></div>
+    <div class="tracker-item"><span class="tracker-name">1-2 step shot</span><div class="tracker-check" onclick="this.classList.toggle('done')"></div></div>
+    <div class="tracker-item"><span class="tracker-name">Mikan drill</span><div class="tracker-check" onclick="this.classList.toggle('done')"></div></div>
+    <div class="tracker-item"><span class="tracker-name">5-spot mid</span><div class="tracker-check" onclick="this.classList.toggle('done')"></div></div>
+    <div class="tracker-item"><span class="tracker-name">Around the world</span><div class="tracker-check" onclick="this.classList.toggle('done')"></div></div>
+    <div class="tracker-item"><span class="tracker-name">Juego del 21</span><div class="tracker-check" onclick="this.classList.toggle('done')"></div></div>
+  </div>
+</div>
+
+<!-- HEATMAP 2K — 14 zonas -->
+<div class="heatmap-section">
+  <div class="heatmap-header">
+    <div>
+      <div class="block-title">🔥 Mapa de calor — acumulado</div>
+      <div class="block-meta">Tocá una zona · datos persistentes entre sesiones</div>
+    </div>
+    <button class="reset-btn" onclick="confirmReset()">Resetear todo</button>
+  </div>
+  <div class="hm-legend">
+    <div class="legend-item"><span class="legend-dot" style="background:#1a3cff"></span>0–10%</div>
+    <div class="legend-item"><span class="legend-dot" style="background:#2a5aee"></span>20%</div>
+    <div class="legend-item"><span class="legend-dot" style="background:#2a7acc"></span>30%</div>
+    <div class="legend-item"><span class="legend-dot" style="background:#4a8888"></span>40%</div>
+    <div class="legend-item"><span class="legend-dot" style="background:#cc6622"></span>50%</div>
+    <div class="legend-item"><span class="legend-dot" style="background:#dd3322"></span>60%</div>
+    <div class="legend-item"><span class="legend-dot" style="background:#cc1133"></span>70%</div>
+    <div class="legend-item"><span class="legend-dot" style="background:#9922aa"></span>80%</div>
+    <div class="legend-item"><span class="legend-dot" style="background:#5500ee"></span>90–100%</div>
+    <div class="legend-item"><span class="legend-dot" style="background:#1a1a1a"></span>Sin datos</div>
+  </div>
+  <div class="hm-court-wrap">
+    <svg id="heatmap-court" viewBox="0 0 420 380" xmlns="http://www.w3.org/2000/svg">
+      <rect width="420" height="380" fill="#0d0d0d"/>
+      <!-- Clickable zones (same geometry as static map) -->
+      <path  class="zone" id="hz-top3" data-id="top3" data-label="Top of Key 3pts (Z14)"       d="M126,0 L294,0 L294,152 A198,198 0 0,0 126,152 Z"/>
+      <path  class="zone" id="hz-lw3"  data-id="lw3"  data-label="Ala Izq 3pts (Z12)"          d="M0,0 L126,0 L126,152 A198,198 0 0,0 26,262 L0,262 Z"/>
+      <path  class="zone" id="hz-rw3"  data-id="rw3"  data-label="Ala Der 3pts (Z13)"          d="M294,0 L420,0 L420,262 L394,262 A198,198 0 0,0 294,152 Z"/>
+      <rect  class="zone" id="hz-lc3"  data-id="lc3"  data-label="Esquina Izq 3pts (Z10)"       x="0"   y="262" width="26"  height="112"/>
+      <rect  class="zone" id="hz-rc3"  data-id="rc3"  data-label="Esquina Der 3pts (Z11)"       x="394" y="262" width="26"  height="112"/>
+      <path  class="zone" id="hz-lm"   data-id="lm"   data-label="Mid-Range Izq (Z7)"           d="M26,374 L26,262 A198,198 0 0,1 148,148 L148,374 Z"/>
+      <path  class="zone" id="hz-rm"   data-id="rm"   data-label="Mid-Range Der (Z8)"           d="M272,374 L272,148 A198,198 0 0,1 394,262 L394,374 Z"/>
+      <path  class="zone" id="hz-hm"   data-id="hm"   data-label="Free Throw / High Post (Z9)" d="M148,254 L148,148 A198,198 0 0,1 272,148 L272,254 Z"/>
+      <rect  class="zone" id="hz-le"   data-id="le"   data-label="Codo Izq (Z4)"                x="148" y="254" width="41"  height="60"/>
+      <rect  class="zone" id="hz-cp"   data-id="cp"   data-label="Centro Paint (Z5)"            x="189" y="254" width="42"  height="60"/>
+      <rect  class="zone" id="hz-re"   data-id="re"   data-label="Codo Der (Z6)"                x="231" y="254" width="41"  height="60"/>
+      <rect  class="zone" id="hz-lb"   data-id="lb"   data-label="Bloque Izq (Z2)"              x="148" y="314" width="62"  height="60"/>
+      <rect  class="zone" id="hz-rb"   data-id="rb"   data-label="Bloque Der (Z3)"              x="210" y="314" width="62"  height="60"/>
+      <path  class="zone" id="hz-ra"   data-id="ra"   data-label="Área Restringida (Z1)"        d="M176,330 A34,34 0 0,1 244,330 L244,374 L176,374 Z"/>
+      <!-- Court lines overlay -->
+      <path fill="none" stroke="#383838" stroke-width="1.5" d="M26,374 L26,262 A198,198 0 0,1 394,262 L394,374"/>
+      <rect fill="none" stroke="#383838" stroke-width="1.5" x="148" y="254" width="124" height="120"/>
+      <path fill="none" stroke="#383838" stroke-width="1.2" d="M162,254 A48,48 0 0,1 258,254"/>
+      <path fill="none" stroke="#282828" stroke-width="1.2" stroke-dasharray="4,3" d="M162,254 A48,48 0 0,0 258,254"/>
+      <path fill="none" stroke="#383838" stroke-width="1.2" d="M176,330 A34,34 0 0,1 244,330"/>
+      <line x1="148" y1="314" x2="272" y2="314" stroke="#252525" stroke-width="1"/>
+      <line x1="189" y1="254" x2="189" y2="374" stroke="#1e1e1e" stroke-width="1"/>
+      <line x1="231" y1="254" x2="231" y2="374" stroke="#1e1e1e" stroke-width="1"/>
+      <line x1="210" y1="314" x2="210" y2="374" stroke="#1e1e1e" stroke-width="1"/>
+      <line x1="0"   y1="374" x2="420" y2="374" stroke="#383838" stroke-width="2"/>
+      <line x1="0"   y1="0"   x2="0"   y2="374" stroke="#252525" stroke-width="1.5"/>
+      <line x1="420" y1="0"   x2="420" y2="374" stroke="#252525" stroke-width="1.5"/>
+      <line x1="166" y1="320" x2="254" y2="320" stroke="#555" stroke-width="2.5"/>
+      <circle cx="210" cy="330" r="8" fill="none" stroke="#F4611A" stroke-width="2"/>
+      <line x1="148" y1="324" x2="162" y2="324" stroke="#444" stroke-width="1.5"/>
+      <line x1="272" y1="324" x2="258" y2="324" stroke="#444" stroke-width="1.5"/>
+      <!-- Zone number labels (static, dimmed) -->
+      <text x="210" y="72"  font-family="Bebas Neue" font-size="13" fill="rgba(255,255,255,.2)" text-anchor="middle" dominant-baseline="middle">14</text>
+      <text x="50"  y="132" font-family="Bebas Neue" font-size="13" fill="rgba(255,255,255,.2)" text-anchor="middle" dominant-baseline="middle">12</text>
+      <text x="370" y="132" font-family="Bebas Neue" font-size="13" fill="rgba(255,255,255,.2)" text-anchor="middle" dominant-baseline="middle">13</text>
+      <text x="13"  y="318" font-family="Bebas Neue" font-size="10" fill="rgba(255,255,255,.2)" text-anchor="middle" dominant-baseline="middle">10</text>
+      <text x="407" y="318" font-family="Bebas Neue" font-size="10" fill="rgba(255,255,255,.2)" text-anchor="middle" dominant-baseline="middle">11</text>
+      <text x="72"  y="300" font-family="Bebas Neue" font-size="13" fill="rgba(255,255,255,.2)" text-anchor="middle" dominant-baseline="middle">7</text>
+      <text x="348" y="300" font-family="Bebas Neue" font-size="13" fill="rgba(255,255,255,.2)" text-anchor="middle" dominant-baseline="middle">8</text>
+      <text x="210" y="200" font-family="Bebas Neue" font-size="14" fill="rgba(255,255,255,.2)" text-anchor="middle" dominant-baseline="middle">9</text>
+      <text x="168" y="284" font-family="Bebas Neue" font-size="12" fill="rgba(255,255,255,.2)" text-anchor="middle" dominant-baseline="middle">4</text>
+      <text x="210" y="284" font-family="Bebas Neue" font-size="12" fill="rgba(255,255,255,.2)" text-anchor="middle" dominant-baseline="middle">5</text>
+      <text x="252" y="284" font-family="Bebas Neue" font-size="12" fill="rgba(255,255,255,.2)" text-anchor="middle" dominant-baseline="middle">6</text>
+      <text x="179" y="344" font-family="Bebas Neue" font-size="12" fill="rgba(255,255,255,.2)" text-anchor="middle" dominant-baseline="middle">2</text>
+      <text x="241" y="344" font-family="Bebas Neue" font-size="12" fill="rgba(255,255,255,.2)" text-anchor="middle" dominant-baseline="middle">3</text>
+      <text x="210" y="356" font-family="Bebas Neue" font-size="12" fill="rgba(255,255,255,.2)" text-anchor="middle" dominant-baseline="middle">1</text>
+      <!-- % labels updated by JS -->
+      <text id="pct-top3" class="zone-pct-txt" x="210" y="85"></text>
+      <text id="pct-lw3"  class="zone-pct-txt" x="50"  y="145"></text>
+      <text id="pct-rw3"  class="zone-pct-txt" x="370" y="145"></text>
+      <text id="pct-lc3"  class="zone-pct-txt" x="13"  y="330"></text>
+      <text id="pct-rc3"  class="zone-pct-txt" x="407" y="330"></text>
+      <text id="pct-lm"   class="zone-pct-txt" x="72"  y="312"></text>
+      <text id="pct-rm"   class="zone-pct-txt" x="348" y="312"></text>
+      <text id="pct-hm"   class="zone-pct-txt" x="210" y="212"></text>
+      <text id="pct-le"   class="zone-pct-txt" x="168" y="296"></text>
+      <text id="pct-cp"   class="zone-pct-txt" x="210" y="296"></text>
+      <text id="pct-re"   class="zone-pct-txt" x="252" y="296"></text>
+      <text id="pct-lb"   class="zone-pct-txt" x="179" y="356"></text>
+      <text id="pct-rb"   class="zone-pct-txt" x="241" y="356"></text>
+      <text id="pct-ra"   class="zone-pct-txt" x="210" y="365"></text>
+    </svg>
+  </div>
+
+  <div class="zone-panel" id="zone-panel">
+    <div class="zone-panel-name" id="zone-panel-name">Tocá una zona del mapa</div>
+    <div class="zone-panel-cumul" id="zone-panel-cumul">Seleccioná una zona para ver su acumulado</div>
+    <div class="zone-input-row">
+      <div class="zig"><label>Encestados hoy</label><input type="number" id="inp-made" min="0" placeholder="0"></div>
+      <div class="zig"><label>Intentos hoy</label><input type="number" id="inp-att"  min="0" placeholder="0"></div>
+      <button class="save-btn" onclick="saveZone()">Guardar</button>
+    </div>
+    <div class="zone-feedback" id="zone-feedback"></div>
+  </div>
+
+  <div class="hm-totals">
+    <div class="hm-total-item"><div class="hm-total-val" id="gt-sessions">0</div><div class="hm-total-label">Sesiones</div></div>
+    <div class="hm-total-item"><div class="hm-total-val" id="gt-made">0</div><div class="hm-total-label">Encestados</div></div>
+    <div class="hm-total-item"><div class="hm-total-val" id="gt-att">0</div><div class="hm-total-label">Intentos</div></div>
+    <div class="hm-total-item"><div class="hm-total-val" id="gt-pct">—</div><div class="hm-total-label">% Global</div></div>
+  </div>
+
+  <div class="zones-summary" id="zones-summary" style="display:none">
+    <div class="zone-summary-row"><span class="zone-sum-icon">🔥</span><div><div class="zone-sum-title">Zona caliente</div><div class="zone-sum-val" id="hot-val"></div></div></div>
+    <div class="zone-summary-row"><span class="zone-sum-icon">🧊</span><div><div class="zone-sum-title">Zona fría — a trabajar</div><div class="zone-sum-val" id="cold-val"></div></div></div>
+  </div>
+</div>
+
+</div><!-- /wrap -->
+<script>
+const ZONES={
+  ra:'Área Restringida (Z1)',lb:'Bloque Izq (Z2)',rb:'Bloque Der (Z3)',
+  le:'Codo Izq (Z4)',cp:'Centro Paint (Z5)',re:'Codo Der (Z6)',
+  lm:'Mid-Range Izq (Z7)',rm:'Mid-Range Der (Z8)',hm:'Free Throw / High Post (Z9)',
+  lc3:'Esquina Izq 3pts (Z10)',rc3:'Esquina Der 3pts (Z11)',
+  lw3:'Ala Izq 3pts (Z12)',rw3:'Ala Der 3pts (Z13)',top3:'Top of Key 3pts (Z14)'
+};
+const KEY='elitehoops_zones_v3';
+let sel=null;
+function load(){try{return JSON.parse(localStorage.getItem(KEY))||{}}catch{return{}}}
+function save(d){localStorage.setItem(KEY,JSON.stringify(d))}
+function p2c(p){
+  if(p<10)return'#1a3cff';if(p<20)return'#2255ee';if(p<30)return'#2272cc';
+  if(p<40)return'#3a7a8a';if(p<50)return'#cc6622';if(p<60)return'#dd3322';
+  if(p<70)return'#cc1133';if(p<80)return'#9922aa';if(p<90)return'#7700cc';
+  return'#5500ee';
+}
+function p2t(p){
+  if(p<40)return'rgba(160,200,255,.95)';
+  if(p<60)return'rgba(255,200,140,.95)';
+  if(p<70)return'rgba(255,150,150,.95)';
+  return'rgba(220,150,255,.95)';
+}
+function render(){
+  const data=load();let tm=0,ta=0,best=null,worst=null;
+  Object.keys(ZONES).forEach(id=>{
+    const z=data[id]||{made:0,att:0,sessions:0};
+    const has=z.att>0;const p=has?Math.round(z.made/z.att*100):0;
+    const el=document.getElementById('hz-'+id);
+    if(el)el.style.fill=has?p2c(p):'';
+    const lbl=document.getElementById('pct-'+id);
+    if(lbl){lbl.textContent=has?p+'%':'';if(has)lbl.style.fill=p2t(p);}
+    tm+=z.made;ta+=z.att;
+    if(has){
+      if(!best||p>best.p)best={id,p,label:ZONES[id],made:z.made,att:z.att};
+      if(!worst||p<worst.p)worst={id,p,label:ZONES[id],made:z.made,att:z.att};
+    }
+  });
+  const m=data._meta||{};
+  document.getElementById('gt-sessions').textContent=m.sessions||0;
+  document.getElementById('gt-made').textContent=tm;
+  document.getElementById('gt-att').textContent=ta;
+  document.getElementById('gt-pct').textContent=ta>0?Math.round(tm/ta*100)+'%':'—';
+  const sum=document.getElementById('zones-summary');
+  if(best&&worst&&best.id!==worst.id){
+    sum.style.display='flex';
+    document.getElementById('hot-val').textContent=best.label+' — '+best.p+'% ('+best.made+'/'+best.att+')';
+    document.getElementById('cold-val').textContent=worst.label+' — '+worst.p+'% ('+worst.made+'/'+worst.att+')';
+  }else sum.style.display='none';
+}
+document.querySelectorAll('.zone').forEach(el=>{
+  el.addEventListener('click',()=>{
+    document.querySelectorAll('.zone').forEach(z=>z.classList.remove('active'));
+    el.classList.add('active');
+    const id=el.dataset.id;sel=id;
+    const z=(load()[id])||{made:0,att:0,sessions:0};
+    const has=z.att>0;const p=has?Math.round(z.made/z.att*100):null;
+    document.getElementById('zone-panel-name').textContent=el.dataset.label;
+    document.getElementById('zone-panel-cumul').textContent=has
+      ?'Acumulado: '+z.made+'/'+z.att+' ('+p+'%) · '+z.sessions+' sesión(es)'
+      :'Sin datos todavía — ¡primera vez en esta zona!';
+    document.getElementById('inp-made').value='';
+    document.getElementById('inp-att').value='';
+    document.getElementById('zone-feedback').textContent='';
+    document.getElementById('zone-panel').classList.add('sel');
+    document.getElementById('inp-made').focus();
+  });
+});
+function saveZone(){
+  if(!sel)return;
+  const made=parseInt(document.getElementById('inp-made').value)||0;
+  const att=parseInt(document.getElementById('inp-att').value)||0;
+  if(!att){document.getElementById('zone-feedback').textContent='⚠ Ingresá al menos los intentos.';return;}
+  if(made>att){document.getElementById('zone-feedback').textContent='⚠ Encestados no pueden superar intentos.';return;}
+  const data=load();
+  if(!data[sel])data[sel]={made:0,att:0,sessions:0};
+  data[sel].made+=made;data[sel].att+=att;data[sel].sessions=(data[sel].sessions||0)+1;
+  save(data);
+  const t=data[sel];const p=Math.round(t.made/t.att*100);const tp=Math.round(made/att*100);
+  document.getElementById('zone-feedback').textContent='✓ Guardado — hoy: '+made+'/'+att+' ('+tp+'%) · Total: '+t.made+'/'+t.att+' ('+p+'%)';
+  document.getElementById('zone-panel-cumul').textContent='Acumulado: '+t.made+'/'+t.att+' ('+p+'%) · '+t.sessions+' sesión(es)';
+  document.getElementById('inp-made').value='';document.getElementById('inp-att').value='';
+  render();
+}
+(function(){
+  if(!sessionStorage.getItem('sb')){
+    const d=load();if(!d._meta)d._meta={sessions:0};
+    d._meta.sessions=(d._meta.sessions||0)+1;save(d);
+    sessionStorage.setItem('sb','1');
+  }
+})();
+function confirmReset(){
+  if(confirm('¿Borrar TODOS los datos acumulados? No se puede deshacer.')){
+    localStorage.removeItem(KEY);sessionStorage.removeItem('sb');
+    document.querySelectorAll('.zone').forEach(z=>{z.classList.remove('active');z.style.fill='';});
+    document.querySelectorAll('.zone-pct-txt').forEach(l=>l.textContent='');
+    document.getElementById('zone-panel-name').textContent='Tocá una zona del mapa';
+    document.getElementById('zone-panel-cumul').textContent='Seleccioná una zona para ver su acumulado';
+    document.getElementById('zone-panel').classList.remove('sel');
+    render();
+  }
+}
+render();
+</script>
+</body>
+</html>
