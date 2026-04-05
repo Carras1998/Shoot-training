@@ -2,398 +2,415 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
 <meta name="theme-color" content="#0F0F0F">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Sesion Tiro">
-<link rel="manifest" id="manifest-link">
-<title>Sesión de Tiro</title>
+<meta name="apple-mobile-web-app-title" content="Elite Hoops">
+<link rel="manifest" id="pwa-manifest">
+<title>Elite Hoops</title>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{--orange:#F4611A;--dark:#0F0F0F;--card:#181818;--card2:#1E1E1E;--border:#2A2A2A;--text:#E8E8E8;--muted:#777;--green:#4CAF6A;--yellow:#F4C11A}
-body{font-family:'DM Sans',sans-serif;background:var(--dark);color:var(--text);min-height:100vh;padding:24px 16px 48px}
-body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");pointer-events:none;z-index:0;opacity:0.4}
-.wrap{max-width:520px;margin:0 auto;position:relative;z-index:1}
-.header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:28px;animation:fadeUp .5s ease both}
-.label{font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:var(--orange);font-weight:500;margin-bottom:4px}
-h1{font-family:'Bebas Neue',sans-serif;font-size:52px;line-height:.9;color:#fff}
-h1 span{color:var(--orange)}
-.meta{margin-top:8px;font-size:12px;color:var(--muted);display:flex;gap:12px}
-.ball-icon{width:54px;height:54px;background:var(--orange);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0;animation:pulse 3s ease-in-out infinite}
-@keyframes pulse{0%,100%{box-shadow:0 0 20px rgba(244,97,26,.3)}50%{box-shadow:0 0 40px rgba(244,97,26,.55)}}
-.summary{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:24px;animation:fadeUp .5s .1s ease both}
-.stat{background:var(--card);padding:14px 16px;text-align:center}
-.stat-val{font-family:'Bebas Neue',sans-serif;font-size:28px;color:#fff;line-height:1}
-.stat-val span{font-size:14px;color:var(--muted)}
-.stat-label{font-size:10px;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-top:3px}
-.block{border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:14px;animation:fadeUp .5s ease both}
-.block:nth-child(1){animation-delay:.15s}.block:nth-child(2){animation-delay:.2s}.block:nth-child(3){animation-delay:.25s}.block:nth-child(4){animation-delay:.3s}
-.block-header{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;background:var(--card);border-bottom:1px solid var(--border)}
-.phase-badge{font-family:'Bebas Neue',sans-serif;font-size:11px;letter-spacing:.1em;padding:3px 8px;border-radius:4px;background:var(--border);color:var(--muted);display:inline-block;margin-bottom:4px}
-.block-title{font-weight:600;font-size:14px;color:#fff}
-.block-meta{font-size:11px;color:var(--muted);margin-top:1px}
-.block-time{font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--orange);flex-shrink:0}
-.block-body{background:var(--card2);padding:4px 0}
-.drill{display:flex;align-items:flex-start;gap:14px;padding:12px 16px;border-bottom:1px solid #222;transition:background .15s}
-.drill:last-child{border-bottom:none}
-.drill:hover{background:#232323}
-.drill-num{font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--border);line-height:1;width:22px;flex-shrink:0;padding-top:1px}
-.drill-content{flex:1}
-.drill-name{font-weight:600;font-size:13.5px;color:#fff}
-.drill-desc{font-size:12px;color:var(--muted);margin-top:3px;line-height:1.5}
-.tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:7px}
-.tag{font-size:10px;font-weight:500;padding:2px 7px;border-radius:20px;letter-spacing:.05em}
-.tag-shots{background:rgba(244,97,26,.12);color:var(--orange)}
-.tag-time{background:rgba(76,175,106,.12);color:var(--green)}
-.tag-focus{background:rgba(244,193,26,.10);color:var(--yellow)}
-.tag-zone{background:rgba(255,255,255,.07);color:#ccc;font-family:'Bebas Neue',sans-serif;font-size:11px;letter-spacing:.06em}
-.drill-right{text-align:right;flex-shrink:0}
-.drill-shots{font-family:'Bebas Neue',sans-serif;font-size:24px;color:#fff;line-height:1}
-.drill-shots-label{font-size:10px;color:var(--muted)}
-.court-section{border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:14px;background:var(--card);animation:fadeUp .5s .35s ease both}
-.court-header{padding:12px 16px 8px;border-bottom:1px solid var(--border)}
-.court-sub{font-size:11px;color:var(--muted);margin-top:3px}
-.court-svg-wrap{padding:10px 8px 6px}
-.court-svg-wrap svg,.hm-court-wrap svg{width:100%;display:block}
-.zone-legend{padding:4px 14px 14px;display:flex;flex-wrap:wrap;gap:5px 12px}
-.zl-item{display:flex;align-items:center;gap:5px;font-size:10px;color:var(--muted)}
-.zl-dot{width:22px;height:14px;border-radius:3px;display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:9px;color:rgba(255,255,255,.8);flex-shrink:0}
-.tips{border:1px solid var(--border);border-left:3px solid var(--orange);border-radius:10px;background:var(--card);padding:14px 16px;margin-bottom:14px;animation:fadeUp .5s .4s ease both}
-.tips-title{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--orange);font-weight:600;margin-bottom:10px}
-.tip{font-size:12.5px;color:#aaa;line-height:1.6;display:flex;gap:8px;margin-bottom:5px}
-.tip::before{content:'→';color:var(--orange);flex-shrink:0}
-.tracker{border:1px solid var(--border);border-radius:14px;background:var(--card);padding:16px;margin-bottom:14px;animation:fadeUp .5s .45s ease both}
-.tracker-title{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:600;margin-bottom:14px}
-.tracker-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.tracker-item{background:var(--card2);border:1px solid var(--border);border-radius:8px;padding:10px 12px;display:flex;align-items:center;justify-content:space-between}
-.tracker-name{font-size:12px;color:#aaa}
-.tracker-check{width:22px;height:22px;border-radius:50%;border:2px solid var(--border);cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.tracker-check.done{background:var(--orange);border-color:var(--orange)}
-.tracker-check.done::after{content:'\2713';color:#fff;font-weight:700;font-size:12px}
-.heatmap-section{border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:14px;background:var(--card);animation:fadeUp .5s .5s ease both}
-.heatmap-header{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid var(--border)}
-.reset-btn{background:none;border:1px solid var(--border);color:var(--muted);font-family:'DM Sans',sans-serif;font-size:11px;padding:5px 10px;border-radius:6px;cursor:pointer;transition:all .2s}
-.reset-btn:hover{border-color:#e05a5a;color:#e05a5a}
-.hm-legend{display:flex;flex-wrap:wrap;gap:7px;padding:8px 16px;border-bottom:1px solid var(--border)}
-.legend-item{display:flex;align-items:center;gap:5px;font-size:10px;color:var(--muted)}
-.legend-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
-.hm-court-wrap{padding:10px 8px 4px}
+:root{--or:#F4611A;--dk:#0F0F0F;--c1:#181818;--c2:#1E1E1E;--bd:#2A2A2A;--tx:#E8E8E8;--mu:#777;--gr:#4CAF6A;--ye:#F4C11A;--nh:64px}
+html,body{height:100%;overflow:hidden;background:var(--dk);color:var(--tx)}
+body{font-family:'DM Sans',sans-serif}
+#app{height:100vh;display:flex;flex-direction:column;overflow:hidden}
+.screen{flex:1;overflow-y:auto;padding:20px 16px calc(var(--nh) + 20px);display:none;-webkit-overflow-scrolling:touch}
+.screen.active{display:block}
+#bnav{position:fixed;bottom:0;left:0;right:0;height:var(--nh);background:var(--c1);border-top:1px solid var(--bd);display:flex;z-index:100;padding-bottom:env(safe-area-inset-bottom,0)}
+.nb{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border:none;background:none;color:var(--mu);cursor:pointer;font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:.05em;transition:color .2s;padding:8px 0}
+.nb.active{color:var(--or)}
+.nb svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+/* Timer */
+#tov{position:fixed;inset:0;background:rgba(0,0,0,.9);z-index:200;display:none;align-items:center;justify-content:center;flex-direction:column;gap:14px}
+#tov.show{display:flex}
+#td{font-family:'Bebas Neue',sans-serif;font-size:88px;color:#fff;line-height:1}
+#tl{font-size:12px;color:var(--mu);letter-spacing:.12em;text-transform:uppercase;text-align:center;max-width:240px}
+.tbtns{display:flex;gap:10px}
+.tbtn{padding:11px 22px;border-radius:10px;border:none;cursor:pointer;font-family:'Bebas Neue',sans-serif;font-size:17px;letter-spacing:.05em;transition:all .15s}
+.tbtn.go{background:var(--or);color:#fff}.tbtn.go:active{transform:scale(.96)}
+.tbtn.rs{background:var(--bd);color:var(--tx)}
+.tbtn.cl{background:none;border:1px solid var(--bd);color:var(--mu)}
+/* Cards */
+.card{background:var(--c1);border:1px solid var(--bd);border-radius:14px;overflow:hidden;margin-bottom:12px}
+.ch{padding:13px 16px;border-bottom:1px solid var(--bd);display:flex;align-items:center;justify-content:space-between}
+.ct{font-weight:600;font-size:14px;color:#fff;display:flex;align-items:center;gap:7px}
+.cs{font-size:11px;color:var(--mu);margin-top:2px}
+.cb{background:var(--c2);padding:4px 0}
+/* Drills */
+.dr{display:flex;align-items:flex-start;gap:11px;padding:11px 16px;border-bottom:1px solid #1e1e1e;transition:background .15s}
+.dr:last-child{border-bottom:none}
+.dr:hover{background:#222}
+.dck{width:22px;height:22px;border-radius:6px;border:2px solid var(--bd);flex-shrink:0;cursor:pointer;transition:all .2s;margin-top:1px;display:flex;align-items:center;justify-content:center}
+.dck.done{background:var(--or);border-color:var(--or)}
+.dck.done::after{content:'✓';color:#fff;font-size:12px;font-weight:700}
+.di{flex:1}
+.dn{font-weight:600;font-size:13px;color:#fff}
+.dd{font-size:11px;color:var(--mu);margin-top:2px;line-height:1.5}
+.dtgs{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px}
+.dtg{font-size:10px;padding:2px 7px;border-radius:20px;font-weight:500}
+.dtg-v{background:rgba(244,97,26,.12);color:var(--or)}
+.dtg-t{background:rgba(76,175,106,.12);color:var(--gr)}
+.dtg-z{background:rgba(255,255,255,.07);color:#ccc;font-family:'Bebas Neue',sans-serif;font-size:11px}
+.dtbtn{width:32px;height:32px;border-radius:8px;border:1px solid var(--bd);background:none;color:var(--mu);cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;margin-top:1px;font-size:15px;transition:all .2s}
+.dtbtn:hover{border-color:var(--or);color:var(--or)}
+/* Stats bar */
+.sbar{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--bd);border:1px solid var(--bd);border-radius:12px;overflow:hidden;margin-bottom:14px}
+.sc{background:var(--c1);padding:11px 6px;text-align:center}
+.sn{font-family:'Bebas Neue',sans-serif;font-size:22px;color:#fff;line-height:1}
+.sl{font-size:9px;color:var(--mu);letter-spacing:.07em;text-transform:uppercase;margin-top:2px}
+/* Heatmap */
 .zone{fill:#1a1a1a;stroke:#0a0a0a;stroke-width:1.2;cursor:pointer;transition:fill .4s,stroke .2s;opacity:.95}
-.zone:hover{opacity:1;stroke:#666;stroke-width:2}
+.zone:hover{opacity:1;stroke:#555;stroke-width:2}
 .zone.active{stroke:#fff;stroke-width:2.5;opacity:1}
-.zone-pct-txt{font-family:'Bebas Neue',sans-serif;font-size:8px;pointer-events:none;text-anchor:middle;dominant-baseline:middle}
-.zone-panel{margin:0 16px 12px;background:#111;border:1px solid var(--border);border-radius:10px;padding:14px;transition:border-color .3s}
-.zone-panel.sel{border-color:var(--orange)}
-.zone-panel-name{font-weight:600;font-size:13px;color:#fff;margin-bottom:2px}
-.zone-panel-cumul{font-size:11px;color:var(--muted);margin-bottom:12px;min-height:16px}
-.zone-input-row{display:grid;grid-template-columns:1fr 1fr auto;gap:8px;align-items:flex-end}
-.zig label{display:block;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:5px}
-.zig input{background:#1a1a1a;border:1px solid var(--border);border-radius:7px;color:#fff;font-family:'Bebas Neue',sans-serif;font-size:22px;padding:8px 10px;width:100%;text-align:center;outline:none;transition:border-color .2s;-moz-appearance:textfield}
-.zig input::-webkit-outer-spin-button,.zig input::-webkit-inner-spin-button{-webkit-appearance:none}
-.zig input:focus{border-color:var(--orange)}
-.save-btn{background:var(--orange);border:none;color:#fff;font-family:'Bebas Neue',sans-serif;font-size:16px;padding:10px 14px;border-radius:7px;cursor:pointer;transition:background .2s,transform .1s;white-space:nowrap}
-.save-btn:hover{background:#e0541a}
-.save-btn:active{transform:scale(.96)}
-.zone-feedback{font-size:11px;color:var(--green);margin-top:8px;min-height:16px}
-.hm-totals{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
-.hm-total-item{background:#141414;padding:12px 8px;text-align:center}
-.hm-total-val{font-family:'Bebas Neue',sans-serif;font-size:26px;color:#fff;line-height:1}
-.hm-total-label{font-size:9px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-top:2px}
-.zones-summary{padding:12px 16px;display:flex;flex-direction:column;gap:8px}
-.zone-summary-row{display:flex;align-items:center;gap:12px;background:#111;border:1px solid var(--border);border-radius:8px;padding:10px 14px}
-.zone-sum-icon{font-size:20px}
-.zone-sum-title{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
-.zone-sum-val{font-size:13px;color:#fff;font-weight:600;margin-top:2px}
-@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.zlbl{font-family:'Bebas Neue',sans-serif;fill:rgba(255,255,255,.2);pointer-events:none;text-anchor:middle;dominant-baseline:middle}
+.zpct{font-family:'Bebas Neue',sans-serif;font-size:8px;pointer-events:none;text-anchor:middle;dominant-baseline:middle}
+/* Zone panel */
+.zpanel{background:#111;border:1px solid var(--bd);border-radius:12px;padding:14px;transition:border-color .3s;margin-bottom:10px}
+.zpanel.sel{border-color:var(--or)}
+.zpname{font-weight:600;font-size:13px;color:#fff;margin-bottom:2px}
+.zpsub{font-size:11px;color:var(--mu);margin-bottom:10px}
+.zinrow{display:grid;grid-template-columns:1fr 1fr auto;gap:8px;align-items:flex-end}
+.zif label{display:block;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--mu);margin-bottom:4px}
+.zif input{background:#1a1a1a;border:1px solid var(--bd);border-radius:7px;color:#fff;font-family:'Bebas Neue',sans-serif;font-size:22px;padding:8px 10px;width:100%;text-align:center;outline:none;-moz-appearance:textfield}
+.zif input::-webkit-outer-spin-button,.zif input::-webkit-inner-spin-button{-webkit-appearance:none}
+.zif input:focus{border-color:var(--or)}
+.sbtn{background:var(--or);border:none;color:#fff;font-family:'Bebas Neue',sans-serif;font-size:15px;padding:10px 14px;border-radius:7px;cursor:pointer;white-space:nowrap;transition:background .2s,transform .1s}
+.sbtn:hover{background:#e0541a}.sbtn:active{transform:scale(.96)}
+.zfb{font-size:11px;color:var(--gr);margin-top:8px;min-height:14px}
+.ztarg{display:flex;align-items:center;gap:8px;margin-top:8px}
+.ztarg label{font-size:11px;color:var(--mu);flex:1}
+.tinput{background:#1a1a1a;border:1px solid var(--bd);border-radius:6px;color:var(--or);font-family:'Bebas Neue',sans-serif;font-size:16px;padding:4px 8px;width:60px;text-align:center;outline:none;-moz-appearance:textfield}
+.tinput::-webkit-outer-spin-button,.tinput::-webkit-inner-spin-button{-webkit-appearance:none}
+.tbarw{height:4px;background:var(--bd);border-radius:2px;margin-top:6px;overflow:hidden}
+.tbar{height:100%;border-radius:2px;background:var(--or);transition:width .5s}
+.zhist{margin-top:10px;border-top:1px solid var(--bd);padding-top:10px}
+.zht{font-size:10px;color:var(--mu);letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px}
+.zhr{display:flex;justify-content:space-between;align-items:center;padding:4px 0;border-bottom:1px solid #1a1a1a;font-size:11px}
+.zhr:last-child{border-bottom:none}
+/* Progress */
+.recgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:14px}
+.rcard{background:var(--c2);border:1px solid var(--bd);border-radius:10px;padding:12px}
+.rv{font-family:'Bebas Neue',sans-serif;font-size:30px;color:var(--or);line-height:1}
+.rl{font-size:10px;color:var(--mu);letter-spacing:.06em;text-transform:uppercase;margin-top:3px}
+/* Plan */
+.pcard{background:var(--c1);border:1px solid var(--bd);border-radius:14px;padding:16px;margin-bottom:12px;display:flex;align-items:center;gap:14px}
+.pav{width:54px;height:54px;background:var(--or);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0;box-shadow:0 0 20px rgba(244,97,26,.3)}
+.pname{font-weight:600;font-size:16px;color:#fff}
+.ppos{font-size:12px;color:var(--mu);margin-top:2px}
+.pstats{display:flex;gap:12px;margin-top:8px}
+.psi{font-size:11px;color:var(--mu)}
+.psi b{color:#fff;font-weight:600}
+.wkgrid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:14px}
+.wkd{background:var(--c1);border:1px solid var(--bd);border-radius:8px;padding:8px 2px;text-align:center}
+.wkd.today{border-color:var(--or);background:rgba(244,97,26,.08)}
+.wkd-n{font-size:9px;color:var(--mu);text-transform:uppercase}
+.wkd-i{font-size:15px;margin-top:3px}
+.wkd-t{font-size:8px;color:var(--mu);margin-top:2px;line-height:1.2}
+.progb{background:var(--c1);border:1px solid var(--bd);border-radius:12px;overflow:hidden;margin-bottom:10px}
+.progh{padding:13px 16px;display:flex;align-items:center;justify-content:space-between;cursor:pointer}
+.progt{font-weight:600;font-size:13px;color:#fff;display:flex;align-items:center;gap:7px}
+.proga{font-size:12px;color:var(--mu);transition:transform .2s}
+.progh.open .proga{transform:rotate(180deg)}
+.progbd{display:none;border-top:1px solid var(--bd);background:var(--c2)}
+.progbd.open{display:block}
+.plv{padding:10px 16px;border-bottom:1px solid #1e1e1e}
+.plv:last-child{border-bottom:none}
+.plvh{display:flex;align-items:center;gap:7px;margin-bottom:4px}
+.plvb{font-family:'Bebas Neue',sans-serif;font-size:10px;padding:2px 6px;border-radius:4px;background:var(--bd);color:var(--mu)}
+.plvb.cur{background:rgba(244,97,26,.2);color:var(--or)}
+.plvn{font-weight:600;font-size:12px;color:#fff}
+.plvd{font-size:11px;color:var(--mu);line-height:1.5}
+/* Misc */
+.ph{margin-bottom:20px}
+.ptitle{font-family:'Bebas Neue',sans-serif;font-size:36px;color:#fff;line-height:1}
+.psub{font-size:12px;color:var(--mu);margin-top:4px}
+.typetag{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:20px;font-size:11px;font-weight:500;margin-bottom:14px}
+.typetag.cancha{background:rgba(244,97,26,.15);color:var(--or)}
+.typetag.casa{background:rgba(26,46,74,.4);color:#7aaeee}
+.opttag{font-size:10px;color:var(--mu);background:var(--bd);padding:2px 6px;border-radius:4px;margin-left:5px}
+.notes{width:100%;background:#111;border:1px solid var(--bd);border-radius:10px;color:var(--tx);font-family:'DM Sans',sans-serif;font-size:13px;padding:12px;resize:none;outline:none;transition:border-color .2s}
+.notes:focus{border-color:var(--or)}
+.btnp{background:var(--or);border:none;color:#fff;font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:.05em;padding:13px;border-radius:10px;cursor:pointer;width:100%;transition:background .2s;margin-top:10px}
+.btnp:hover{background:#e0541a}
+.btnout{background:none;border:1px solid var(--bd);color:var(--mu);font-family:'DM Sans',sans-serif;font-size:12px;padding:8px 14px;border-radius:8px;cursor:pointer;transition:all .2s}
+.btnout:hover{border-color:#e05a5a;color:#e05a5a}
+.hcrow{display:flex;align-items:center;gap:12px;background:#111;border:1px solid var(--bd);border-radius:10px;padding:10px 14px;margin-bottom:8px}
+.hci{font-size:20px}
+.hct{font-size:10px;color:var(--mu);text-transform:uppercase;letter-spacing:.08em}
+.hcv{font-size:13px;color:#fff;font-weight:600;margin-top:1px}
+.srow{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;border-bottom:1px solid #1e1e1e}
+.srow:last-child{border-bottom:none}
+.toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:var(--gr);color:#fff;padding:10px 20px;border-radius:10px;font-size:13px;font-weight:600;z-index:500;white-space:nowrap}
+.badge{font-family:'Bebas Neue',sans-serif;font-size:11px;padding:3px 8px;border-radius:4px;background:var(--bd);color:var(--mu)}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.fu{animation:fadeUp .4s ease both}
+::-webkit-scrollbar{width:3px}
+::-webkit-scrollbar-thumb{background:var(--bd);border-radius:2px}
 </style>
 </head>
 <body>
-<div class="wrap">
-
-<div class="header">
-  <div>
-    <div class="label">Sesion individual &middot; 1 balon</div>
-    <h1>SESION<br>DE <span>TIRO</span></h1>
-    <div class="meta"><span>&#9201; ~75 min</span><span>&#127936; ~280 tiros</span><span>&#128205; Solo</span></div>
-  </div>
-  <div class="ball-icon">&#127936;</div>
-</div>
-
-<div class="summary">
-  <div class="stat"><div class="stat-val">4</div><div class="stat-label">Bloques</div></div>
-  <div class="stat"><div class="stat-val">75<span>min</span></div><div class="stat-label">Duracion</div></div>
-  <div class="stat"><div class="stat-val">~280</div><div class="stat-label">Intentos</div></div>
-</div>
-
-<!-- BLOQUE 1 -->
-<div class="block">
-  <div class="block-header">
-    <div><span class="phase-badge">BLOQUE 01</span><div class="block-title">Activacion de mecanica</div><div class="block-meta">Sin fatiga &middot; maxima concentracion tecnica</div></div>
-    <div class="block-time">15 min</div>
-  </div>
-  <div class="block-body">
-    <div class="drill"><div class="drill-num">1</div><div class="drill-content"><div class="drill-name">Form shooting &mdash; 1 mano</div><div class="drill-desc">En la zona canasta (C), a 1-1.5 m del aro. Solo la mano dominante, la otra en la espalda. Foco en salida desde los dedos y follow-through completo.</div><div class="tags"><span class="tag tag-shots">3 x 10</span><span class="tag tag-zone">&#128205; C &mdash; Canasta</span><span class="tag tag-focus">mecanica pura</span></div></div><div class="drill-right"><div class="drill-shots">30</div><div class="drill-shots-label">tiros</div></div></div>
-    <div class="drill"><div class="drill-num">2</div><div class="drill-content"><div class="drill-name">Wall drill &mdash; correccion lateral</div><div class="drill-desc">Frente a una pared, dispara rozandola hacia arriba. Si el balon se desvía la mano guia esta forzando. Sin zona especifica &mdash; mecanica pura sin distancia.</div><div class="tags"><span class="tag tag-shots">2 x 15</span><span class="tag tag-focus">alineacion</span></div></div><div class="drill-right"><div class="drill-shots">30</div><div class="drill-shots-label">tiros</div></div></div>
+<!-- Timer overlay -->
+<div id="tov">
+  <div id="tl">TEMPORIZADOR</div>
+  <div id="td">00:00</div>
+  <div class="tbtns">
+    <button class="tbtn go" id="ttog" onclick="T.toggle()">INICIAR</button>
+    <button class="tbtn rs" onclick="T.reset()">RESET</button>
+    <button class="tbtn cl" onclick="T.close()">CERRAR</button>
   </div>
 </div>
 
-<!-- BLOQUE 2 -->
-<div class="block">
-  <div class="block-header">
-    <div><span class="phase-badge">BLOQUE 02</span><div class="block-title">Catch &amp; Shoot &mdash; Spots fijos</div><div class="block-meta">Footwork + ritmo piernas-brazos</div></div>
-    <div class="block-time">20 min</div>
-  </div>
-  <div class="block-body">
-    <div class="drill"><div class="drill-num">3</div><div class="drill-content"><div class="drill-name">Ball pickup catch &amp; shoot &mdash; Triple</div><div class="drill-desc">Coloca el balon en el suelo, recogelo simulando un pase y dispara en un movimiento fluido. Recorre los 5 spots de triple en orden: esquina izq (T1) &rarr; ala izq (T2) &rarr; top del arco (T3) &rarr; ala der (T4) &rarr; esquina der (T5). 10 tiros por zona.</div><div class="tags"><span class="tag tag-shots">5 zonas x 10</span><span class="tag tag-zone">&#128205; T1 &middot; T2 &middot; T3 &middot; T4 &middot; T5</span><span class="tag tag-focus">ritmo y footwork</span></div></div><div class="drill-right"><div class="drill-shots">50</div><div class="drill-shots-label">tiros</div></div></div>
-    <div class="drill"><div class="drill-num">4</div><div class="drill-content"><div class="drill-name">1-2 step into shot &mdash; Mid-range</div><div class="drill-desc">Camina hacia el balon, da 2 pasos y tira simulando recibir un pase. Trabaja 4 spots: esquina izq (M1), codo izq (M2), codo der (M4) y esquina der (M5). Foco en no perder la alineacion al moverte.</div><div class="tags"><span class="tag tag-shots">4 zonas x 10</span><span class="tag tag-zone">&#128205; M1 &middot; M2 &middot; M4 &middot; M5</span><span class="tag tag-focus">tiro en movimiento</span></div></div><div class="drill-right"><div class="drill-shots">40</div><div class="drill-shots-label">tiros</div></div></div>
-  </div>
+<div id="app">
+<!-- HOY -->
+<div id="screen-hoy" class="screen active">
+  <div id="hoy-root"></div>
 </div>
-
-<!-- BLOQUE 3 -->
-<div class="block">
-  <div class="block-header">
-    <div><span class="phase-badge">BLOQUE 03</span><div class="block-title">Volumen + presion</div><div class="block-meta">Consistencia bajo algo de fatiga</div></div>
-    <div class="block-time">25 min</div>
-  </div>
-  <div class="block-body">
-    <div class="drill"><div class="drill-num">5</div><div class="drill-content"><div class="drill-name">Mikan drill</div><div class="drill-desc">Bandeja alternada izq/der sin dejar caer el balon. Te mueves continuamente dentro de la zona canasta (C) como si estuvieras en el poste bajo. 30 seg de trabajo, 30 seg de descanso.</div><div class="tags"><span class="tag tag-time">3 x 30 seg</span><span class="tag tag-zone">&#128205; C &mdash; Canasta</span><span class="tag tag-focus">finishing</span></div></div><div class="drill-right"><div class="drill-shots">~30</div><div class="drill-shots-label">tiros</div></div></div>
-    <div class="drill"><div class="drill-num">6</div><div class="drill-content"><div class="drill-name">5-spot mid-range con conteo</div><div class="drill-desc">10 tiros por zona, anotas los encestados. Recorre las 5 zonas de media distancia en orden: esquina izq (M1) &rarr; codo izq (M2) &rarr; high post / centro (M3) &rarr; codo der (M4) &rarr; esquina der (M5). Objetivo: superar 35/50.</div><div class="tags"><span class="tag tag-shots">5 zonas x 10</span><span class="tag tag-zone">&#128205; M1 &middot; M2 &middot; M3 &middot; M4 &middot; M5</span><span class="tag tag-focus">% de acierto</span></div></div><div class="drill-right"><div class="drill-shots">50</div><div class="drill-shots-label">tiros</div></div></div>
-    <div class="drill"><div class="drill-num">7</div><div class="drill-content"><div class="drill-name">Around the world &mdash; 7 zonas</div><div class="drill-desc">Encesta en cada zona antes de avanzar. Ruta: T1 &rarr; T2 &rarr; T3 &rarr; T4 &rarr; T5 &rarr; M2 &rarr; M4. Si fallas 2 seguidos en la misma zona baja un paso mas cerca. 2 vueltas completas.</div><div class="tags"><span class="tag tag-shots">2 vueltas</span><span class="tag tag-zone">&#128205; T1&rarr;T2&rarr;T3&rarr;T4&rarr;T5&rarr;M2&rarr;M4</span><span class="tag tag-focus">presion de enceste</span></div></div><div class="drill-right"><div class="drill-shots">~50</div><div class="drill-shots-label">tiros</div></div></div>
-  </div>
-</div>
-
-<!-- BLOQUE 4 -->
-<div class="block">
-  <div class="block-header">
-    <div><span class="phase-badge">BLOQUE 04</span><div class="block-title">Cierre &mdash; Competitivo</div><div class="block-meta">Con piernas cargadas, como en partido</div></div>
-    <div class="block-time">15 min</div>
-  </div>
-  <div class="block-body">
-    <div class="drill"><div class="drill-num">8</div><div class="drill-content"><div class="drill-name">Juego del 21</div><div class="drill-desc">Elige un codo (M2 o M4). Si entra &rarr; 2 puntos, repites. Si falla &rarr; corres al rebote y tiras bandeja al vuelo desde la zona canasta (C, vale 1). Primero en llegar a 21. 3 rondas contra tu propio record.</div><div class="tags"><span class="tag tag-shots">3 rondas</span><span class="tag tag-zone">&#128205; M2 o M4 + C</span><span class="tag tag-focus">concentracion + piernas</span></div></div><div class="drill-right"><div class="drill-shots">~50</div><div class="drill-shots-label">tiros</div></div></div>
-  </div>
-</div>
-
-<!-- MAPA DE SPOTS -->
-<div class="court-section">
-  <div class="court-header">
-    <div class="block-title">&#128506; Mapa de zonas &mdash; 11 zonas</div>
-    <div class="court-sub">C (canasta) &middot; M1-M5 (media distancia) &middot; T1-T5 (triple)</div>
-  </div>
-  <div class="court-svg-wrap">
-    <svg viewBox="0 0 420 380" xmlns="http://www.w3.org/2000/svg">
-      <rect width="420" height="380" fill="#0d0d0d"/>
-      <!-- T3 top 3 -->
-      <path fill="#0a1420" d="M126,0 L294,0 L294,151 A198,198 0 0,0 126,151 Z"/>
-      <!-- T2 left wing 3 -->
-      <path fill="#0a1420" d="M0,0 L126,0 L126,151 A198,198 0 0,0 26,262 L0,262 Z"/>
-      <!-- T4 right wing 3 -->
-      <path fill="#0a1420" d="M294,0 L420,0 L420,262 L394,262 A198,198 0 0,0 294,151 Z"/>
-      <!-- T1 left corner 3 -->
-      <rect fill="#080f1c" x="0" y="262" width="26" height="112"/>
-      <!-- T5 right corner 3 -->
-      <rect fill="#080f1c" x="394" y="262" width="26" height="112"/>
-      <!-- M2 left elbow (arc-bounded) -->
-      <path fill="#0e1e38" d="M26,262 L26,314 L148,314 L148,142 A198,198 0 0,0 26,262 Z"/>
-      <!-- M4 right elbow (arc-bounded) -->
-      <path fill="#0e1e38" d="M272,314 L272,142 A198,198 0 0,1 394,262 L394,314 Z"/>
-      <!-- M3 high post / center (arc-bounded) -->
-      <path fill="#0e1e38" d="M148,254 L148,142 A198,198 0 0,1 272,142 L272,254 Z"/>
-      <!-- M1 left short corner -->
-      <rect fill="#0e1e38" x="26" y="314" width="122" height="60"/>
-      <!-- M5 right short corner -->
-      <rect fill="#0e1e38" x="272" y="314" width="122" height="60"/>
-      <!-- C canasta (full paint) -->
-      <rect fill="#1c3858" x="148" y="254" width="124" height="120"/>
-      <!-- Court lines -->
-      <path fill="none" stroke="#363636" stroke-width="1.5" d="M26,374 L26,262 A198,198 0 0,1 394,262 L394,374"/>
-      <rect fill="none" stroke="#363636" stroke-width="1.5" x="148" y="254" width="124" height="120"/>
-      <path fill="none" stroke="#363636" stroke-width="1.2" d="M162,254 A48,48 0 0,1 258,254"/>
-      <path fill="none" stroke="#282828" stroke-width="1.2" stroke-dasharray="4,3" d="M162,254 A48,48 0 0,0 258,254"/>
-      <path fill="none" stroke="#363636" stroke-width="1.2" d="M176,330 A34,34 0 0,1 244,330"/>
-      <!-- M dividers: horizontal between M1/M2 and M4/M5 -->
-      <line x1="26" y1="314" x2="148" y2="314" stroke="#1e1e1e" stroke-width="1"/>
-      <line x1="272" y1="314" x2="394" y2="314" stroke="#1e1e1e" stroke-width="1"/>
-      <!-- M3 / paint top line -->
-      <line x1="148" y1="254" x2="272" y2="254" stroke="#363636" stroke-width="1.2"/>
-      <line x1="0" y1="374" x2="420" y2="374" stroke="#363636" stroke-width="2"/>
-      <line x1="0" y1="0" x2="0" y2="374" stroke="#252525" stroke-width="1.5"/>
-      <line x1="420" y1="0" x2="420" y2="374" stroke="#252525" stroke-width="1.5"/>
-      <line x1="166" y1="320" x2="254" y2="320" stroke="#555" stroke-width="2.5"/>
-      <circle cx="210" cy="330" r="8" fill="none" stroke="#F4611A" stroke-width="2"/>
-      <line x1="148" y1="323" x2="162" y2="323" stroke="#444" stroke-width="1.5"/>
-      <line x1="272" y1="323" x2="258" y2="323" stroke="#444" stroke-width="1.5"/>
-      <!-- Zone labels -->
-      <circle cx="210" cy="75" r="13" fill="rgba(0,0,0,.6)"/><text x="210" y="75" font-family="Bebas Neue" font-size="12" fill="rgba(255,255,255,.6)" text-anchor="middle" dominant-baseline="middle">T3</text>
-      <circle cx="50"  cy="140" r="12" fill="rgba(0,0,0,.6)"/><text x="50"  y="140" font-family="Bebas Neue" font-size="12" fill="rgba(255,255,255,.6)" text-anchor="middle" dominant-baseline="middle">T2</text>
-      <circle cx="370" cy="140" r="12" fill="rgba(0,0,0,.6)"/><text x="370" y="140" font-family="Bebas Neue" font-size="12" fill="rgba(255,255,255,.6)" text-anchor="middle" dominant-baseline="middle">T4</text>
-      <circle cx="13"  cy="318" r="10" fill="rgba(0,0,0,.6)"/><text x="13"  y="318" font-family="Bebas Neue" font-size="10" fill="rgba(255,255,255,.6)" text-anchor="middle" dominant-baseline="middle">T1</text>
-      <circle cx="407" cy="318" r="10" fill="rgba(0,0,0,.6)"/><text x="407" y="318" font-family="Bebas Neue" font-size="10" fill="rgba(255,255,255,.6)" text-anchor="middle" dominant-baseline="middle">T5</text>
-      <circle cx="75"  cy="250" r="12" fill="rgba(0,0,0,.6)"/><text x="75"  y="250" font-family="Bebas Neue" font-size="12" fill="rgba(255,255,255,.6)" text-anchor="middle" dominant-baseline="middle">M2</text>
-      <circle cx="345" cy="250" r="12" fill="rgba(0,0,0,.6)"/><text x="345" y="250" font-family="Bebas Neue" font-size="12" fill="rgba(255,255,255,.6)" text-anchor="middle" dominant-baseline="middle">M4</text>
-      <circle cx="210" cy="198" r="12" fill="rgba(0,0,0,.6)"/><text x="210" y="198" font-family="Bebas Neue" font-size="12" fill="rgba(255,255,255,.6)" text-anchor="middle" dominant-baseline="middle">M3</text>
-      <circle cx="87"  cy="342" r="12" fill="rgba(0,0,0,.6)"/><text x="87"  y="342" font-family="Bebas Neue" font-size="12" fill="rgba(255,255,255,.6)" text-anchor="middle" dominant-baseline="middle">M1</text>
-      <circle cx="333" cy="342" r="12" fill="rgba(0,0,0,.6)"/><text x="333" y="342" font-family="Bebas Neue" font-size="12" fill="rgba(255,255,255,.6)" text-anchor="middle" dominant-baseline="middle">M5</text>
-      <circle cx="210" cy="314" r="12" fill="rgba(0,0,0,.6)"/><text x="210" y="314" font-family="Bebas Neue" font-size="12" fill="rgba(255,255,255,.6)" text-anchor="middle" dominant-baseline="middle">C</text>
-    </svg>
-  </div>
-  <div class="zone-legend">
-    <div class="zl-item"><div class="zl-dot" style="background:#1c3858">C</div>Canasta (bajo el aro)</div>
-    <div class="zl-item"><div class="zl-dot" style="background:#0e1e38">M1</div>Short corner izq</div>
-    <div class="zl-item"><div class="zl-dot" style="background:#0e1e38">M2</div>Codo / elbow izq</div>
-    <div class="zl-item"><div class="zl-dot" style="background:#0e1e38">M3</div>High post / centro</div>
-    <div class="zl-item"><div class="zl-dot" style="background:#0e1e38">M4</div>Codo / elbow der</div>
-    <div class="zl-item"><div class="zl-dot" style="background:#0e1e38">M5</div>Short corner der</div>
-    <div class="zl-item"><div class="zl-dot" style="background:#080f1c">T1</div>Esquina izq 3pts</div>
-    <div class="zl-item"><div class="zl-dot" style="background:#0a1420">T2</div>Ala izq 3pts</div>
-    <div class="zl-item"><div class="zl-dot" style="background:#0a1420">T3</div>Top of key 3pts</div>
-    <div class="zl-item"><div class="zl-dot" style="background:#0a1420">T4</div>Ala der 3pts</div>
-    <div class="zl-item"><div class="zl-dot" style="background:#080f1c">T5</div>Esquina der 3pts</div>
-  </div>
-</div>
-
-<!-- TIPS -->
-<div class="tips">
-  <div class="tips-title">&#9889; Claves tecnicas para hoy</div>
-  <div class="tip">Si sientes que empujas el balon, vuelve a la zona C y resetea la mecanica.</div>
-  <div class="tip">BEEF: Balance &rarr; Eyes &rarr; Elbow alineado &rarr; Follow-through ("sacar la mano del frasco").</div>
-  <div class="tip">T1 y T5 (esquinas) son los triples mas asequibles &mdash; empieza por ahi para coger confianza.</div>
-  <div class="tip">Entre drill y drill: 60-90 seg de descanso. Calidad sobre cantidad.</div>
-</div>
-
-<!-- TRACKER -->
-<div class="tracker">
-  <div class="tracker-title">&#10003; Tracker de la sesion</div>
-  <div class="tracker-grid">
-    <div class="tracker-item"><span class="tracker-name">Form shooting</span><div class="tracker-check" onclick="this.classList.toggle('done')"></div></div>
-    <div class="tracker-item"><span class="tracker-name">Wall drill</span><div class="tracker-check" onclick="this.classList.toggle('done')"></div></div>
-    <div class="tracker-item"><span class="tracker-name">Catch &amp; shoot</span><div class="tracker-check" onclick="this.classList.toggle('done')"></div></div>
-    <div class="tracker-item"><span class="tracker-name">1-2 step shot</span><div class="tracker-check" onclick="this.classList.toggle('done')"></div></div>
-    <div class="tracker-item"><span class="tracker-name">Mikan drill</span><div class="tracker-check" onclick="this.classList.toggle('done')"></div></div>
-    <div class="tracker-item"><span class="tracker-name">5-spot mid</span><div class="tracker-check" onclick="this.classList.toggle('done')"></div></div>
-    <div class="tracker-item"><span class="tracker-name">Around the world</span><div class="tracker-check" onclick="this.classList.toggle('done')"></div></div>
-    <div class="tracker-item"><span class="tracker-name">Juego del 21</span><div class="tracker-check" onclick="this.classList.toggle('done')"></div></div>
-  </div>
-</div>
-
-<!-- HEATMAP -->
-<div class="heatmap-section">
-  <div class="heatmap-header">
-    <div>
-      <div class="block-title">&#128293; Mapa de calor &mdash; acumulado</div>
-      <div class="block-meta">Toca una zona &middot; datos persistentes entre sesiones</div>
+<!-- MAPA -->
+<div id="screen-mapa" class="screen">
+  <div class="ph fu"><div class="ptitle">MAPA DE TIRO</div><div class="psub">11 zonas · estilo NBA 2K · datos acumulados entre sesiones</div></div>
+  <div id="mapa-sbar" class="sbar"></div>
+  <div class="card" style="margin-bottom:10px">
+    <div style="padding:8px 6px 4px">
+      <svg id="hmsvg" viewBox="0 0 420 380" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block">
+        <rect width="420" height="380" fill="#0d0d0d"/>
+        <path class="zone" id="hz-t3" data-id="t3" data-label="Top of Key 3pts (T3)" d="M126,0 L294,0 L294,151 A198,198 0 0,0 126,151 Z"/>
+        <path class="zone" id="hz-t2" data-id="t2" data-label="Ala Izq 3pts (T2)" d="M0,0 L126,0 L126,151 A198,198 0 0,0 26,262 L0,262 Z"/>
+        <path class="zone" id="hz-t4" data-id="t4" data-label="Ala Der 3pts (T4)" d="M294,0 L420,0 L420,262 L394,262 A198,198 0 0,0 294,151 Z"/>
+        <rect class="zone" id="hz-t1" data-id="t1" data-label="Esquina Izq 3pts (T1)" x="0" y="262" width="26" height="112"/>
+        <rect class="zone" id="hz-t5" data-id="t5" data-label="Esquina Der 3pts (T5)" x="394" y="262" width="26" height="112"/>
+        <path class="zone" id="hz-m2" data-id="m2" data-label="Codo Izq (M2)" d="M26,262 L26,314 L148,314 L148,142 A198,198 0 0,0 26,262 Z"/>
+        <path class="zone" id="hz-m4" data-id="m4" data-label="Codo Der (M4)" d="M272,314 L272,142 A198,198 0 0,1 394,262 L394,314 Z"/>
+        <path class="zone" id="hz-m3" data-id="m3" data-label="High Post / Centro (M3)" d="M148,254 L148,142 A198,198 0 0,1 272,142 L272,254 Z"/>
+        <rect class="zone" id="hz-m1" data-id="m1" data-label="Short Corner Izq (M1)" x="26" y="314" width="122" height="60"/>
+        <rect class="zone" id="hz-m5" data-id="m5" data-label="Short Corner Der (M5)" x="272" y="314" width="122" height="60"/>
+        <rect class="zone" id="hz-c" data-id="c" data-label="Canasta / Zona C" x="148" y="254" width="124" height="120"/>
+        <path fill="none" stroke="#363636" stroke-width="1.5" d="M26,374 L26,262 A198,198 0 0,1 394,262 L394,374"/>
+        <rect fill="none" stroke="#363636" stroke-width="1.5" x="148" y="254" width="124" height="120"/>
+        <path fill="none" stroke="#363636" stroke-width="1.2" d="M162,254 A48,48 0 0,1 258,254"/>
+        <path fill="none" stroke="#282828" stroke-width="1.2" stroke-dasharray="4,3" d="M162,254 A48,48 0 0,0 258,254"/>
+        <path fill="none" stroke="#363636" stroke-width="1.2" d="M176,330 A34,34 0 0,1 244,330"/>
+        <line x1="26" y1="314" x2="148" y2="314" stroke="#1e1e1e" stroke-width="1"/>
+        <line x1="272" y1="314" x2="394" y2="314" stroke="#1e1e1e" stroke-width="1"/>
+        <line x1="148" y1="254" x2="272" y2="254" stroke="#363636" stroke-width="1.2"/>
+        <line x1="0" y1="374" x2="420" y2="374" stroke="#363636" stroke-width="2"/>
+        <line x1="0" y1="0" x2="0" y2="374" stroke="#252525" stroke-width="1.5"/>
+        <line x1="420" y1="0" x2="420" y2="374" stroke="#252525" stroke-width="1.5"/>
+        <line x1="166" y1="320" x2="254" y2="320" stroke="#555" stroke-width="2.5"/>
+        <circle cx="210" cy="330" r="8" fill="none" stroke="#F4611A" stroke-width="2"/>
+        <line x1="148" y1="323" x2="162" y2="323" stroke="#444" stroke-width="1.5"/>
+        <line x1="272" y1="323" x2="258" y2="323" stroke="#444" stroke-width="1.5"/>
+        <text class="zlbl" font-size="12" x="210" y="75">T3</text>
+        <text class="zlbl" font-size="12" x="50" y="140">T2</text>
+        <text class="zlbl" font-size="12" x="370" y="140">T4</text>
+        <text class="zlbl" font-size="10" x="13" y="318">T1</text>
+        <text class="zlbl" font-size="10" x="407" y="318">T5</text>
+        <text class="zlbl" font-size="12" x="75" y="250">M2</text>
+        <text class="zlbl" font-size="12" x="345" y="250">M4</text>
+        <text class="zlbl" font-size="12" x="210" y="198">M3</text>
+        <text class="zlbl" font-size="12" x="87" y="342">M1</text>
+        <text class="zlbl" font-size="12" x="333" y="342">M5</text>
+        <text class="zlbl" font-size="12" x="210" y="314">C</text>
+        <text class="zpct" id="pct-t3" x="210" y="88"></text>
+        <text class="zpct" id="pct-t2" x="50" y="153"></text>
+        <text class="zpct" id="pct-t4" x="370" y="153"></text>
+        <text class="zpct" id="pct-t1" x="13" y="330"></text>
+        <text class="zpct" id="pct-t5" x="407" y="330"></text>
+        <text class="zpct" id="pct-m2" x="75" y="262"></text>
+        <text class="zpct" id="pct-m4" x="345" y="262"></text>
+        <text class="zpct" id="pct-m3" x="210" y="210"></text>
+        <text class="zpct" id="pct-m1" x="87" y="354"></text>
+        <text class="zpct" id="pct-m5" x="333" y="354"></text>
+        <text class="zpct" id="pct-c" x="210" y="326"></text>
+      </svg>
     </div>
-    <button class="reset-btn" onclick="confirmReset()">Resetear todo</button>
   </div>
-  <div class="hm-legend">
-    <div class="legend-item"><span class="legend-dot" style="background:#1a3cff"></span>0-10%</div>
-    <div class="legend-item"><span class="legend-dot" style="background:#2255ee"></span>20%</div>
-    <div class="legend-item"><span class="legend-dot" style="background:#2272cc"></span>30%</div>
-    <div class="legend-item"><span class="legend-dot" style="background:#3a7a8a"></span>40%</div>
-    <div class="legend-item"><span class="legend-dot" style="background:#cc6622"></span>50%</div>
-    <div class="legend-item"><span class="legend-dot" style="background:#dd3322"></span>60%</div>
-    <div class="legend-item"><span class="legend-dot" style="background:#cc1133"></span>70%</div>
-    <div class="legend-item"><span class="legend-dot" style="background:#9922aa"></span>80%</div>
-    <div class="legend-item"><span class="legend-dot" style="background:#5500ee"></span>90-100%</div>
-    <div class="legend-item"><span class="legend-dot" style="background:#1a1a1a"></span>Sin datos</div>
-  </div>
-  <div class="hm-court-wrap">
-    <svg id="heatmap-court" viewBox="0 0 420 380" xmlns="http://www.w3.org/2000/svg">
-      <rect width="420" height="380" fill="#0d0d0d"/>
-      <!-- Clickable zones -->
-      <path  class="zone" id="hz-t3" data-id="t3" data-label="Top of Key 3pts (T3)"       d="M126,0 L294,0 L294,151 A198,198 0 0,0 126,151 Z"/>
-      <path  class="zone" id="hz-t2" data-id="t2" data-label="Ala Izq 3pts (T2)"           d="M0,0 L126,0 L126,151 A198,198 0 0,0 26,262 L0,262 Z"/>
-      <path  class="zone" id="hz-t4" data-id="t4" data-label="Ala Der 3pts (T4)"           d="M294,0 L420,0 L420,262 L394,262 A198,198 0 0,0 294,151 Z"/>
-      <rect  class="zone" id="hz-t1" data-id="t1" data-label="Esquina Izq 3pts (T1)"        x="0"   y="262" width="26"  height="112"/>
-      <rect  class="zone" id="hz-t5" data-id="t5" data-label="Esquina Der 3pts (T5)"        x="394" y="262" width="26"  height="112"/>
-      <path  class="zone" id="hz-m2" data-id="m2" data-label="Codo / Elbow Izq (M2)"        d="M26,262 L26,314 L148,314 L148,142 A198,198 0 0,0 26,262 Z"/>
-      <path  class="zone" id="hz-m4" data-id="m4" data-label="Codo / Elbow Der (M4)"        d="M272,314 L272,142 A198,198 0 0,1 394,262 L394,314 Z"/>
-      <path  class="zone" id="hz-m3" data-id="m3" data-label="High Post / Centro (M3)"      d="M148,254 L148,142 A198,198 0 0,1 272,142 L272,254 Z"/>
-      <rect  class="zone" id="hz-m1" data-id="m1" data-label="Short Corner Izq (M1)"        x="26"  y="314" width="122" height="60"/>
-      <rect  class="zone" id="hz-m5" data-id="m5" data-label="Short Corner Der (M5)"        x="272" y="314" width="122" height="60"/>
-      <rect  class="zone" id="hz-c"  data-id="c"  data-label="Canasta / Bajo el Aro (C)"    x="148" y="254" width="124" height="120"/>
-      <!-- Court lines overlay -->
-      <path fill="none" stroke="#383838" stroke-width="1.5" d="M26,374 L26,262 A198,198 0 0,1 394,262 L394,374"/>
-      <rect fill="none" stroke="#383838" stroke-width="1.5" x="148" y="254" width="124" height="120"/>
-      <path fill="none" stroke="#383838" stroke-width="1.2" d="M162,254 A48,48 0 0,1 258,254"/>
-      <path fill="none" stroke="#282828" stroke-width="1.2" stroke-dasharray="4,3" d="M162,254 A48,48 0 0,0 258,254"/>
-      <path fill="none" stroke="#383838" stroke-width="1.2" d="M176,330 A34,34 0 0,1 244,330"/>
-      <line x1="26" y1="314" x2="148" y2="314" stroke="#252525" stroke-width="1"/>
-      <line x1="272" y1="314" x2="394" y2="314" stroke="#252525" stroke-width="1"/>
-      <line x1="148" y1="254" x2="272" y2="254" stroke="#383838" stroke-width="1.2"/>
-      <line x1="0" y1="374" x2="420" y2="374" stroke="#383838" stroke-width="2"/>
-      <line x1="0" y1="0" x2="0" y2="374" stroke="#252525" stroke-width="1.5"/>
-      <line x1="420" y1="0" x2="420" y2="374" stroke="#252525" stroke-width="1.5"/>
-      <line x1="166" y1="320" x2="254" y2="320" stroke="#555" stroke-width="2.5"/>
-      <circle cx="210" cy="330" r="8" fill="none" stroke="#F4611A" stroke-width="2"/>
-      <line x1="148" y1="323" x2="162" y2="323" stroke="#444" stroke-width="1.5"/>
-      <line x1="272" y1="323" x2="258" y2="323" stroke="#444" stroke-width="1.5"/>
-      <!-- Static zone labels -->
-      <text x="210" y="75"  font-family="Bebas Neue" font-size="12" fill="rgba(255,255,255,.2)" text-anchor="middle" dominant-baseline="middle">T3</text>
-      <text x="50"  y="140" font-family="Bebas Neue" font-size="12" fill="rgba(255,255,255,.2)" text-anchor="middle" dominant-baseline="middle">T2</text>
-      <text x="370" y="140" font-family="Bebas Neue" font-size="12" fill="rgba(255,255,255,.2)" text-anchor="middle" dominant-baseline="middle">T4</text>
-      <text x="13"  y="318" font-family="Bebas Neue" font-size="10" fill="rgba(255,255,255,.2)" text-anchor="middle" dominant-baseline="middle">T1</text>
-      <text x="407" y="318" font-family="Bebas Neue" font-size="10" fill="rgba(255,255,255,.2)" text-anchor="middle" dominant-baseline="middle">T5</text>
-      <text x="75"  y="250" font-family="Bebas Neue" font-size="12" fill="rgba(255,255,255,.2)" text-anchor="middle" dominant-baseline="middle">M2</text>
-      <text x="345" y="250" font-family="Bebas Neue" font-size="12" fill="rgba(255,255,255,.2)" text-anchor="middle" dominant-baseline="middle">M4</text>
-      <text x="210" y="198" font-family="Bebas Neue" font-size="12" fill="rgba(255,255,255,.2)" text-anchor="middle" dominant-baseline="middle">M3</text>
-      <text x="87"  y="342" font-family="Bebas Neue" font-size="12" fill="rgba(255,255,255,.2)" text-anchor="middle" dominant-baseline="middle">M1</text>
-      <text x="333" y="342" font-family="Bebas Neue" font-size="12" fill="rgba(255,255,255,.2)" text-anchor="middle" dominant-baseline="middle">M5</text>
-      <text x="210" y="314" font-family="Bebas Neue" font-size="12" fill="rgba(255,255,255,.2)" text-anchor="middle" dominant-baseline="middle">C</text>
-      <!-- % labels updated by JS -->
-      <text id="pct-t3" class="zone-pct-txt" x="210" y="88"></text>
-      <text id="pct-t2" class="zone-pct-txt" x="50"  y="153"></text>
-      <text id="pct-t4" class="zone-pct-txt" x="370" y="153"></text>
-      <text id="pct-t1" class="zone-pct-txt" x="13"  y="330"></text>
-      <text id="pct-t5" class="zone-pct-txt" x="407" y="330"></text>
-      <text id="pct-m2" class="zone-pct-txt" x="75"  y="262"></text>
-      <text id="pct-m4" class="zone-pct-txt" x="345" y="262"></text>
-      <text id="pct-m3" class="zone-pct-txt" x="210" y="210"></text>
-      <text id="pct-m1" class="zone-pct-txt" x="87"  y="354"></text>
-      <text id="pct-m5" class="zone-pct-txt" x="333" y="354"></text>
-      <text id="pct-c"  class="zone-pct-txt" x="210" y="326"></text>
-    </svg>
-  </div>
-
-  <div class="zone-panel" id="zone-panel">
-    <div class="zone-panel-name" id="zone-panel-name">Toca una zona del mapa</div>
-    <div class="zone-panel-cumul" id="zone-panel-cumul">Selecciona una zona para ver su acumulado</div>
-    <div class="zone-input-row">
-      <div class="zig"><label>Encestados hoy</label><input type="number" id="inp-made" min="0" placeholder="0"></div>
-      <div class="zig"><label>Intentos hoy</label><input type="number"  id="inp-att"  min="0" placeholder="0"></div>
-      <button class="save-btn" onclick="saveZone()">Guardar</button>
+  <div class="zpanel" id="zpanel">
+    <div class="zpname" id="zpname">Toca una zona del mapa</div>
+    <div class="zpsub" id="zpsub">Selecciona una zona para ver su historial y registrar tiros</div>
+    <div class="zinrow">
+      <div class="zif"><label>Encestados hoy</label><input type="number" id="zm" min="0" placeholder="0"></div>
+      <div class="zif"><label>Intentos hoy</label><input type="number" id="za" min="0" placeholder="0"></div>
+      <button class="sbtn" onclick="M.save()">Guardar</button>
     </div>
-    <div class="zone-feedback" id="zone-feedback"></div>
+    <div class="zfb" id="zfb"></div>
+    <div class="ztarg"><label>🎯 Objetivo %</label><input type="number" class="tinput" id="zti" min="0" max="100" placeholder="—" onchange="M.saveTgt()"></div>
+    <div class="tbarw"><div class="tbar" id="ztbar" style="width:0%"></div></div>
+    <div id="zhist" class="zhist"></div>
   </div>
-
-  <div class="hm-totals">
-    <div class="hm-total-item"><div class="hm-total-val" id="gt-sessions">0</div><div class="hm-total-label">Sesiones</div></div>
-    <div class="hm-total-item"><div class="hm-total-val" id="gt-made">0</div><div class="hm-total-label">Encestados</div></div>
-    <div class="hm-total-item"><div class="hm-total-val" id="gt-att">0</div><div class="hm-total-label">Intentos</div></div>
-    <div class="hm-total-item"><div class="hm-total-val" id="gt-pct">-</div><div class="hm-total-label">% Global</div></div>
-  </div>
-
-  <div class="zones-summary" id="zones-summary" style="display:none">
-    <div class="zone-summary-row"><span class="zone-sum-icon">&#128293;</span><div><div class="zone-sum-title">Zona caliente</div><div class="zone-sum-val" id="hot-val"></div></div></div>
-    <div class="zone-summary-row"><span class="zone-sum-icon">&#129398;</span><div><div class="zone-sum-title">Zona fria &mdash; a trabajar</div><div class="zone-sum-val" id="cold-val"></div></div></div>
+  <div id="hcwrap"></div>
+  <div style="display:flex;justify-content:flex-end;margin-bottom:16px">
+    <button class="btnout" onclick="M.reset()">Resetear todos los datos</button>
   </div>
 </div>
+<!-- PROGRESO -->
+<div id="screen-progreso" class="screen">
+  <div class="ph fu"><div class="ptitle">PROGRESO</div><div class="psub">Evolución sesión a sesión</div></div>
+  <div id="prog-root"></div>
+</div>
+<!-- PLAN -->
+<div id="screen-plan" class="screen">
+  <div class="ph fu"><div class="ptitle">PLAN</div><div class="psub">Perfil · semana · progresiones</div></div>
+  <div id="plan-root"></div>
+</div>
 
+<nav id="bnav">
+  <button class="nb active" data-sc="hoy" onclick="nav('hoy')">
+    <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>HOY
+  </button>
+  <button class="nb" data-sc="mapa" onclick="nav('mapa')">
+    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 010 20M12 2a15.3 15.3 0 000 20"/></svg>MAPA
+  </button>
+  <button class="nb" data-sc="progreso" onclick="nav('progreso')">
+    <svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>PROGRESO
+  </button>
+  <button class="nb" data-sc="plan" onclick="nav('plan')">
+    <svg viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>PLAN
+  </button>
+</nav>
 </div>
 <script>
-const ZONES={
-  c:'Canasta / Bajo el Aro (C)',
-  m1:'Short Corner Izq (M1)',m2:'Codo Izq (M2)',m3:'High Post / Centro (M3)',
-  m4:'Codo Der (M4)',m5:'Short Corner Der (M5)',
-  t1:'Esquina Izq 3pts (T1)',t2:'Ala Izq 3pts (T2)',t3:'Top of Key 3pts (T3)',
-  t4:'Ala Der 3pts (T4)',t5:'Esquina Der 3pts (T5)'
+/* ── DATA DEFINITIONS ── */
+const ZD={
+  c:{l:'Canasta (C)'},m1:{l:'Short Corner Izq (M1)'},m2:{l:'Codo Izq (M2)'},
+  m3:{l:'High Post / Centro (M3)'},m4:{l:'Codo Der (M4)'},m5:{l:'Short Corner Der (M5)'},
+  t1:{l:'Esquina Izq 3pts (T1)'},t2:{l:'Ala Izq 3pts (T2)'},t3:{l:'Top of Key 3pts (T3)'},
+  t4:{l:'Ala Der 3pts (T4)'},t5:{l:'Esquina Der 3pts (T5)'}
 };
-const KEY='elitehoops_v5';
-let sel=null;
-function load(){try{return JSON.parse(localStorage.getItem(KEY))||{}}catch{return{}}}
-function save(d){localStorage.setItem(KEY,JSON.stringify(d))}
+
+const WP={
+  0:{title:'Descanso activo',sub:'Domingo · opcional',type:'casa',icon:'😴',
+    blocks:[{id:'su',title:'Dribling Ligero',sub:'Opcional · 15 min',icon:'🏀',opt:true,drills:[
+      {id:'su1',n:'Bote estático ambas manos',d:'Cabeza arriba, sin mirar el balón. 2 min cada mano.',tag:'2+2 min',t:120},
+      {id:'su2',n:'Crossover ligero',d:'Forma correcta, sin velocidad. Solo mantener el hábito.',tag:'5 min',t:300},
+    ]}]},
+  1:{title:'Fuerza + Calentamiento',sub:'Lunes · defensa y físico antes del gimnasio',type:'casa',icon:'🛡️',
+    blocks:[
+      {id:'md',title:'Bloque Defensa',sub:'Calentamiento gimnasio · 15 min',icon:'🛡️',drills:[
+        {id:'md1',n:'Postura defensiva estática',d:'Rodillas flexionadas, espalda recta, peso en puntas. Manos activas. Mantén 2 min sin moverse.',tag:'2 min',t:120},
+        {id:'md2',n:'Defensive slides',d:'Desplazamientos laterales sin cruzar los pies. 3 series de 30 seg con 20 de descanso.',tag:'3×30 seg',t:30},
+        {id:'md3',n:'Closeout drill',d:'Arranca fuerte, últimos 2 pasos frena abriendo pies. Simula salir a presionar un tirador. 8 reps.',tag:'8 reps'},
+        {id:'md4',n:'Manos activas',d:'Postura defensiva con manos moviéndose arriba/abajo continuamente. 2×30 seg.',tag:'2×30 seg',t:30},
+      ]},
+      {id:'mf',title:'Bloque Físico',sub:'Explosividad · 10 min',icon:'⚡',drills:[
+        {id:'mf1',n:'Saltos máximos',d:'Salto vertical máximo. 5 series de 5 saltos, 30 seg descanso entre series.',tag:'5×5'},
+        {id:'mf2',n:'Sprint stops',d:'Arrancada explosiva de 5-6 pasos y parada en seco con pies abiertos. Simula cortar en partido. 10 reps.',tag:'10 reps'},
+      ]},
+    ]},
+  2:{title:'Boxeo + Dribling',sub:'Martes · dribling en casa después del boxeo',type:'casa',icon:'🏀',
+    blocks:[{id:'td',title:'Bloque Dribling Completo',sub:'Casa · 20 min',icon:'🏀',drills:[
+      {id:'td1',n:'Bote básico cabeza arriba',d:'Estático, mano dominante 2 min. Luego mano débil 2 min. Nunca mirar el balón.',tag:'2+2 min',t:120},
+      {id:'td2',n:'Bote bajo y fuerte',d:'Lo más bajo posible, máxima fuerza. Simula proteger el balón bajo presión defensiva. Ambas manos.',tag:'2 min',t:120},
+      {id:'td3',n:'Crossover',d:'Cambio de mano por delante. Empieza lento, sube velocidad cuando el gesto sea limpio y automático.',tag:'3 min',t:180},
+      {id:'td4',n:'Entre piernas (between the legs)',d:'Más lento que el crossover. Foco en no perder el balón antes de ganar velocidad.',tag:'3 min',t:180},
+      {id:'td5',n:'Por la espalda (behind the back)',d:'El más difícil. Solo cuando los anteriores sean completamente automáticos.',tag:'3 min',t:180},
+      {id:'td6',n:'Bote en movimiento',d:'Desplazamientos laterales botando con cambios de dirección. Cabeza arriba siempre.',tag:'5 min',t:300},
+    ]}]},
+  3:{title:'Fuerza + Calentamiento',sub:'Miércoles · dribling y slides antes del gimnasio',type:'casa',icon:'🏀',
+    blocks:[
+      {id:'wd',title:'Dribling Parcial',sub:'Calentamiento · 10 min',icon:'🏀',drills:[
+        {id:'wd1',n:'Bote básico ambas manos',d:'Activa la coordinación mano-ojo antes de la sesión de fuerza.',tag:'3 min',t:180},
+        {id:'wd2',n:'Crossover + entre piernas',d:'A ritmo cómodo. Foco en el gesto limpio, no en la velocidad.',tag:'4 min',t:240},
+      ]},
+      {id:'wdd',title:'Defensa Parcial',sub:'Activa cadenas laterales · 8 min',icon:'🛡️',drills:[
+        {id:'wdd1',n:'Defensive slides',d:'3 series de 30 seg. Activa cadenas laterales — perfecto antes de sentadilla.',tag:'3×30 seg',t:30},
+        {id:'wdd2',n:'Sprint stops',d:'6 repeticiones. Activa el sistema nervioso antes de la fuerza.',tag:'6 reps'},
+      ]},
+    ]},
+  4:{title:'Boxeo + IQ de Juego',sub:'Jueves · trabajo mental sin carga física',type:'casa',icon:'🧠',
+    blocks:[
+      {id:'iq',title:'IQ de Juego',sub:'Casa · 20 min de vídeo analítico',icon:'🧠',drills:[
+        {id:'iq1',n:'Análisis defensivo',d:'Ve un partido fijándote SOLO en el defensor sin balón. Cómo se mueve, cómo anticipa el pase o el corte.',tag:'10 min'},
+        {id:'iq2',n:'Pick and roll',d:'Busca en YouTube una explicación de pick and roll. Interioriza cuándo se hace y cómo se defiende.',tag:'5 min'},
+        {id:'iq3',n:'Cortes sin balón',d:'Fíjate cómo los jugadores se mueven sin el balón para recibir en posición de tiro. Cortes en V y L.',tag:'5 min'},
+      ]},
+      {id:'iqd',title:'Dribling Opcional',sub:'Solo si tienes energía tras el boxeo',icon:'🏀',opt:true,drills:[
+        {id:'iqd1',n:'Repaso crossover y entre piernas',d:'Ligero, sin velocidad máxima. Solo mantener el hábito del gesto.',tag:'10 min',t:600},
+      ]},
+    ]},
+  5:{title:'Fuerza + Calentamiento',sub:'Viernes · físico explosivo antes del gimnasio',type:'casa',icon:'⚡',
+    blocks:[{id:'ff',title:'Bloque Físico Completo',sub:'Calentamiento gimnasio · 15 min',icon:'⚡',drills:[
+      {id:'ff1',n:'Saltos máximos',d:'5 series de 5 saltos. Máxima intención en cada uno, 30 seg descanso entre series.',tag:'5×5'},
+      {id:'ff2',n:'Sprint stops',d:'10 repeticiones. Arrancada explosiva + parada en seco. Simula los cortes de partido.',tag:'10 reps'},
+      {id:'ff3',n:'Lateral quickness',d:'Desplazamientos laterales máxima velocidad entre 2 puntos separados 3-4m. 6 series de 10 seg.',tag:'6×10 seg',t:10},
+      {id:'ff4',n:'Bote en movimiento',d:'Activa coordinación mano-ojo. Desplazamientos laterales botando con cambios de dirección.',tag:'5 min',t:300},
+    ]}]},
+  6:{title:'Sesión en Cancha',sub:'Sábado · tiro, bandejas y mapa de zonas',type:'cancha',icon:'🏀',
+    blocks:[
+      {id:'sa',title:'Activación de Mecánica',sub:'10 min · sin fatiga',icon:'🎯',drills:[
+        {id:'sa1',n:'Form shooting 1 mano',d:'Zona C, a 1-1.5m del aro. Solo mano dominante. Foco en follow-through completo.',tag:'3×10',z:'C'},
+        {id:'sa2',n:'Wall drill',d:'Dispara rozando una pared. Si el balón se desvía la mano guía está forzando.',tag:'2×15'},
+      ]},
+      {id:'sb',title:'Bandejas',sub:'10 min · control bajo el aro',icon:'🏀',drills:[
+        {id:'sb1',n:'Mikan drill',d:'Bandeja alternada izq/der sin dejar caer el balón. Zona C.',tag:'3×30 seg',t:30,z:'C'},
+        {id:'sb2',n:'Bandeja mano débil',d:'Solo mano débil hasta que sea limpia. 20 repeticiones.',tag:'20 reps',z:'C'},
+      ]},
+      {id:'sc',title:'Catch & Shoot',sub:'15 min · footwork + ritmo',icon:'📍',drills:[
+        {id:'sc1',n:'Ball pickup — Triples',d:'Recoge del suelo simulando pase y dispara en un movimiento. T1→T2→T3→T4→T5. 10 tiros por zona.',tag:'5 zonas×10',z:'T1·T2·T3·T4·T5'},
+        {id:'sc2',n:'1-2 step — Mid range',d:'2 pasos y tira simulando recibir un pase en movimiento. Zonas M1, M2, M4, M5.',tag:'4 zonas×10',z:'M1·M2·M4·M5'},
+      ]},
+      {id:'sd',title:'Registro de Zonas',sub:'30-40 min · 40 tiros por zona',icon:'🗺️',drills:[
+        {id:'sd1',n:'40 tiros — Mid range',d:'M1→M2→M3→M4→M5. Registra en el mapa antes de moverte a la siguiente zona.',tag:'5 zonas×40',z:'M1·M2·M3·M4·M5'},
+        {id:'sd2',n:'40 tiros — Triple',d:'T1→T2→T3→T4→T5. Solo si quedan piernas y tiempo.',tag:'5 zonas×40',z:'T1·T2·T3·T4·T5'},
+      ]},
+      {id:'se',title:'Cierre Competitivo',sub:'10 min · con piernas cargadas',icon:'🏆',drills:[
+        {id:'se1',n:'Juego del 21',d:'Desde M2 o M4. Entra → 2 puntos, repites. Falla → bandeja al vuelo desde C (1 punto). Llegar a 21. 3 rondas contra tu récord.',tag:'3 rondas',z:'M2·M4·C'},
+      ]},
+    ]},
+};
+
+const PROGS=[
+  {id:'drib',title:'Dribling',icon:'🏀',levels:[
+    {n:'Nivel 1 — Control básico',d:'Bote estático con ambas manos sin mirar el balón. Bote bajo y fuerte. Solo cuando sea automático pasa al siguiente.',cur:true},
+    {n:'Nivel 2 — Cambios de mano',d:'Crossover → entre piernas → por la espalda. Empieza lento, sube velocidad progresivamente.'},
+    {n:'Nivel 3 — Movimiento real',d:'Todos los cambios de mano en movimiento con oponente imaginario. Combinaciones de 2-3 movimientos.'},
+  ]},
+  {id:'def',title:'Defensa',icon:'🛡️',levels:[
+    {n:'Nivel 1 — Postura y slides',d:'Postura correcta automática. Defensive slides sin cruzar pies a velocidad máxima.',cur:true},
+    {n:'Nivel 2 — Closeout y anticipación',d:'Closeout técnico. Leer la dirección del dribling antes de que ocurra.'},
+    {n:'Nivel 3 — Defensa en vivo',d:'Aplicar todo en 1vs1 real. Defensa de pick and roll.'},
+  ]},
+  {id:'tiro',title:'Tiro',icon:'🎯',levels:[
+    {n:'Nivel 1 — Mecánica estática',d:'Form shooting con 1 mano en zona C. BEEF consistente. Objetivo: 50%+ en C y M1/M5.',cur:true},
+    {n:'Nivel 2 — Catch & shoot',d:'Tiro con footwork. Objetivo: 40%+ en M2/M4 y 35%+ en T1/T5.'},
+    {n:'Nivel 3 — Tiro en partido',d:'Step-in shots, pull-ups tras bote. Objetivo: 40%+ global en mid-range.'},
+  ]},
+  {id:'fis',title:'Físico Específico',icon:'⚡',levels:[
+    {n:'Nivel 1 — Explosividad base',d:'Saltos máximos, sprint stops, lateral quickness. Construir velocidad de pies.',cur:true},
+    {n:'Nivel 2 — Agilidad con balón',d:'Todos los drills físicos con balón. Lateral quickness botando.'},
+    {n:'Nivel 3 — Condición específica',d:'Circuitos completos simulando partido: sprint + bote + tiro + defensa.'},
+  ]},
+];
+
+/* ── STORAGE ── */
+const KEY='eh_v1';
+function dbLoad(){try{return JSON.parse(localStorage.getItem(KEY))||dbDefault()}catch{return dbDefault()}}
+function dbSave(d){localStorage.setItem(KEY,JSON.stringify(d))}
+function today(){return new Date().toISOString().split('T')[0]}
+function dbDefault(){
+  const t=today();
+  return{
+    profile:{name:'Sergio',height:178,weight:76,wingspan:173,pos:'Base / Escolta'},
+    zones:{
+      c:{records:[],target:70},
+      m1:{records:[{date:t,made:3,att:10}],target:40},
+      m2:{records:[{date:t,made:2,att:10}],target:40},
+      m3:{records:[{date:t,made:2,att:10}],target:40},
+      m4:{records:[{date:t,made:1,att:10}],target:40},
+      m5:{records:[{date:t,made:1,att:10}],target:40},
+      t1:{records:[{date:t,made:1,att:10}],target:35},
+      t2:{records:[{date:t,made:0,att:10}],target:35},
+      t3:{records:[{date:t,made:2,att:10}],target:35},
+      t4:{records:[{date:t,made:2,att:10}],target:35},
+      t5:{records:[{date:t,made:2,att:10}],target:35},
+    },
+    sessions:[],
+  };
+}
+
+/* ── COLOR ── */
 function p2c(p){
   if(p<10)return'#1a3cff';if(p<20)return'#2255ee';if(p<30)return'#2272cc';
   if(p<40)return'#3a7a8a';if(p<50)return'#cc6622';if(p<60)return'#dd3322';
@@ -406,154 +423,394 @@ function p2t(p){
   if(p<70)return'rgba(255,160,150,.95)';
   return'rgba(225,160,255,.95)';
 }
-function render(){
-  const data=load();let tm=0,ta=0,best=null,worst=null;
-  Object.keys(ZONES).forEach(id=>{
-    const z=data[id]||{made:0,att:0,sessions:0};
-    const has=z.att>0;const p=has?Math.round(z.made/z.att*100):0;
+
+/* ── NAV ── */
+let _sel=null;
+function nav(sc){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.nb').forEach(b=>b.classList.remove('active'));
+  document.getElementById('screen-'+sc).classList.add('active');
+  document.querySelector('[data-sc="'+sc+'"]').classList.add('active');
+  if(sc==='hoy')renderHoy();
+  if(sc==='mapa')renderMapa();
+  if(sc==='progreso')renderProg();
+  if(sc==='plan')renderPlan();
+}
+
+/* ── TOAST ── */
+function toast(msg){
+  const el=document.createElement('div');
+  el.className='toast fu';el.textContent=msg;
+  document.body.appendChild(el);
+  setTimeout(()=>el.remove(),2200);
+}
+
+/* ── HOY ── */
+function renderHoy(){
+  const day=new Date().getDay();
+  const plan=WP[day];
+  const db=dbLoad();
+  const t=today();
+  const sess=db.sessions.find(s=>s.date===t)||{completedDrills:[],notes:''};
+  const DN=['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
+  const MN=['enero','feb','marzo','abril','mayo','junio','julio','ago','sept','oct','nov','dic'];
+  const now=new Date();
+  const ds=now.getDate()+' de '+MN[now.getMonth()];
+  let h=`<div class="ph fu"><div class="ptitle">${DN[day].toUpperCase()}</div><div class="psub">${ds} · ${plan.title}</div></div>
+  <div class="typetag ${plan.type}">${plan.icon} ${plan.type==='cancha'?'Sesión en cancha':'Entrenamiento en casa'}</div>`;
+  plan.blocks.forEach(bl=>{
+    const done=bl.drills.filter(d=>(sess.completedDrills||[]).includes(d.id)).length;
+    h+=`<div class="card fu"><div class="ch"><div><div class="ct">${bl.icon} ${bl.title}${bl.opt?'<span class="opttag">opcional</span>':''}</div><div class="cs">${bl.sub}</div></div>
+    <span style="font-family:'Bebas Neue',sans-serif;font-size:18px;color:${done===bl.drills.length?'#4CAF6A':'var(--mu)'};">${done}/${bl.drills.length}</span></div><div class="cb">`;
+    bl.drills.forEach(dr=>{
+      const dn=(sess.completedDrills||[]).includes(dr.id);
+      h+=`<div class="dr"><div class="dck ${dn?'done':''}" onclick="toggleDrill('${dr.id}')"></div>
+      <div class="di"><div class="dn" style="${dn?'opacity:.4;text-decoration:line-through':''}">${dr.n}</div>
+      <div class="dd">${dr.d}</div><div class="dtgs"><span class="dtg dtg-v">${dr.tag}</span>${dr.z?`<span class="dtg dtg-z">📍 ${dr.z}</span>`:''}</div></div>
+      ${dr.t?`<button class="dtbtn" onclick="T.open(${dr.t},'${dr.n.substring(0,30)}')" title="Temporizador">⏱</button>`:''}
+      </div>`;
+    });
+    h+=`</div></div>`;
+  });
+  h+=`<div class="card fu"><div class="ch"><div class="ct">📝 Notas de sesión</div></div>
+  <div style="padding:12px"><textarea class="notes" id="snotes" rows="4" placeholder="¿Cómo ha ido? Zonas que mejoran, sensaciones, qué trabajar la próxima...">${sess.notes||''}</textarea>
+  <button class="btnp" onclick="saveSession()">GUARDAR SESIÓN</button></div></div>`;
+  document.getElementById('hoy-root').innerHTML=h;
+}
+
+function toggleDrill(id){
+  const db=dbLoad();const t=today();
+  let sess=db.sessions.find(s=>s.date===t);
+  if(!sess){sess={date:t,completedDrills:[],notes:''};db.sessions.push(sess);}
+  const i=sess.completedDrills.indexOf(id);
+  if(i>=0)sess.completedDrills.splice(i,1);else sess.completedDrills.push(id);
+  dbSave(db);renderHoy();
+}
+
+function saveSession(){
+  const db=dbLoad();const t=today();
+  let sess=db.sessions.find(s=>s.date===t);
+  if(!sess){sess={date:t,completedDrills:[],notes:''};db.sessions.push(sess);}
+  const n=document.getElementById('snotes');
+  if(n)sess.notes=n.value;
+  dbSave(db);toast('✓ Sesión guardada');
+}
+
+/* ── MAPA ── */
+function renderMapa(){
+  const db=dbLoad();
+  let tm=0,ta=0,best=null,worst=null;
+  const dates=new Set();
+  Object.keys(ZD).forEach(id=>{
+    const z=db.zones[id]||{records:[],target:null};
+    const made=z.records.reduce((a,r)=>a+r.made,0);
+    const att=z.records.reduce((a,r)=>a+r.att,0);
+    z.records.forEach(r=>dates.add(r.date));
+    const has=att>0;const p=has?Math.round(made/att*100):0;
     const el=document.getElementById('hz-'+id);
     if(el)el.style.fill=has?p2c(p):'';
     const lbl=document.getElementById('pct-'+id);
     if(lbl){lbl.textContent=has?p+'%':'';if(has)lbl.style.fill=p2t(p);}
-    tm+=z.made;ta+=z.att;
+    tm+=made;ta+=att;
     if(has){
-      if(!best||p>best.p)best={id,p,label:ZONES[id],made:z.made,att:z.att};
-      if(!worst||p<worst.p)worst={id,p,label:ZONES[id],made:z.made,att:z.att};
+      if(!best||p>best.p)best={id,p,l:ZD[id].l,made,att};
+      if(!worst||p<worst.p)worst={id,p,l:ZD[id].l,made,att};
     }
   });
-  const m=data._meta||{};
-  document.getElementById('gt-sessions').textContent=m.sessions||0;
-  document.getElementById('gt-made').textContent=tm;
-  document.getElementById('gt-att').textContent=ta;
-  document.getElementById('gt-pct').textContent=ta>0?Math.round(tm/ta*100)+'%':'-';
-  const sum=document.getElementById('zones-summary');
+  const sess=dates.size||1;
+  document.getElementById('mapa-sbar').innerHTML=`
+    <div class="sc"><div class="sn">${sess}</div><div class="sl">Sesiones</div></div>
+    <div class="sc"><div class="sn">${tm}</div><div class="sl">Encestados</div></div>
+    <div class="sc"><div class="sn">${ta}</div><div class="sl">Intentos</div></div>
+    <div class="sc"><div class="sn">${ta>0?Math.round(tm/ta*100)+'%':'—'}</div><div class="sl">% Global</div></div>`;
+  let hc='';
   if(best&&worst&&best.id!==worst.id){
-    sum.style.display='flex';
-    document.getElementById('hot-val').textContent=best.label+' - '+best.p+'% ('+best.made+'/'+best.att+')';
-    document.getElementById('cold-val').textContent=worst.label+' - '+worst.p+'% ('+worst.made+'/'+worst.att+')';
-  }else sum.style.display='none';
+    hc=`<div class="hcrow"><span class="hci">🔥</span><div><div class="hct">Zona caliente</div><div class="hcv">${best.l} — ${best.p}% (${best.made}/${best.att})</div></div></div>
+    <div class="hcrow"><span class="hci">🧊</span><div><div class="hct">Zona fría — a trabajar</div><div class="hcv">${worst.l} — ${worst.p}% (${worst.made}/${worst.att})</div></div></div>`;
+  }
+  document.getElementById('hcwrap').innerHTML=hc;
 }
-document.querySelectorAll('.zone').forEach(el=>{
-  el.addEventListener('click',()=>{
+
+const M={
+  sel(id,label){
+    _sel=id;
     document.querySelectorAll('.zone').forEach(z=>z.classList.remove('active'));
-    el.classList.add('active');
-    const id=el.dataset.id;sel=id;
-    const z=(load()[id])||{made:0,att:0,sessions:0};
-    const has=z.att>0;const p=has?Math.round(z.made/z.att*100):null;
-    document.getElementById('zone-panel-name').textContent=el.dataset.label;
-    document.getElementById('zone-panel-cumul').textContent=has
-      ?'Acumulado: '+z.made+'/'+z.att+' ('+p+'%) - '+z.sessions+' sesion(es)'
-      :'Sin datos todavia - primera vez en esta zona!';
-    document.getElementById('inp-made').value='';
-    document.getElementById('inp-att').value='';
-    document.getElementById('zone-feedback').textContent='';
-    document.getElementById('zone-panel').classList.add('sel');
-    document.getElementById('inp-made').focus();
-  });
-});
-function saveZone(){
-  if(!sel)return;
-  const made=parseInt(document.getElementById('inp-made').value)||0;
-  const att=parseInt(document.getElementById('inp-att').value)||0;
-  if(!att){document.getElementById('zone-feedback').textContent='Ingresa al menos los intentos.';return;}
-  if(made>att){document.getElementById('zone-feedback').textContent='Encestados no pueden superar intentos.';return;}
-  const data=load();
-  if(!data[sel])data[sel]={made:0,att:0,sessions:0};
-  data[sel].made+=made;data[sel].att+=att;data[sel].sessions=(data[sel].sessions||0)+1;
-  save(data);
-  const t=data[sel];const p=Math.round(t.made/t.att*100);const tp=Math.round(made/att*100);
-  document.getElementById('zone-feedback').textContent='Guardado - hoy: '+made+'/'+att+' ('+tp+'%) - Total: '+t.made+'/'+t.att+' ('+p+'%)';
-  document.getElementById('zone-panel-cumul').textContent='Acumulado: '+t.made+'/'+t.att+' ('+p+'%) - '+t.sessions+' sesion(es)';
-  document.getElementById('inp-made').value='';document.getElementById('inp-att').value='';
-  render();
-}
-(function(){
-  if(!sessionStorage.getItem('sb')){
-    const d=load();if(!d._meta)d._meta={sessions:0};
-    d._meta.sessions=(d._meta.sessions||0)+1;save(d);
-    sessionStorage.setItem('sb','1');
-  }
-})();
-function confirmReset(){
-  if(confirm('Borrar TODOS los datos acumulados? No se puede deshacer.')){
-    localStorage.removeItem(KEY);sessionStorage.removeItem('sb');
+    const el=document.getElementById('hz-'+id);if(el)el.classList.add('active');
+    const db=dbLoad();
+    const z=db.zones[id]||{records:[],target:null};
+    const made=z.records.reduce((a,r)=>a+r.made,0);
+    const att=z.records.reduce((a,r)=>a+r.att,0);
+    const p=att>0?Math.round(made/att*100):null;
+    document.getElementById('zpname').textContent=label;
+    document.getElementById('zpsub').textContent=att>0?`Acumulado: ${made}/${att} (${p}%) · ${z.records.length} sesión(es)`:'Sin datos todavía — ¡primera vez en esta zona!';
+    document.getElementById('zm').value='';
+    document.getElementById('za').value='';
+    document.getElementById('zfb').textContent='';
+    document.getElementById('zpanel').classList.add('sel');
+    document.getElementById('zti').value=z.target||'';
+    M.updTbar(p,z.target);
+    const hist=document.getElementById('zhist');
+    if(z.records.length>0){
+      const rec=[...z.records].reverse().slice(0,5);
+      hist.innerHTML=`<div class="zht">Últimas sesiones</div>`+rec.map(r=>{
+        const rp=Math.round(r.made/r.att*100);
+        return `<div class="zhr"><span style="color:var(--mu)">${r.date}</span><span style="color:var(--mu)">${r.made}/${r.att}</span><span style="font-family:'Bebas Neue',sans-serif;font-size:14px;color:${p2c(rp)}">${rp}%</span></div>`;
+      }).join('');
+    }else{hist.innerHTML='';}
+    document.getElementById('zm').focus();
+  },
+  save(){
+    if(!_sel)return;
+    const made=parseInt(document.getElementById('zm').value)||0;
+    const att=parseInt(document.getElementById('za').value)||0;
+    if(!att){document.getElementById('zfb').textContent='⚠ Ingresa al menos los intentos.';return;}
+    if(made>att){document.getElementById('zfb').textContent='⚠ Encestados no pueden superar intentos.';return;}
+    const db=dbLoad();
+    if(!db.zones[_sel])db.zones[_sel]={records:[],target:null};
+    db.zones[_sel].records.push({date:today(),made,att});
+    dbSave(db);
+    const z=db.zones[_sel];
+    const tm=z.records.reduce((a,r)=>a+r.made,0);
+    const ta=z.records.reduce((a,r)=>a+r.att,0);
+    const p=Math.round(tm/ta*100);
+    const tp=Math.round(made/att*100);
+    document.getElementById('zfb').textContent=`✓ Guardado — hoy: ${made}/${att} (${tp}%) · Total: ${tm}/${ta} (${p}%)`;
+    document.getElementById('zm').value='';document.getElementById('za').value='';
+    M.updTbar(p,z.target);
+    renderMapa();
+    M.sel(_sel,ZD[_sel]?.l||_sel);
+  },
+  saveTgt(){
+    if(!_sel)return;
+    const v=parseInt(document.getElementById('zti').value)||null;
+    const db=dbLoad();
+    if(!db.zones[_sel])db.zones[_sel]={records:[],target:null};
+    db.zones[_sel].target=v;dbSave(db);
+    const z=db.zones[_sel];
+    const made=z.records.reduce((a,r)=>a+r.made,0);
+    const att=z.records.reduce((a,r)=>a+r.att,0);
+    M.updTbar(att>0?Math.round(made/att*100):0,v);
+  },
+  updTbar(cur,tgt){
+    const bar=document.getElementById('ztbar');if(!bar)return;
+    if(!tgt||cur===null){bar.style.width='0%';return;}
+    const pct=Math.min((cur/tgt)*100,100);
+    bar.style.width=pct+'%';
+    bar.style.background=pct>=100?'#4CAF6A':'var(--or)';
+  },
+  reset(){
+    if(!confirm('¿Borrar TODOS los datos de tiro? No se puede deshacer.'))return;
+    const db=dbLoad();
+    Object.keys(db.zones).forEach(id=>{db.zones[id].records=[];});
+    dbSave(db);_sel=null;
     document.querySelectorAll('.zone').forEach(z=>{z.classList.remove('active');z.style.fill='';});
-    document.querySelectorAll('.zone-pct-txt').forEach(l=>l.textContent='');
-    document.getElementById('zone-panel-name').textContent='Toca una zona del mapa';
-    document.getElementById('zone-panel-cumul').textContent='Selecciona una zona para ver su acumulado';
-    document.getElementById('zone-panel').classList.remove('sel');
-    render();
+    document.querySelectorAll('.zpct').forEach(l=>l.textContent='');
+    document.getElementById('zpanel').classList.remove('sel');
+    document.getElementById('zpname').textContent='Toca una zona del mapa';
+    document.getElementById('zpsub').textContent='Selecciona una zona para ver su historial y registrar tiros';
+    document.getElementById('zhist').innerHTML='';
+    document.getElementById('hcwrap').innerHTML='';
+    renderMapa();
   }
+};
+
+/* ── PROGRESO ── */
+function renderProg(){
+  const db=dbLoad();
+  const byDate={};
+  Object.keys(ZD).forEach(id=>{
+    (db.zones[id]?.records||[]).forEach(r=>{
+      if(!byDate[r.date])byDate[r.date]={made:0,att:0};
+      byDate[r.date].made+=r.made;byDate[r.date].att+=r.att;
+    });
+  });
+  const dates=Object.keys(byDate).sort();
+  const tMade=dates.reduce((a,d)=>a+byDate[d].made,0);
+  const tAtt=dates.reduce((a,d)=>a+byDate[d].att,0);
+  const gPct=tAtt>0?Math.round(tMade/tAtt*100):0;
+  let bestPct=0,bestDate='—';
+  dates.forEach(d=>{const p=byDate[d].att>0?Math.round(byDate[d].made/byDate[d].att*100):0;if(p>bestPct){bestPct=p;bestDate=d;}});
+  let bZone=null,wZone=null;
+  Object.keys(ZD).forEach(id=>{
+    const z=db.zones[id]||{records:[]};
+    const m=z.records.reduce((a,r)=>a+r.made,0);
+    const a=z.records.reduce((a,r)=>a+r.att,0);
+    if(a<5)return;const p=Math.round(m/a*100);
+    if(!bZone||p>bZone.p)bZone={id,p,l:ZD[id].l};
+    if(!wZone||p<wZone.p)wZone={id,p,l:ZD[id].l};
+  });
+  let h=`<div class="card fu"><div class="ch"><div class="ct">🏆 Récords</div></div>
+  <div class="recgrid">
+    <div class="rcard"><div class="rv">${tAtt}</div><div class="rl">Tiros totales</div></div>
+    <div class="rcard"><div class="rv">${tAtt>0?gPct+'%':'—'}</div><div class="rl">% global</div></div>
+    <div class="rcard"><div class="rv">${dates.length||1}</div><div class="rl">Sesiones</div></div>
+    <div class="rcard"><div class="rv">${bestPct>0?bestPct+'%':'—'}</div><div class="rl">Mejor sesión</div></div>
+  </div></div>`;
+  
+  // Chart
+  if(dates.length>0){
+    const pts=dates.map(d=>({date:d.slice(5),p:byDate[d].att>0?Math.round(byDate[d].made/byDate[d].att*100):0}));
+    const mx=Math.max(...pts.map(x=>x.p),60);
+    const W=340,H=110,PX=28,PY=20;
+    const xs=(i)=>PX+i*(W-PX*2)/(Math.max(pts.length-1,1));
+    const ys=(p)=>H-PY-(p/mx)*(H-PY*1.8);
+    const poly=pts.map((p,i)=>`${xs(i)},${ys(p.p)}`).join(' ');
+    h+=`<div class="card fu"><div class="ch"><div class="ct">📈 Evolución del tiro</div></div>
+    <div style="padding:14px 10px 8px">
+    <svg viewBox="0 0 ${W} ${H}" style="width:100%;overflow:visible">
+      ${[0,25,50,75].filter(v=>v<=mx).map(v=>`<line x1="${PX}" y1="${ys(v)}" x2="${W-PX}" y2="${ys(v)}" stroke="#2a2a2a" stroke-width="1"/>
+      <text x="${PX-4}" y="${ys(v)+3}" font-family="Bebas Neue" font-size="9" fill="#555" text-anchor="end">${v}%</text>`).join('')}
+      ${pts.length>1?`<polyline points="${poly}" fill="none" stroke="#F4611A" stroke-width="2" stroke-linejoin="round"/>`:''}
+      ${pts.map((p,i)=>`<circle cx="${xs(i)}" cy="${ys(p.p)}" r="3.5" fill="#F4611A"/>
+      <text x="${xs(i)}" y="${H-4}" font-family="Bebas Neue" font-size="8" fill="#555" text-anchor="middle">${p.date}</text>`).join('')}
+    </svg></div></div>`;
+  }
+  
+  // Zone breakdown
+  h+=`<div class="card fu"><div class="ch"><div class="ct">🗺️ Desglose por zonas</div></div><div style="padding:6px 0">`;
+  Object.keys(ZD).forEach(id=>{
+    const z=db.zones[id]||{records:[],target:null};
+    const m=z.records.reduce((a,r)=>a+r.made,0);
+    const a=z.records.reduce((a,r)=>a+r.att,0);
+    const p=a>0?Math.round(m/a*100):null;
+    const tgt=z.target;
+    h+=`<div style="padding:8px 16px;border-bottom:1px solid #1e1e1e">
+      <div style="display:flex;justify-content:space-between;margin-bottom:4px;align-items:center">
+        <span style="font-size:12px;color:#ccc">${ZD[id].l}</span>
+        <div style="display:flex;align-items:center;gap:8px">
+          <span style="font-size:10px;color:var(--mu)">${a>0?m+'/'+a:'—'}</span>
+          <span style="font-family:'Bebas Neue',sans-serif;font-size:16px;color:${p!==null?p2c(p):'var(--mu)'}">${p!==null?p+'%':'—'}</span>
+        </div>
+      </div>
+      <div style="height:4px;background:var(--bd);border-radius:2px;overflow:hidden">
+        <div style="height:100%;border-radius:2px;background:${p!==null?p2c(p):'transparent'};width:${p!==null?p+'%':'0'}"></div>
+      </div>
+      ${tgt?`<div style="font-size:9px;color:var(--mu);margin-top:2px">Obj: ${tgt}% ${p!==null?(p>=tgt?'✅':'→ faltan '+(tgt-p)+'%'):'sin datos'}</div>`:''}
+    </div>`;
+  });
+  h+=`</div></div>`;
+  
+  if(bZone||wZone){
+    h+=`<div style="margin-bottom:12px">`;
+    if(bZone)h+=`<div class="hcrow"><span class="hci">🔥</span><div><div class="hct">Zona más consistente</div><div class="hcv">${bZone.l} — ${bZone.p}%</div></div></div>`;
+    if(wZone)h+=`<div class="hcrow"><span class="hci">🎯</span><div><div class="hct">Mayor margen de mejora</div><div class="hcv">${wZone.l} — ${wZone.p}%</div></div></div>`;
+    h+=`</div>`;
+  }
+  document.getElementById('prog-root').innerHTML=h;
 }
-// Seed data from previous session if storage is empty
+
+/* ── PLAN ── */
+function renderPlan(){
+  const db=dbLoad();const p=db.profile;
+  const day=new Date().getDay();
+  const DN=['D','L','M','X','J','V','S'];
+  const FULL=['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
+  let h=`
+  <div class="pcard fu">
+    <div class="pav">🏀</div>
+    <div>
+      <div class="pname">${p.name}</div>
+      <div class="ppos">${p.pos}</div>
+      <div class="pstats">
+        <span class="psi"><b>${p.height}</b> cm</span>
+        <span class="psi"><b>${p.weight}</b> kg</span>
+        <span class="psi">Env. <b>${p.wingspan}</b> cm</span>
+      </div>
+    </div>
+  </div>
+  <div class="wkgrid fu">
+    ${DN.map((d,i)=>`<div class="wkd ${i===day?'today':''}">
+      <div class="wkd-n">${d}</div>
+      <div class="wkd-i">${WP[i].icon}</div>
+      <div class="wkd-t">${WP[i].type==='cancha'?'Cancha':'Casa'}</div>
+    </div>`).join('')}
+  </div>
+  <div class="card fu"><div class="ch"><div class="ct">📅 Tu semana</div></div><div style="padding:4px 0">`;
+  Object.keys(WP).forEach(d=>{
+    const pl=WP[d];
+    h+=`<div class="srow">
+      <div>
+        <div style="font-size:13px;color:${parseInt(d)===day?'var(--or)':'#fff'};font-weight:${parseInt(d)===day?600:400}">${FULL[d]}</div>
+        <div style="font-size:11px;color:var(--mu)">${pl.sub}</div>
+      </div>
+      <span style="font-size:18px">${pl.icon}</span>
+    </div>`;
+  });
+  h+=`</div></div><div style="font-size:11px;color:var(--mu);letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px" class="fu">PROGRESIONES</div>`;
+  PROGS.forEach(pr=>{
+    h+=`<div class="progb fu"><div class="progh" onclick="toggleProg('pb-${pr.id}',this)">
+      <div class="progt">${pr.icon} ${pr.title}</div><span class="proga">▼</span></div>
+      <div class="progbd" id="pb-${pr.id}">
+        ${pr.levels.map((lv,i)=>`<div class="plv">
+          <div class="plvh"><span class="plvb ${lv.cur?'cur':''}">${lv.cur?'▶ ACTUAL':'NVL '+(i+1)}</span><span class="plvn">${lv.n}</span></div>
+          <div class="plvd">${lv.d}</div>
+        </div>`).join('')}
+      </div></div>`;
+  });
+  document.getElementById('plan-root').innerHTML=h;
+}
+
+function toggleProg(id,hdr){
+  const b=document.getElementById(id);
+  const o=b.classList.contains('open');
+  b.classList.toggle('open',!o);hdr.classList.toggle('open',!o);
+}
+
+/* ── TIMER ── */
+let _tInt=null,_tSec=0,_tTgt=0,_tRun=false;
+const T={
+  open(sec,lbl){
+    _tSec=sec;_tTgt=sec;_tRun=false;
+    clearInterval(_tInt);
+    document.getElementById('td').textContent=T.fmt(sec);
+    document.getElementById('tl').textContent=(lbl||'temporizador').toUpperCase().substring(0,40);
+    document.getElementById('ttog').textContent='INICIAR';
+    document.getElementById('tov').classList.add('show');
+  },
+  close(){clearInterval(_tInt);_tRun=false;document.getElementById('tov').classList.remove('show');},
+  toggle(){
+    if(_tRun){clearInterval(_tInt);_tRun=false;document.getElementById('ttog').textContent='REANUDAR';}
+    else{
+      _tRun=true;document.getElementById('ttog').textContent='PAUSAR';
+      _tInt=setInterval(()=>{
+        _tSec--;
+        document.getElementById('td').textContent=T.fmt(_tSec);
+        if(_tSec<=0){
+          clearInterval(_tInt);_tRun=false;
+          document.getElementById('ttog').textContent='INICIAR';
+          document.getElementById('td').textContent='00:00';
+          if(navigator.vibrate)navigator.vibrate([300,100,300]);
+        }
+      },1000);
+    }
+  },
+  reset(){clearInterval(_tInt);_tRun=false;_tSec=_tTgt;document.getElementById('td').textContent=T.fmt(_tTgt);document.getElementById('ttog').textContent='INICIAR';},
+  fmt(s){const m=Math.floor(Math.abs(s)/60);const sc=Math.abs(s)%60;return(m<10?'0':'')+m+':'+(sc<10?'0':'')+sc;}
+};
+
+/* ── INIT ── */
+window.addEventListener('DOMContentLoaded',()=>{
+  if(!localStorage.getItem(KEY))dbSave(dbDefault());
+  document.querySelectorAll('.zone').forEach(el=>{
+    el.addEventListener('click',()=>M.sel(el.dataset.id,el.dataset.label));
+  });
+  renderHoy();
+  renderMapa();
+});
+
+/* ── PWA ── */
 (function(){
-  const existing=load();
-  const hasData=Object.keys(ZONES).some(id=>existing[id]&&existing[id].att>0);
-  if(!hasData){
-    const seed={
-      t1:{made:1,att:10,sessions:1},
-      t2:{made:0,att:10,sessions:1},
-      t3:{made:2,att:10,sessions:1},
-      t4:{made:2,att:10,sessions:1},
-      t5:{made:2,att:10,sessions:1},
-      m1:{made:3,att:10,sessions:1},
-      m2:{made:2,att:10,sessions:1},
-      m3:{made:2,att:10,sessions:1},
-      m4:{made:1,att:10,sessions:1},
-      m5:{made:1,att:10,sessions:1},
-      _meta:{sessions:1}
-    };
-    save(seed);
-    sessionStorage.setItem('sb','1');
+  const mf={name:'Elite Hoops',short_name:'Elite Hoops',description:'Entrenador personal de baloncesto',
+    start_url:'./',display:'standalone',background_color:'#0F0F0F',theme_color:'#0F0F0F',orientation:'portrait',
+    icons:[{src:"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Crect width='192' height='192' rx='38' fill='%23F4611A'/%3E%3Ctext x='96' y='135' font-size='110' text-anchor='middle'%3E%F0%9F%8F%80%3C/text%3E%3C/svg%3E",sizes:'192x192',type:'image/svg+xml',purpose:'any maskable'}]};
+  const mb=new Blob([JSON.stringify(mf)],{type:'application/json'});
+  document.getElementById('pwa-manifest').href=URL.createObjectURL(mb);
+  if('serviceWorker' in navigator){
+    const sw=`self.addEventListener('install',()=>self.skipWaiting());self.addEventListener('activate',()=>self.clients.claim());self.addEventListener('fetch',e=>e.respondWith(fetch(e.request).catch(()=>new Response(''))));`;
+    const sb=new Blob([sw],{type:'text/javascript'});
+    navigator.serviceWorker.register(URL.createObjectURL(sb)).catch(()=>{});
   }
 })();
-render();
-</script>
-
-<script>
-// ── PWA Manifest (inline) ──
-const manifest = {
-  name: "Sesion de Tiro",
-  short_name: "Tiro 🏀",
-  description: "Tracker de tiro y mapa de zonas estilo 2K",
-  start_url: "./",
-  display: "standalone",
-  background_color: "#0F0F0F",
-  theme_color: "#0F0F0F",
-  orientation: "portrait",
-  icons: [
-    {
-      src: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Crect width='192' height='192' rx='40' fill='%23F4611A'/%3E%3Ctext x='96' y='130' font-size='110' text-anchor='middle'%3E%F0%9F%8F%80%3C/text%3E%3C/svg%3E",
-      sizes: "192x192",
-      type: "image/svg+xml",
-      purpose: "any maskable"
-    }
-  ]
-};
-const blob = new Blob([JSON.stringify(manifest)], {type:'application/json'});
-const murl = URL.createObjectURL(blob);
-document.getElementById('manifest-link').setAttribute('href', murl);
-
-// ── Service Worker (inline via blob) ──
-const swCode = `
-const CACHE = 'sesion-tiro-v1';
-self.addEventListener('install', e => {
-  e.waitUntil(caches.open(CACHE).then(c => c.addAll(['./', './index.html'])).catch(()=>{}));
-  self.skipWaiting();
-});
-self.addEventListener('activate', e => {
-  e.waitUntil(caches.keys().then(keys => Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k)))));
-  self.clients.claim();
-});
-self.addEventListener('fetch', e => {
-  e.respondWith(caches.match(e.request).then(r => r || fetch(e.request).catch(() => caches.match('./'))));
-});
-`;
-if ('serviceWorker' in navigator) {
-  const swBlob = new Blob([swCode], {type:'text/javascript'});
-  const swUrl = URL.createObjectURL(swBlob);
-  navigator.serviceWorker.register(swUrl).catch(()=>{});
-}
 </script>
 </body>
 </html>
