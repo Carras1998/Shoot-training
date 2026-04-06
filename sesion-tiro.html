@@ -7,9 +7,9 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Elite Hoops">
+<meta name="apple-mobile-web-app-title" content="Hoop Log">
 <link rel="manifest" id="pwa-manifest">
-<title>Elite Hoops</title>
+<title>Hoop Log</title>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -919,13 +919,13 @@ window.addEventListener('DOMContentLoaded',()=>{
 
 /* ── PWA ── */
 (function(){
-  const mf={name:'Elite Hoops',short_name:'Elite Hoops',description:'Entrenador personal de baloncesto',
+  const mf={name:'Hoop Log',short_name:'Hoop Log',description:'Entrenador personal de baloncesto',
     start_url:'./',display:'standalone',background_color:'#0F0F0F',theme_color:'#0F0F0F',orientation:'portrait',
     icons:[{src:"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Crect width='192' height='192' rx='38' fill='%23F4611A'/%3E%3Ctext x='96' y='135' font-size='110' text-anchor='middle'%3E%F0%9F%8F%80%3C/text%3E%3C/svg%3E",sizes:'192x192',type:'image/svg+xml',purpose:'any maskable'}]};
   const mb=new Blob([JSON.stringify(mf)],{type:'application/json'});
   document.getElementById('pwa-manifest').href=URL.createObjectURL(mb);
   if('serviceWorker' in navigator){
-    const sw=`self.addEventListener('install',()=>self.skipWaiting());self.addEventListener('activate',()=>self.clients.claim());self.addEventListener('fetch',e=>e.respondWith(fetch(e.request).catch(()=>new Response(''))));`;
+    const sw=`const V='v${Date.now()}';self.addEventListener('install',()=>self.skipWaiting());self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(ks=>Promise.all(ks.map(k=>caches.delete(k)))));self.clients.claim();});self.addEventListener('fetch',e=>e.respondWith(fetch(e.request).then(r=>{const c=r.clone();caches.open(V).then(ca=>ca.put(e.request,c));return r;}).catch(()=>caches.match(e.request))));`;
     const sb=new Blob([sw],{type:'text/javascript'});
     navigator.serviceWorker.register(URL.createObjectURL(sb)).catch(()=>{});
   }
