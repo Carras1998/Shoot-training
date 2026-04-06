@@ -116,13 +116,27 @@ body{font-family:'DM Sans',sans-serif}
 .progh.open .proga{transform:rotate(180deg)}
 .progbd{display:none;border-top:1px solid var(--bd);background:var(--c2)}
 .progbd.open{display:block}
-.plv{padding:10px 16px;border-bottom:1px solid #1e1e1e}
+.plv{border-bottom:1px solid #1e1e1e}
 .plv:last-child{border-bottom:none}
-.plvh{display:flex;align-items:center;gap:7px;margin-bottom:4px}
-.plvb{font-family:'Bebas Neue',sans-serif;font-size:10px;padding:2px 6px;border-radius:4px;background:var(--bd);color:var(--mu)}
+.plvh{display:flex;align-items:center;gap:7px;padding:11px 16px;cursor:pointer;user-select:none}
+.plvh:hover{background:#222}
+.plvb{font-family:'Bebas Neue',sans-serif;font-size:10px;padding:2px 6px;border-radius:4px;background:var(--bd);color:var(--mu);flex-shrink:0}
 .plvb.cur{background:rgba(244,97,26,.2);color:var(--or)}
-.plvn{font-weight:600;font-size:12px;color:#fff}
-.plvd{font-size:11px;color:var(--mu);line-height:1.5}
+.plvn{font-weight:600;font-size:12px;color:#fff;flex:1}
+.plva{font-size:11px;color:var(--mu);transition:transform .2s;flex-shrink:0}
+.plvh.open .plva{transform:rotate(180deg)}
+.plvbody{display:none;padding:0 16px 12px;background:#111}
+.plvbody.open{display:block}
+.plvd{font-size:11px;color:var(--mu);line-height:1.6;margin-bottom:10px}
+.plvex{margin-top:4px}
+.plvex-item{padding:8px 12px;border-left:2px solid var(--bd);margin-bottom:6px;background:#161616;border-radius:0 6px 6px 0}
+.plvex-item.cur{border-left-color:var(--or)}
+.plvex-n{font-size:12px;font-weight:600;color:#fff;margin-bottom:3px}
+.plvex-d{font-size:11px;color:var(--mu);line-height:1.6}
+.plvex-tip{font-size:10px;color:var(--or);margin-top:4px;font-style:italic}
+/* timer flash */
+@keyframes tcflash{0%,100%{color:#fff}50%{color:var(--or)}}
+.tflash{animation:tcflash .4s ease}
 /* Misc */
 .ph{margin-bottom:20px}
 .ptitle{font-family:'Bebas Neue',sans-serif;font-size:36px;color:#fff;line-height:1}
@@ -363,24 +377,64 @@ const WP={
 
 const PROGS=[
   {id:'drib',title:'Dribling',icon:'🏀',levels:[
-    {n:'Nivel 1 — Control básico',d:'Bote estático con ambas manos sin mirar el balón. Bote bajo y fuerte. Solo cuando sea automático pasa al siguiente.',cur:true},
-    {n:'Nivel 2 — Cambios de mano',d:'Crossover → entre piernas → por la espalda. Empieza lento, sube velocidad progresivamente.'},
-    {n:'Nivel 3 — Movimiento real',d:'Todos los cambios de mano en movimiento con oponente imaginario. Combinaciones de 2-3 movimientos.'},
+    {n:'Nivel 1 — Control básico',d:'El 90% de los jugadores amateur jamás consolidan este nivel. Sin él, todo lo demás es humo. Domina estos 3 ejercicios antes de pasar al siguiente nivel.',cur:true,exs:[
+      {n:'Bote estático mano dominante',d:'De pie, rodillas ligeramente flexionadas, espalda recta. Bota con la yema de los dedos, no con la palma. 2 minutos sin mirar el balón. Si tienes que mirar, baja la intensidad hasta que no necesites hacerlo.',tip:'Test de nivel: ¿puedes mantener el bote y leer un texto a la vez? Si no, sigue aquí.'},
+      {n:'Bote estático mano débil',d:'Exactamente igual pero con la mano no dominante. Tómate el doble de tiempo que con la dominante. La asimetría entre manos es lo que te hace predecible en partido.',tip:'El objetivo no es que sea perfecto, sino que no tengas que pensar en ello.'},
+      {n:'Bote bajo y fuerte',d:'Lo más cerca del suelo posible — menos de 30cm. Máxima fuerza en cada bote. Simula proteger el balón cuando un defensor está encima de ti. Alterna manos cada 30 segundos.',tip:'Si el balón sube más de la cadera, no estás botando lo suficientemente fuerte.'},
+    ]},
+    {n:'Nivel 2 — Cambios de mano',d:'Solo cuando el bote básico sea completamente automático. El orden importa: crossover primero, entre piernas después, por la espalda al final.',exs:[
+      {n:'Crossover',d:'Cambio de mano por delante del cuerpo. El balón debe pasar justo frente a las caderas, no delante del pecho (demasiado alto = fácil de robar). Empieza lento y sube velocidad solo cuando el gesto sea limpio.',tip:'Si tienes que girar el torso para hacer el crossover, es demasiado alto. Practica encogiéndote más.'},
+      {n:'Entre piernas (between the legs)',d:'Más difícil que el crossover porque requiere coordinación entre manos y pies. Paso derecho adelante → bota entre piernas con mano derecha hacia la izquierda. Paso izquierdo adelante → al revés. Empieza parado, luego en movimiento.',tip:'Los primeros días perderás el balón constantemente. Es normal. La coordinación viene con la repetición.'},
+      {n:'Por la espalda (behind the back)',d:'El más difícil. Solo entrarlo cuando los anteriores sean completamente automáticos. La mecánica: el balón pasa por detrás de las caderas, no de los hombros. Practica primero sin moverse, luego caminando.',tip:'Un behind the back mal hecho es peor que un crossover limpio. No lo uses en partido hasta que sea automático.'},
+    ]},
+    {n:'Nivel 3 — Movimiento real',d:'El dribling en partido nunca es estático. Aquí integras todo en movimiento con cambios de dirección y presión defensiva imaginaria.',exs:[
+      {n:'Combinaciones en movimiento',d:'Crossover → entre piernas → crossover en secuencia caminando por la pista. Luego corriendo. Luego con cambio de ritmo (lento-rápido-lento). El objetivo es que el cerebro deje de pensar en el gesto.',tip:'Cuando no tengas que pensar en qué movimiento viene después, estás en nivel 3.'},
+      {n:'Dribling con oponente imaginario',d:'Ponte en la esquina, imagina un defensor. Bota hacia él, haz un crossover para pasar, acelera hacia el aro. Trabaja todas las zonas de la pista. Foco en el cambio de ritmo — velocidad lenta antes del movimiento, explosión después.',tip:'Los mejores jugadores no son los más rápidos, son los más impredecibles. El cambio de ritmo es la habilidad clave.'},
+    ]},
   ]},
   {id:'def',title:'Defensa',icon:'🛡️',levels:[
-    {n:'Nivel 1 — Postura y slides',d:'Postura correcta automática. Defensive slides sin cruzar pies a velocidad máxima.',cur:true},
-    {n:'Nivel 2 — Closeout y anticipación',d:'Closeout técnico. Leer la dirección del dribling antes de que ocurra.'},
-    {n:'Nivel 3 — Defensa en vivo',d:'Aplicar todo en 1vs1 real. Defensa de pick and roll.'},
+    {n:'Nivel 1 — Postura y slides',d:'La defensa empieza con la postura. Sin la postura correcta todo lo demás falla. Domina estos fundamentos antes de intentar anticipar jugadas.',cur:true,exs:[
+      {n:'Postura defensiva estática',d:'Pies más anchos que los hombros, rodillas flexionadas a 90-110°, caderas bajas, espalda recta — no encorvada. El peso en las puntas de los pies, nunca en los talones. Brazos abiertos, manos activas. Mantén esta postura 2 minutos sin "descansar" subiéndote.',tip:'Test: si te empujan suavemente desde un lado y pierdes el equilibrio, tus caderas están demasiado altas. Baja más.'},
+      {n:'Defensive slides',d:'Desde la postura defensiva, desplázate lateralmente SIN cruzar los pies — el pie de atrás empuja, el pie de delante arrastra. Nunca cruces. Mantén la postura durante todo el movimiento. 3 series de 30 segundos al máximo.',tip:'Cuando estés fatigado el primer instinto es cruzar los pies y perder la postura. Ahí es donde más tienes que resistir.'},
+      {n:'Manos activas',d:'En postura defensiva, mueve las manos continuamente arriba y abajo. Simula interrumpir el campo de visión del atacante y dificultar el pase. La mano de delante va al balón, la de atrás corta el pase interior.',tip:'Las manos activas son gratis — no cuestan energía y molestan muchísimo al atacante.'},
+    ]},
+    {n:'Nivel 2 — Closeout y anticipación',d:'Saber ponerse entre el atacante y el aro es la habilidad más importante del defensor sin balón.',exs:[
+      {n:'Closeout técnico',d:'Sal corriendo fuerte hacia el tirador, pero los ÚLTIMOS 2-3 pasos acorta el paso, abre los pies y frena en postura defensiva. Si llegas a toda velocidad y no frenas, el atacante te supera con un bote. El closeout bien hecho termina en postura defensiva lista para reaccionar.',tip:'El error más común: llegar demasiado cerca. Frena a un paso y medio del tirador para no ser superado.'},
+      {n:'Leer la dirección del bote',d:'El atacante te dirá hacia dónde va antes de que se mueva: observa sus caderas, no sus pies ni sus manos. Las caderas van primero. Practica mirando las caderas de un compañero que camina y predice su próximo paso.',tip:'El defensor de élite reacciona a las caderas, no al balón. El balón ya pasó cuando lo ves.'},
+    ]},
+    {n:'Nivel 3 — Defensa en vivo',d:'Aplicar todo en situaciones reales de 1vs1 y trabajo de equipo.',exs:[
+      {n:'Defensa 1vs1 real',d:'Con un compañero: el atacante parte del perímetro y puede botar, pasar o tirar. El defensor aplica postura, slides y closeout en tiempo real. Empieza dando ventaja al atacante — que arranque ya botando — y conforme mejoras, reduces esa ventaja.',tip:'Perder el 1vs1 en entrenamiento es bueno. Si siempre ganas es porque el ejercicio es demasiado fácil.'},
+      {n:'Defensa del pick and roll',d:'El atacante recibe un bloqueo. El defensor tiene dos opciones: pasar por debajo (permite tiro exterior) o luchar por encima (permite drive interior). Decide según el tirador. Un tirador de 16% exterior → pasa por debajo, deja el triple. Un 40% exterior → lucha por encima.',tip:'La decisión importa más que la ejecución. La táctica equivocada ejecutada perfectamente sigue siendo un error.'},
+    ]},
   ]},
   {id:'tiro',title:'Tiro',icon:'🎯',levels:[
-    {n:'Nivel 1 — Mecánica estática',d:'Form shooting con 1 mano en zona C. BEEF consistente. Objetivo: 50%+ en C y M1/M5.',cur:true},
-    {n:'Nivel 2 — Catch & shoot',d:'Tiro con footwork. Objetivo: 40%+ en M2/M4 y 35%+ en T1/T5.'},
-    {n:'Nivel 3 — Tiro en partido',d:'Step-in shots, pull-ups tras bote. Objetivo: 40%+ global en mid-range.'},
+    {n:'Nivel 1 — Mecánica estática',d:'El 99% de los jugadores que fallan tiros lo hacen por mecánica deficiente, no por falta de práctica. Construye la mecánica primero o estarás repitiendo errores miles de veces.',cur:true,exs:[
+      {n:'Form shooting 1 mano — zona C',d:'A 1-1.5m del aro. SOLO la mano dominante. Coloca el balón en la yema de los dedos, no en la palma. Codo alineado con la rodilla y el pie. Empuja hacia arriba y adelante con un arco de 45-50°. Follow-through completo — la mano debe quedar apuntando al aro como metiendo la mano en un cubo. 3 series de 10.',tip:'Si el balón gira hacia los lados al salir, tu muñeca no está completamente volcada en el follow-through.'},
+      {n:'BEEF — check de mecánica',d:'Balance: pies alineados con el aro, pie de la mano de tiro ligeramente adelante. Eyes: fija la vista en el borde trasero del aro. Elbow: codo bajo el balón. Follow-through: mano queda colgando como si metieras la mano en un cubo de agua. Revisa estos 4 puntos en cada tiro hasta que sean automáticos.',tip:'Grábate en vídeo lateral. El codo que sobresale hacia afuera es el error más común y más fácil de corregir viéndote.'},
+      {n:'Wall drill',d:'Dispara rozando una pared lateral. Si el balón la toca, la mano guía (la que no tira) está empujando el balón. La mano guía SOLO sostiene el balón antes de tirar — no aplica fuerza. Este drill revela si tienes este error en segundos.',tip:'La mano guía es la enemiga silenciosa del tiro. La mayoría no sabe que la están usando hasta que hacen este drill.'},
+    ]},
+    {n:'Nivel 2 — Catch & shoot',d:'Añadir footwork al tiro. Recibir el balón en movimiento y disparar en un solo movimiento fluido.',exs:[
+      {n:'Ball pickup con 1-2 step',d:'Deja el balón en el suelo, aléjate 2 pasos, vuelve, recógelo y dispara en un movimiento continuo. El catch y el inicio del salto son prácticamente simultáneos. Empieza por M1 y M5 (zonas más fáciles) y progresa hacia las triples.',tip:'El error más común: frenar completamente al recoger el balón. El ritmo no se rompe — catch y salto son casi un solo movimiento.'},
+      {n:'Spot shooting con movimiento lateral',d:'Empieza en M2, tira, recoge el rebote, desplázate a M3, tira, desplázate a M4, tira. No pares entre tiros. Simula el ritmo de partido donde nunca tiras desde posición estática perfecta.',tip:'Cuando el % baje mucho respecto a tiro estático, es señal de que el footwork está interrumpiendo la mecánica. Ralentiza hasta que vuelvan a igualarse.'},
+    ]},
+    {n:'Nivel 3 — Tiro en partido',d:'Creación propia de tiro bajo presión defensiva y con fatiga.',exs:[
+      {n:'Pull-up tras bote',d:'Bota 2-3 veces hacia la zona, para en seco con 1-2 step y tira. La parada en seco es el 90% del ejercicio — si no paras bien no puedes tirar en equilibrio. Trabaja desde M2 y M4 hacia el aro.',tip:'Los mejores step backs del mundo vienen después de dominar la parada en seco. No al revés.'},
+      {n:'Tiro con fatiga',d:'Haz 5 sprints de 10 metros, luego dispara 5 tiros seguidos desde M1. Descansa. Repite. Tu mecánica con el corazón a 170 ppm es la que importa en el cuarto tiempo del partido.',tip:'Si tu % cae más de un 15% con fatiga respecto a descansado, necesitas más work de resistencia específica.'},
+    ]},
   ]},
   {id:'fis',title:'Físico Específico',icon:'⚡',levels:[
-    {n:'Nivel 1 — Explosividad base',d:'Saltos máximos, sprint stops, lateral quickness. Construir velocidad de pies.',cur:true},
-    {n:'Nivel 2 — Agilidad con balón',d:'Todos los drills físicos con balón. Lateral quickness botando.'},
-    {n:'Nivel 3 — Condición específica',d:'Circuitos completos simulando partido: sprint + bote + tiro + defensa.'},
+    {n:'Nivel 1 — Explosividad base',d:'El baloncesto son sprints de 2-4 segundos, no resistencia de fondo. Trabaja la explosividad desde el primer día — es tu mayor ventaja siendo atlético.',cur:true,exs:[
+      {n:'Saltos máximos verticales',d:'Desde parado, salto vertical máximo con ambas pies. 5 series de 5 saltos con 30 segundos de descanso entre series. Cada salto con máxima intención — no hagas series "de calentamiento". La calidad importa más que la cantidad.',tip:'Mide tu altura con una marca en la pared. El progreso en cm de salto vertical es el indicador más honesto de la mejora explosiva.'},
+      {n:'Sprint stops',d:'Arrancada explosiva de 5-6 pasos a máxima velocidad y parada BRUSCA en seco con los dos pies. La parada es tan importante como la arrancada — simula los cortes en partido. 10 repeticiones con 20 segundos de descanso.',tip:'Si al parar pierdes el equilibrio hacia delante, necesitas fortalecer los cuádriceps. Si te vas hacia atrás, los isquios.'},
+      {n:'Lateral quickness',d:'2 conos o marcas separados 3-4 metros. Desplazamiento lateral máximo entre ellos sin cruzar los pies (igual que defensive slides pero al máximo de velocidad). 6 series de 10 segundos con 20 de descanso.',tip:'Cronométrate. ¿Cuántos toques haces en 10 segundos? Ese número mejorará con las semanas.'},
+    ]},
+    {n:'Nivel 2 — Agilidad con balón',d:'Integrar el balón en los drills físicos. El objetivo es que el balón no frene tu velocidad de movimiento.',exs:[
+      {n:'Lateral quickness con bote',d:'Igual que el lateral quickness del nivel 1 pero botando el balón durante todo el ejercicio. La coordinación mano-pie es el reto. Empieza más lento y sube velocidad conforme la coordinación mejora.',tip:'Si el bote se descontrola al cambiar de dirección, tu bote básico todavía no es suficientemente automático. Vuelve al nivel 1 de dribling.'},
+      {n:'Sprint stop con catch and shoot',d:'Sprint de 5 metros, parada en seco, y lanza hacia un punto fijo (o dispara al aro si estás en pista). El equilibrio en la parada es lo que permite el tiro preciso tras movimiento explosivo.',tip:'Este drill une el físico y el tiro. Los jugadores que ejecutan bien esto son los más peligrosos en partido.'},
+    ]},
+    {n:'Nivel 3 — Condición específica',d:'Circuitos que simulan el trabajo real de un partido: ráfagas de intensidad máxima con recuperación parcial.',exs:[
+      {n:'Circuito completo',d:'Sprint 5m → parada → bote 5 segundos → tiro desde M2 → sprint a recuperar rebote → defensive slide 5m → repetir. 4 rondas de 3 minutos con 1 minuto de descanso entre rondas. Tu cuerpo y tu mecánica de tiro con fatiga máxima.',tip:'Si el % de tiro al final del circuito es similar al del principio, tu condición específica es buena. Si cae en picado, necesitas más base cardiovascular.'},
+    ]},
   ]},
 ];
 
@@ -742,8 +796,19 @@ function renderPlan(){
       <div class="progt">${pr.icon} ${pr.title}</div><span class="proga">▼</span></div>
       <div class="progbd" id="pb-${pr.id}">
         ${pr.levels.map((lv,i)=>`<div class="plv">
-          <div class="plvh"><span class="plvb ${lv.cur?'cur':''}">${lv.cur?'▶ ACTUAL':'NVL '+(i+1)}</span><span class="plvn">${lv.n}</span></div>
-          <div class="plvd">${lv.d}</div>
+          <div class="plvh" onclick="toggleLevel('pl-${pr.id}-${i}',this)">
+            <span class="plvb ${lv.cur?'cur':''}">${lv.cur?'▶ ACTUAL':'NVL '+(i+1)}</span>
+            <span class="plvn">${lv.n}</span>
+            <span class="plva">▼</span>
+          </div>
+          <div class="plvbody" id="pl-${pr.id}-${i}">
+            <div class="plvd">${lv.d}</div>
+            ${lv.exs?`<div class="plvex">${lv.exs.map(ex=>`<div class="plvex-item ${lv.cur?'cur':''}">
+              <div class="plvex-n">→ ${ex.n}</div>
+              <div class="plvex-d">${ex.d}</div>
+              ${ex.tip?`<div class="plvex-tip">💡 ${ex.tip}</div>`:''}
+            </div>`).join('')}</div>`:''}
+          </div>
         </div>`).join('')}
       </div></div>`;
   });
@@ -755,9 +820,54 @@ function toggleProg(id,hdr){
   const o=b.classList.contains('open');
   b.classList.toggle('open',!o);hdr.classList.toggle('open',!o);
 }
+function toggleLevel(id,hdr){
+  const b=document.getElementById(id);
+  const o=b.classList.contains('open');
+  b.classList.toggle('open',!o);hdr.classList.toggle('open',!o);
+}
 
 /* ── TIMER ── */
 let _tInt=null,_tSec=0,_tTgt=0,_tRun=false;
+let _ac=null;
+function getAC(){if(!_ac)_ac=new(window.AudioContext||window.webkitAudioContext)();return _ac;}
+
+function playBeep(freq,dur,vol){
+  try{
+    const ac=getAC();
+    const o=ac.createOscillator(),g=ac.createGain();
+    o.connect(g);g.connect(ac.destination);
+    o.frequency.value=freq;o.type='sine';
+    g.gain.setValueAtTime(vol,ac.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.001,ac.currentTime+dur);
+    o.start(ac.currentTime);o.stop(ac.currentTime+dur);
+  }catch(e){}
+}
+
+function playBell(){
+  try{
+    const ac=getAC();
+    const t=ac.currentTime;
+    // Boxing bell = multiple harmonics with different decay rates
+    const freqs=[[880,1.0],[1760,0.6],[2640,0.4],[3520,0.25],[440,0.5],[1320,0.35]];
+    freqs.forEach(([f,v])=>{
+      const o=ac.createOscillator(),g=ac.createGain();
+      o.connect(g);g.connect(ac.destination);
+      o.frequency.value=f;o.type='sine';
+      g.gain.setValueAtTime(v*1.2,t);
+      g.gain.exponentialRampToValueAtTime(v*0.3,t+0.08);
+      g.gain.exponentialRampToValueAtTime(0.001,t+2.8);
+      o.start(t);o.stop(t+3);
+    });
+    // Metallic click at attack
+    const buf=ac.createBuffer(1,ac.sampleRate*0.05,ac.sampleRate);
+    const d=buf.getChannelData(0);
+    for(let i=0;i<d.length;i++)d[i]=(Math.random()*2-1)*Math.exp(-i/500);
+    const src=ac.createBufferSource(),ng=ac.createGain();
+    src.buffer=buf;src.connect(ng);ng.connect(ac.destination);
+    ng.gain.value=0.7;src.start(t);
+  }catch(e){}
+}
+
 const T={
   open(sec,lbl){
     _tSec=sec;_tTgt=sec;_tRun=false;
@@ -766,20 +876,29 @@ const T={
     document.getElementById('tl').textContent=(lbl||'temporizador').toUpperCase().substring(0,40);
     document.getElementById('ttog').textContent='INICIAR';
     document.getElementById('tov').classList.add('show');
+    // unlock AudioContext on user gesture
+    try{const ac=getAC();if(ac.state==='suspended')ac.resume();}catch(e){}
   },
   close(){clearInterval(_tInt);_tRun=false;document.getElementById('tov').classList.remove('show');},
   toggle(){
     if(_tRun){clearInterval(_tInt);_tRun=false;document.getElementById('ttog').textContent='REANUDAR';}
     else{
+      try{const ac=getAC();if(ac.state==='suspended')ac.resume();}catch(e){}
       _tRun=true;document.getElementById('ttog').textContent='PAUSAR';
       _tInt=setInterval(()=>{
         _tSec--;
-        document.getElementById('td').textContent=T.fmt(_tSec);
+        const td=document.getElementById('td');
+        td.textContent=T.fmt(_tSec);
+        if(_tSec===3||_tSec===2||_tSec===1){
+          playBeep(1100,0.18,0.9);
+          td.classList.remove('tflash');void td.offsetWidth;td.classList.add('tflash');
+        }
         if(_tSec<=0){
           clearInterval(_tInt);_tRun=false;
           document.getElementById('ttog').textContent='INICIAR';
-          document.getElementById('td').textContent='00:00';
-          if(navigator.vibrate)navigator.vibrate([300,100,300]);
+          td.textContent='00:00';
+          playBell();
+          if(navigator.vibrate)navigator.vibrate([400,100,400,100,600]);
         }
       },1000);
     }
