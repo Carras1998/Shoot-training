@@ -166,6 +166,14 @@ body{font-family:'DM Sans',sans-serif}
 </style>
 </head>
 <body>
+<!-- Export overlay -->
+<div id="exov" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.95);z-index:300;flex-direction:column;padding:24px 16px;gap:12px">
+  <div style="font-family:'Bebas Neue',sans-serif;font-size:28px;color:#fff">EXPORTAR DATOS</div>
+  <div style="font-size:12px;color:var(--mu)">Copia todo el texto de abajo y pégalo en el chat con Claude</div>
+  <textarea id="extxt" readonly style="flex:1;background:#111;border:1px solid var(--bd);border-radius:10px;color:#ccc;font-family:monospace;font-size:10px;padding:12px;resize:none;outline:none;min-height:300px"></textarea>
+  <button class="btnp" onclick="copyExport()">📋 COPIAR AL PORTAPAPELES</button>
+  <button class="btnp" style="background:#1e1e1e;border:1px solid var(--bd);color:var(--mu)" onclick="document.getElementById('exov').style.display='none'">CERRAR</button>
+</div>
 <!-- Timer overlay -->
 <div id="tov">
   <div id="tl">TEMPORIZADOR</div>
@@ -750,6 +758,7 @@ function renderProg(){
     if(wZone)h+=`<div class="hcrow"><span class="hci">🎯</span><div><div class="hct">Mayor margen de mejora</div><div class="hcv">${wZone.l} — ${wZone.p}%</div></div></div>`;
     h+=`</div>`;
   }
+  h+=`<button class="btnp" style="background:#1e1e1e;border:1px solid var(--bd);color:var(--tx);margin-bottom:8px" onclick="exportData()">📤 Exportar datos para Claude</button>`;
   document.getElementById('prog-root').innerHTML=h;
 }
 
@@ -906,6 +915,59 @@ const T={
   reset(){clearInterval(_tInt);_tRun=false;_tSec=_tTgt;document.getElementById('td').textContent=T.fmt(_tTgt);document.getElementById('ttog').textContent='INICIAR';},
   fmt(s){const m=Math.floor(Math.abs(s)/60);const sc=Math.abs(s)%60;return(m<10?'0':'')+m+':'+(sc<10?'0':'')+sc;}
 };
+
+/* ── EXPORT ── */
+function exportData(){
+  const db=dbLoad();
+  const lines=[];
+  lines.push('=== HOOP LOG — DATOS COMPLETOS ===');
+  lines.push('Exportado: '+new Date().toLocaleString('es-ES'));
+  lines.push('');
+  lines.push('--- PERFIL ---');
+  lines.push(`Jugador: ${db.profile.name} · ${db.profile.pos}`);
+  lines.push(`Físico: ${db.profile.height}cm / ${db.profile.weight}kg / Env. ${db.profile.wingspan}cm`);
+  lines.push('');
+  lines.push('--- ZONAS DE TIRO ---');
+  let tm=0,ta=0;
+  Object.keys(ZD).forEach(id=>{
+    const z=db.zones[id]||{records:[],target:null};
+    const m=z.records.reduce((a,r)=>a+r.made,0);
+    const a=z.records.reduce((a,r)=>a+r.att,0);
+    tm+=m;ta+=a;
+    const p=a>0?Math.round(m/a*100):null;
+    lines.push(`${ZD[id].l}: ${a>0?m+'/'+a+' ('+p+'%)':'sin datos'}${z.target?' [obj: '+z.target+'%]':''}`);
+    z.records.forEach(r=>{
+      const rp=Math.round(r.made/r.att*100);
+      lines.push(`  · ${r.date}: ${r.made}/${r.att} (${rp}%)`);
+    });
+  });
+  lines.push('');
+  lines.push(`GLOBAL: ${ta>0?tm+'/'+ta+' ('+Math.round(tm/ta*100)+'%)':'sin datos'}`);
+  lines.push('');
+  lines.push('--- SESIONES ---');
+  if(db.sessions.length===0){lines.push('Sin sesiones guardadas.');}
+  else{
+    db.sessions.forEach(s=>{
+      lines.push(`[${s.date}]`);
+      if(s.completedDrills&&s.completedDrills.length)lines.push(`  Drills completados: ${s.completedDrills.join(', ')}`);
+      if(s.notes)lines.push(`  Notas: ${s.notes}`);
+    });
+  }
+  lines.push('');
+  lines.push('--- JSON COMPLETO (para restaurar) ---');
+  lines.push(JSON.stringify(db));
+  const txt=lines.join('\n');
+  document.getElementById('extxt').value=txt;
+  const ov=document.getElementById('exov');
+  ov.style.display='flex';
+}
+function copyExport(){
+  const ta=document.getElementById('extxt');
+  ta.select();ta.setSelectionRange(0,99999);
+  try{
+    navigator.clipboard.writeText(ta.value).then(()=>toast('✓ Copiado al portapapeles')).catch(()=>{document.execCommand('copy');toast('✓ Copiado');});
+  }catch(e){document.execCommand('copy');toast('✓ Copiado');}
+}
 
 /* ── INIT ── */
 window.addEventListener('DOMContentLoaded',()=>{
