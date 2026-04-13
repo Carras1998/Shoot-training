@@ -163,6 +163,49 @@ body{font-family:'DM Sans',sans-serif}
 .fu{animation:fadeUp .4s ease both}
 ::-webkit-scrollbar{width:3px}
 ::-webkit-scrollbar-thumb{background:var(--bd);border-radius:2px}
+/* LCA screen */
+.phase-pills{display:flex;gap:8px;margin-bottom:14px}
+.ppill{flex:1;padding:10px 6px;border-radius:10px;border:2px solid var(--bd);background:none;color:var(--mu);font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:.06em;cursor:pointer;transition:all .2s;text-align:center}
+.ppill.active{border-color:var(--or);background:rgba(244,97,26,.1);color:#fff}
+.ppill-sub{font-family:'DM Sans',sans-serif;font-size:9px;display:block;letter-spacing:0;margin-top:2px;opacity:.7}
+.phase-desc{background:#111;border:1px solid var(--bd);border-radius:10px;padding:12px 14px;margin-bottom:14px;font-size:12px;color:var(--mu);line-height:1.6}
+.phase-desc strong{color:var(--or);font-size:13px;display:block;margin-bottom:4px}
+.prehab-card{background:var(--c1);border:1px solid var(--bd);border-radius:14px;overflow:hidden;margin-bottom:12px}
+.prehab-head{padding:13px 16px;border-bottom:1px solid var(--bd);display:flex;align-items:center;justify-content:space-between}
+.prehab-title{font-weight:600;font-size:14px;color:#fff;display:flex;align-items:center;gap:7px}
+.prehab-date{font-size:10px;color:var(--mu)}
+.quad-row{padding:14px 16px;border-bottom:1px solid #1e1e1e;display:flex;align-items:center;gap:10px}
+.quad-num{font-family:'Bebas Neue',sans-serif;font-size:40px;color:var(--or);line-height:1;min-width:60px}
+.quad-goal{font-size:10px;color:var(--mu);line-height:1.4}
+.quad-btns{display:flex;gap:6px;margin-top:6px}
+.qbtn{background:var(--bd);border:none;color:#fff;font-family:'Bebas Neue',sans-serif;font-size:13px;padding:6px 12px;border-radius:6px;cursor:pointer;transition:background .15s}
+.qbtn:active{background:var(--or)}
+.quad-bar{height:4px;background:var(--bd);border-radius:2px;margin-top:8px;overflow:hidden;width:100%}
+.quad-fill{height:100%;border-radius:2px;background:var(--or);transition:width .4s}
+.prehab-item{display:flex;align-items:center;gap:11px;padding:10px 16px;border-bottom:1px solid #1e1e1e}
+.prehab-item:last-child{border-bottom:none}
+.pck{width:22px;height:22px;border-radius:6px;border:2px solid var(--bd);flex-shrink:0;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center}
+.pck.done{background:var(--gr);border-color:var(--gr)}
+.pck.done::after{content:'✓';color:#fff;font-size:12px;font-weight:700}
+.prehab-itxt{flex:1}
+.prehab-in{font-size:13px;color:#fff;font-weight:500}
+.prehab-is{font-size:10px;color:var(--mu);margin-top:1px}
+.crit-item{display:flex;align-items:flex-start;gap:10px;padding:9px 16px;border-bottom:1px solid #1e1e1e}
+.crit-item:last-child{border-bottom:none}
+.critck{width:20px;height:20px;border-radius:5px;border:2px solid var(--bd);flex-shrink:0;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;margin-top:1px}
+.critck.done{background:var(--gr);border-color:var(--gr)}
+.critck.done::after{content:'✓';color:#fff;font-size:10px;font-weight:700}
+.crit-txt{font-size:12px;color:var(--tx);line-height:1.5}
+.iq-week-badge{display:inline-flex;align-items:center;gap:5px;background:rgba(244,97,26,.12);color:var(--or);border:1px solid rgba(244,97,26,.3);border-radius:6px;padding:3px 9px;font-family:'Bebas Neue',sans-serif;font-size:12px;letter-spacing:.06em;margin-bottom:8px}
+.bench-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:12px 16px;border-bottom:1px solid #1e1e1e}
+.bench-row:last-child{border-bottom:none}
+.bench-lbl{font-size:10px;color:var(--mu);text-transform:uppercase;letter-spacing:.07em;margin-bottom:4px}
+.bench-in{background:#1a1a1a;border:1px solid var(--bd);border-radius:7px;color:#fff;font-family:'Bebas Neue',sans-serif;font-size:22px;padding:7px 10px;width:100%;text-align:center;outline:none;-moz-appearance:textfield}
+.bench-in::-webkit-outer-spin-button,.bench-in::-webkit-inner-spin-button{-webkit-appearance:none}
+.bench-in:focus{border-color:var(--or)}
+.bench-hist{padding:10px 16px 6px;border-top:1px solid var(--bd)}
+.bench-hr{display:flex;justify-content:space-between;font-size:11px;padding:3px 0;border-bottom:1px solid #1a1a1a}
+.bench-hr:last-child{border-bottom:none}
 </style>
 </head>
 <body>
@@ -277,6 +320,11 @@ body{font-family:'DM Sans',sans-serif}
   <div class="ph fu"><div class="ptitle">PLAN</div><div class="psub">Perfil · semana · progresiones</div></div>
   <div id="plan-root"></div>
 </div>
+<!-- LCA -->
+<div id="screen-lca" class="screen">
+  <div class="ph fu"><div class="ptitle">FASES & LCA</div><div class="psub">Fase actual · Prehab diario · Criterios pre-cirugía</div></div>
+  <div id="lca-root"></div>
+</div>
 
 <nav id="bnav">
   <button class="nb active" data-sc="hoy" onclick="nav('hoy')">
@@ -291,6 +339,9 @@ body{font-family:'DM Sans',sans-serif}
   <button class="nb" data-sc="plan" onclick="nav('plan')">
     <svg viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>PLAN
   </button>
+  <button class="nb" data-sc="lca" onclick="nav('lca')">
+    <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>LCA
+  </button>
 </nav>
 </div>
 <script>
@@ -302,80 +353,132 @@ const ZD={
   t4:{l:'Ala Der 3pts (T4)'},t5:{l:'Esquina Der 3pts (T5)'}
 };
 
+const IQ_CURRICULUM=[
+  {w:1,title:'Reglas FIBA — Violaciones',tema:'Pasos, doble bote, campo atrás, 3 seg, 8 seg, 24 seg. Busca un partido y cuenta cuántas ves.',rec:'YouTube: "violaciones baloncesto FIBA"'},
+  {w:2,title:'Posiciones y geometría',tema:'Las 5 posiciones y qué hace cada una. Dibuja la cancha con todas sus líneas y nombres de zonas.',rec:'breakthroughbasketball.com/basics'},
+  {w:3,title:'Faltas personales',tema:'Cuándo es falta, cuándo es carga, cuándo es bloqueante. Diferencias NBA vs FIBA.',rec:'YouTube: "reglas faltas baloncesto"'},
+  {w:4,title:'Faltas en tiro y técnicas',tema:'Cuándo se dan tiros libres. Faltas técnicas, antideportivas. Gestión de faltas en partido.',rec:'Reglamento FEB online — cap. 4'},
+  {w:5,title:'Pick and Roll — qué es y por qué',tema:'La acción más importante del baloncesto moderno. Qué hace el bloqueador, qué hace el manejador, cuándo se usa.',rec:'YouTube: "Chris Paul pick and roll reads"'},
+  {w:6,title:'Pick and Roll — 6 coberturas defensivas',tema:'Pasar por debajo, por encima, hedge, switch, trap, drop coverage. Qué permites en cada una.',rec:'YouTube: "pick and roll defense coverages explained"'},
+  {w:7,title:'Spacing — los 3.5-4.5 metros',tema:'Por qué mantener distancia entre jugadores. Qué pasa cuando hay clustering. Cómo se rompe la defensa con spacing.',rec:'Thinking Basketball (YouTube): espaciado'},
+  {w:8,title:'Cortes sin balón',tema:'V-cut, L-cut, backdoor cut, curl cut. Cómo crearte una ventaja antes de recibir el balón.',rec:'YouTube: "off ball movement basketball"'},
+  {w:9,title:'Transición ofensiva',tema:'Los 3 carriles: balón por el centro, alas corren por las bandas, trailer para triple. Ritmo de transición.',rec:'YouTube: "fast break basketball fundamentals"'},
+  {w:10,title:'Transición defensiva',tema:'Sprint back, prioridades (proteger el aro primero), cómo frenar la ventaja del rival.',rec:'BBallBreakdown: "transition defense"'},
+  {w:11,title:'Defensa de zona — 2-3 y 3-2',tema:'Dónde se coloca cada jugador, cómo rotan, cuáles son los gaps a atacar.',rec:'YouTube: "how to attack 2-3 zone offense"'},
+  {w:12,title:'Atacar la zona',tema:'Mover el balón rápido, atacar gaps, short corner, skip pass. Por qué el triple de 45° destroza la zona.',rec:'YouTube: "zone offense basketball"'},
+  {w:13,title:'Selección de tiro — eficiencia',tema:'Layups y triples son los tiros más eficientes. Media distancia es el menos eficiente pero necesario. Cuándo tirar y cuándo no.',rec:'Thinking Basketball (YouTube): shot quality'},
+  {w:14,title:'Situaciones finales',tema:'Gestión del reloj, cuándo foulear, cuándo no, saques de banda en últimos segundos.',rec:'YouTube: "late game situations basketball"'},
+  {w:15,title:'Sets ofensivos básicos',tema:'"Horns" y "Spain Pick and Roll". Dos jugadas que se ven en todos los niveles. Entiende el objetivo de cada acción.',rec:'YouTube: "Horns offense basketball" / "Spain pick and roll"'},
+  {w:16,title:'Film study avanzado',tema:'Ver partido pausando cada posesión y prediciendo la siguiente acción ANTES de que ocurra. Luego comparar.',rec:'HooperIQ app — decision-making quizzes'},
+];
+function getIQWeek(){
+  const db=dbLoad();
+  if(!db.iqStart)return IQ_CURRICULUM[0];
+  const start=new Date(db.iqStart);
+  const now=new Date();
+  const w=Math.floor((now-start)/(7*24*3600*1000));
+  return IQ_CURRICULUM[Math.min(w,IQ_CURRICULUM.length-1)];
+}
+
 const WP={
   0:{title:'Descanso activo',sub:'Domingo · opcional',type:'casa',icon:'😴',
     blocks:[{id:'su',title:'Dribling Ligero',sub:'Opcional · 15 min',icon:'🏀',opt:true,drills:[
       {id:'su1',n:'Bote estático ambas manos',d:'Cabeza arriba, sin mirar el balón. 2 min cada mano.',tag:'2+2 min',t:120},
       {id:'su2',n:'Crossover ligero',d:'Forma correcta, sin velocidad. Solo mantener el hábito.',tag:'5 min',t:300},
     ]}]},
-  1:{title:'Fuerza + Calentamiento',sub:'Lunes · defensa y físico antes del gimnasio',type:'casa',icon:'🛡️',
+  1:{title:'Fuerza + Calentamiento',sub:'Lunes · defensa, prehab y fuerza',type:'casa',icon:'🛡️',
     blocks:[
-      {id:'md',title:'Bloque Defensa',sub:'Calentamiento gimnasio · 15 min',icon:'🛡️',drills:[
-        {id:'md1',n:'Postura defensiva estática',d:'Rodillas flexionadas, espalda recta, peso en puntas. Manos activas. Mantén 2 min sin moverse.',tag:'2 min',t:120},
-        {id:'md2',n:'Defensive slides',d:'Desplazamientos laterales sin cruzar los pies. 3 series de 30 seg con 20 de descanso.',tag:'3×30 seg',t:30},
-        {id:'md3',n:'Closeout drill',d:'Arranca fuerte, últimos 2 pasos frena abriendo pies. Simula salir a presionar un tirador. 8 reps.',tag:'8 reps'},
-        {id:'md4',n:'Manos activas',d:'Postura defensiva con manos moviéndose arriba/abajo continuamente. 2×30 seg.',tag:'2×30 seg',t:30},
+      {id:'md',title:'Bloque Defensa',sub:'Calentamiento gimnasio · 12 min',icon:'🛡️',drills:[
+        {id:'md1',n:'Postura defensiva estática',d:'Rodillas flexionadas, espalda recta, peso en puntas. Manos activas. Mantén sin moverse.',tag:'3×30 seg',t:30},
+        {id:'md2',n:'Defensive slides',d:'Desplazamientos laterales sin cruzar los pies. Velocidad controlada — LCA: sin explosividad máxima.',tag:'3×30 seg',t:30},
+        {id:'md3',n:'Closeout a ritmo controlado',d:'Camina 75% → pasos cortos y picados el 25% final → llega en stance equilibrado. LCA: sin sprint completo.',tag:'8 reps'},
+        {id:'md4',n:'Manos activas',d:'Postura defensiva con manos moviéndose arriba/abajo continuamente.',tag:'2×30 seg',t:30},
       ]},
-      {id:'mf',title:'Bloque Físico',sub:'Explosividad · 10 min',icon:'⚡',drills:[
-        {id:'mf1',n:'Saltos máximos',d:'Salto vertical máximo. 5 series de 5 saltos, 30 seg descanso entre series.',tag:'5×5'},
-        {id:'mf2',n:'Sprint stops',d:'Arrancada explosiva de 5-6 pasos y parada en seco con pies abiertos. Simula cortar en partido. 10 reps.',tag:'10 reps'},
+      {id:'mlca',title:'Prehab LCA',sub:'Antes del gimnasio · 8 min · obligatorio',icon:'🦵',drills:[
+        {id:'mlca1',n:'Quad sets',d:'Tumbado boca arriba. Aprieta el cuádriceps contra el suelo, mantén 10 seg, suelta. Recordatorio: el objetivo es 100 repeticiones repartidas a lo largo del día.',tag:'3×10',t:10},
+        {id:'mlca2',n:'Heel props',d:'Talón elevado sobre toalla. Deja que la rodilla se extienda por gravedad. Mantener al menos 20 min hoy en total (en tandas). Marca cuando hayas completado la primera tanda.',tag:'20 min total'},
+        {id:'mlca3',n:'Puentes de glúteo',d:'Tumbado boca arriba, pies apoyados. Sube caderas apretando glúteos, mantén 2 seg, baja. Bilateral primero, después unilateral si hay control.',tag:'3×15'},
+        {id:'mlca4',n:'Equilibrio unipodal',d:'De pie sobre la pierna derecha (lesionada), ojos cerrados. Activa la propiocepción de la rodilla.',tag:'3×45 seg',t:45},
+        {id:'mlca5',n:'TKE — Terminal Knee Extension',d:'Polea baja con tobillera en la corva de la rodilla derecha. Extiende los últimos 20-30° de rodilla lento y controlado. Activa el VMO, el músculo más importante para el LCA.',tag:'3×15 · 5-7 kg'},
       ]},
     ]},
-  2:{title:'Boxeo + Dribling',sub:'Martes · dribling en casa después del boxeo',type:'casa',icon:'🏀',
-    blocks:[{id:'td',title:'Bloque Dribling Completo',sub:'Casa · 20 min',icon:'🏀',drills:[
-      {id:'td1',n:'Bote básico cabeza arriba',d:'Estático, mano dominante 2 min. Luego mano débil 2 min. Nunca mirar el balón.',tag:'2+2 min',t:120},
-      {id:'td2',n:'Bote bajo y fuerte',d:'Lo más bajo posible, máxima fuerza. Simula proteger el balón bajo presión defensiva. Ambas manos.',tag:'2 min',t:120},
-      {id:'td3',n:'Crossover',d:'Cambio de mano por delante. Empieza lento, sube velocidad cuando el gesto sea limpio y automático.',tag:'3 min',t:180},
-      {id:'td4',n:'Entre piernas (between the legs)',d:'Más lento que el crossover. Foco en no perder el balón antes de ganar velocidad.',tag:'3 min',t:180},
-      {id:'td5',n:'Por la espalda (behind the back)',d:'El más difícil. Solo cuando los anteriores sean completamente automáticos.',tag:'3 min',t:180},
-      {id:'td6',n:'Bote en movimiento',d:'Desplazamientos laterales botando con cambios de dirección. Cabeza arriba siempre.',tag:'5 min',t:300},
-    ]}]},
-  3:{title:'Fuerza + Calentamiento',sub:'Miércoles · dribling y slides antes del gimnasio',type:'casa',icon:'🏀',
+  2:{title:'Boxeo + Dribling',sub:'Martes · dribling completo + test semanal',type:'casa',icon:'🏀',
+    blocks:[
+      {id:'td',title:'Bloque Dribling Completo',sub:'Casa · 20 min',icon:'🏀',drills:[
+        {id:'td1',n:'Calentamiento sin bote',d:'Ball slaps ×25, fingertip taps 30 seg, ball wraps: cabeza ×15, cintura ×15, figura-8 sin bote ×20.',tag:'3 min',t:180},
+        {id:'td2',n:'Bote básico cabeza arriba',d:'Mano dominante 2 min, luego débil 2 min. Nunca mirar el balón.',tag:'2+2 min',t:120},
+        {id:'td3',n:'Bote bajo y fuerte',d:'Lo más bajo posible — menos de 30cm. Máxima fuerza. Alterna manos cada 30 seg.',tag:'2 min',t:120},
+        {id:'td4',n:'Crossover',d:'Cambio de mano por delante de las caderas — NO del pecho. Empieza lento, sube velocidad cuando el gesto sea limpio.',tag:'3 min',t:180},
+        {id:'td5',n:'Between the legs — CORRECCIÓN',d:'ANTES de empezar: amplía la separación de pies (pie delantero 40-50cm por delante). Bota el balón hacia un punto ENTRE los pies, no detrás. Empieza con single-bounce (un bote y recoge con otra mano) hasta que sea limpio, luego continuo.',tag:'3 min',t:180},
+        {id:'td6',n:'Behind the back',d:'Solo cuando los anteriores sean automáticos. El balón pasa por detrás de las CADERAS, no de los hombros.',tag:'3 min',t:180},
+        {id:'td7',n:'Bote en movimiento (lineal)',d:'Desplazamiento en línea recta botando con cambios de mano. Sin giros bruscos — LCA: movimiento controlado.',tag:'4 min',t:240},
+      ]},
+      {id:'ttest',title:'Test Semanal de Dribling',sub:'Opcional · 5 min · registra en PROGRESO',icon:'📊',opt:true,drills:[
+        {id:'ttest1',n:'Test crossovers 30 seg',d:'30 segundos de crossovers máxima velocidad. Cuenta las repeticiones. Regístralas en la pantalla PROGRESO → Test Dribling.',tag:'30 seg',t:30},
+        {id:'ttest2',n:'Test between-legs continuo',d:'¿Cuántos segundos puedes mantener el between-the-legs sin perder el balón? Regístralo en PROGRESO → Test Dribling.',tag:'máx segundos'},
+      ]},
+    ]},
+  3:{title:'Fuerza + Calentamiento',sub:'Miércoles · dribling, defensa y prehab',type:'casa',icon:'🏀',
     blocks:[
       {id:'wd',title:'Dribling Parcial',sub:'Calentamiento · 10 min',icon:'🏀',drills:[
         {id:'wd1',n:'Bote básico ambas manos',d:'Activa la coordinación mano-ojo antes de la sesión de fuerza.',tag:'3 min',t:180},
-        {id:'wd2',n:'Crossover + entre piernas',d:'A ritmo cómodo. Foco en el gesto limpio, no en la velocidad.',tag:'4 min',t:240},
+        {id:'wd2',n:'Crossover + between the legs',d:'A ritmo cómodo. Foco en el gesto limpio. Corrige la posición de pies en el between-legs.',tag:'4 min',t:240},
       ]},
-      {id:'wdd',title:'Defensa Parcial',sub:'Activa cadenas laterales · 8 min',icon:'🛡️',drills:[
-        {id:'wdd1',n:'Defensive slides',d:'3 series de 30 seg. Activa cadenas laterales — perfecto antes de sentadilla.',tag:'3×30 seg',t:30},
-        {id:'wdd2',n:'Sprint stops',d:'6 repeticiones. Activa el sistema nervioso antes de la fuerza.',tag:'6 reps'},
+      {id:'wdd',title:'Defensa Parcial',sub:'Activa cadenas laterales · 6 min',icon:'🛡️',drills:[
+        {id:'wdd1',n:'Defensive slides controlados',d:'3 series de 30 seg. Activa cadenas laterales — perfecto antes de sentadilla. Velocidad moderada, sin explosividad.',tag:'3×30 seg',t:30},
+        {id:'wdd2',n:'Postura defensiva + manos activas',d:'30 seg en stance, manos moviéndose. Activa el sistema nervioso sin impacto en la rodilla.',tag:'2×30 seg',t:30},
+      ]},
+      {id:'wlca',title:'Prehab LCA',sub:'Antes del gimnasio · 5 min',icon:'🦵',drills:[
+        {id:'wlca1',n:'Quad sets',d:'3×10. Recordatorio: llevar el contador a 100 hoy.',tag:'3×10',t:10},
+        {id:'wlca2',n:'Puentes de glúteo',d:'3×15 bilateral. Control total en el descenso.',tag:'3×15'},
+        {id:'wlca3',n:'Equilibrio unipodal derecho',d:'3×45 seg ojos cerrados. Esencial para la propiocepción de rodilla.',tag:'3×45 seg',t:45},
       ]},
     ]},
   4:{title:'Boxeo + IQ de Juego',sub:'Jueves · trabajo mental sin carga física',type:'casa',icon:'🧠',
     blocks:[
-      {id:'iq',title:'IQ de Juego',sub:'Casa · 20 min de vídeo analítico',icon:'🧠',drills:[
-        {id:'iq1',n:'Análisis defensivo',d:'Ve un partido fijándote SOLO en el defensor sin balón. Cómo se mueve, cómo anticipa el pase o el corte.',tag:'10 min'},
-        {id:'iq2',n:'Pick and roll',d:'Busca en YouTube una explicación de pick and roll. Interioriza cuándo se hace y cómo se defiende.',tag:'5 min'},
-        {id:'iq3',n:'Cortes sin balón',d:'Fíjate cómo los jugadores se mueven sin el balón para recibir en posición de tiro. Cortes en V y L.',tag:'5 min'},
+      {id:'iq',title:'IQ de Juego — Tema Semanal',sub:'Casa · 20-25 min de estudio analítico',icon:'🧠',iqWeekly:true,drills:[
+        {id:'iq1',n:'Estudio del tema de esta semana',d:'Lee el tema en la pantalla LCA → o busca el recurso indicado. Dedica 10-15 min a entender el concepto.',tag:'10-15 min'},
+        {id:'iq2',n:'Film study con intención',d:'Ve un partido o compilación relacionada con el tema de esta semana. Pausa y predice antes de que ocurra cada jugada.',tag:'10 min'},
+        {id:'iq3',n:'Visualización mental',d:'Cierra los ojos 5 min. Imagínate en una cancha aplicando lo que has estudiado hoy. El balón, los defensores, tus decisiones.',tag:'5 min',t:300},
       ]},
       {id:'iqd',title:'Dribling Opcional',sub:'Solo si tienes energía tras el boxeo',icon:'🏀',opt:true,drills:[
-        {id:'iqd1',n:'Repaso crossover y entre piernas',d:'Ligero, sin velocidad máxima. Solo mantener el hábito del gesto.',tag:'10 min',t:600},
+        {id:'iqd1',n:'Repaso crossover y between-legs',d:'Ligero, sin velocidad máxima. Aplica la corrección de posición de pies del between-legs.',tag:'10 min',t:600},
       ]},
     ]},
-  5:{title:'Fuerza + Calentamiento',sub:'Viernes · físico explosivo antes del gimnasio',type:'casa',icon:'⚡',
-    blocks:[{id:'ff',title:'Bloque Físico Completo',sub:'Calentamiento gimnasio · 15 min',icon:'⚡',drills:[
-      {id:'ff1',n:'Saltos máximos',d:'5 series de 5 saltos. Máxima intención en cada uno, 30 seg descanso entre series.',tag:'5×5'},
-      {id:'ff2',n:'Sprint stops',d:'10 repeticiones. Arrancada explosiva + parada en seco. Simula los cortes de partido.',tag:'10 reps'},
-      {id:'ff3',n:'Lateral quickness',d:'Desplazamientos laterales máxima velocidad entre 2 puntos separados 3-4m. 6 series de 10 seg.',tag:'6×10 seg',t:10},
-      {id:'ff4',n:'Bote en movimiento',d:'Activa coordinación mano-ojo. Desplazamientos laterales botando con cambios de dirección.',tag:'5 min',t:300},
-    ]}]},
+  5:{title:'Fuerza + Calentamiento',sub:'Viernes · prehab intensivo y fuerza',type:'casa',icon:'⚡',
+    blocks:[
+      {id:'fp',title:'Prehab LCA Intensivo',sub:'Antes del gimnasio · 15 min · obligatorio',icon:'🦵',drills:[
+        {id:'fp1',n:'Quad sets',d:'3×10. El objetivo de 100 reps hoy — este es el día más importante.',tag:'3×10',t:10},
+        {id:'fp2',n:'Heel props',d:'20 min mínimo hoy. Talón elevado, rodilla se extiende por gravedad. Hazlo mientras ves algo en el móvil.',tag:'20 min'},
+        {id:'fp3',n:'Puentes glúteo — unilateral',d:'Unilateral: levanta el pie sano, trabaja solo con la pierna derecha. Si hay inestabilidad, bilateral.',tag:'3×15 c/lado'},
+        {id:'fp4',n:'SLR — Straight Leg Raise',d:'Tumbado, cuádriceps apretado, sube la pierna 45°. Solo si puedes hacerlo sin lag (sin que la rodilla se doble).',tag:'3×10 c/pierna'},
+        {id:'fp5',n:'Wall sit',d:'Espalda en pared, 90° de rodilla. Isométrico. Para si hay dolor.',tag:'3×30 seg',t:30},
+        {id:'fp6',n:'TKE — Terminal Knee Extension',d:'Polea baja, tobillera en corva derecha. Últimos 20-30° de extensión. Lento y controlado.',tag:'3×15 · 5-7 kg'},
+        {id:'fp7',n:'Hip Abduction polea',d:'Polea baja, tobillera en tobillo derecho. Abducción lateral de cadera. Glúteo medio — estabilizador lateral de rodilla.',tag:'3×15 · 5-7 kg'},
+        {id:'fp8',n:'Equilibrio unipodal + cierre',d:'3×45 seg pierna derecha ojos cerrados. Termina con 2 min de bote estático para activar coordinación antes del gym.',tag:'3×45 seg',t:45},
+      ]},
+    ]},
   6:{title:'Sesión en Cancha',sub:'Sábado · tiro, bandejas y mapa de zonas',type:'cancha',icon:'🏀',
     blocks:[
-      {id:'sa',title:'Activación de Mecánica',sub:'10 min · sin fatiga',icon:'🎯',drills:[
-        {id:'sa1',n:'Form shooting 1 mano',d:'Zona C, a 1-1.5m del aro. Solo mano dominante. Foco en follow-through completo.',tag:'3×10',z:'C'},
-        {id:'sa2',n:'Wall drill',d:'Dispara rozando una pared. Si el balón se desvía la mano guía está forzando.',tag:'2×15'},
+      {id:'sa',title:'Form Shooting',sub:'15 min · fijar la mecánica base',icon:'🎯',drills:[
+        {id:'sa1',n:'Form shooting 1 mano',d:'A 1-1.5m del aro. SOLO mano dominante — la guía no toca el balón. Criterio: hacer 8/10 antes de avanzar.',tag:'3×10',z:'C'},
+        {id:'sa2',n:'Form shooting con mano guía',d:'Añade la mano guía al lado del balón — NOT empujando. 5 posiciones a 1-2m del aro.',tag:'5 pos × 10',z:'C'},
+        {id:'sa3',n:'Wall drill',d:'Dispara rozando una pared lateral. Si el balón la toca, la mano guía está empujando.',tag:'2×15'},
       ]},
-      {id:'sb',title:'Bandejas',sub:'10 min · control bajo el aro',icon:'🏀',drills:[
-        {id:'sb1',n:'Mikan drill',d:'Bandeja alternada izq/der sin dejar caer el balón. Zona C.',tag:'3×30 seg',t:30,z:'C'},
-        {id:'sb2',n:'Bandeja mano débil',d:'Solo mano débil hasta que sea limpia. 20 repeticiones.',tag:'20 reps',z:'C'},
+      {id:'sb',title:'Spot Shooting con Spin-Out',sub:'20 min · footwork + ritmo de recepción',icon:'📍',drills:[
+        {id:'sb1',n:'Spin-out M1-M5',d:'Lanza el balón al suelo con backspin, recógelo con paso 1-2 (pie interior primero), base ancha + puntas, dispara. 15 tiros/zona. Registra en el MAPA.',tag:'5 zonas × 15',z:'M1·M2·M3·M4·M5'},
+        {id:'sb2',n:'Dip consciente',d:'Al recoger el balón, bájalo ligeramente antes de subir al tiro (dip). El 95% de tiradores NBA lo usan. Entrénalo conscientemente en cada recepción.',tag:'técnica clave'},
       ]},
-      {id:'sc',title:'Catch & Shoot',sub:'15 min · footwork + ritmo',icon:'📍',drills:[
-        {id:'sc1',n:'Ball pickup — Triples',d:'Recoge del suelo simulando pase y dispara en un movimiento. T1→T2→T3→T4→T5. 10 tiros por zona.',tag:'5 zonas×10',z:'T1·T2·T3·T4·T5'},
-        {id:'sc2',n:'1-2 step — Mid range',d:'2 pasos y tira simulando recibir un pase en movimiento. Zonas M1, M2, M4, M5.',tag:'4 zonas×10',z:'M1·M2·M4·M5'},
+      {id:'sc',title:'Tiros Libres',sub:'10 min · rutina fija',icon:'⭕',drills:[
+        {id:'sc1',n:'Series de 2 con rutina fija',d:'Antes de cada tiro: 3 botes → respirar → set point → tirar. La rutina es idéntica SIEMPRE. Registra cuántos haces de 20.',tag:'20 tiros'},
       ]},
-      {id:'sd',title:'Registro de Zonas',sub:'30-40 min · 40 tiros por zona',icon:'🗺️',drills:[
-        {id:'sd1',n:'40 tiros — Mid range',d:'M1→M2→M3→M4→M5. Registra en el mapa antes de moverte a la siguiente zona.',tag:'5 zonas×40',z:'M1·M2·M3·M4·M5'},
-        {id:'sd2',n:'40 tiros — Triple',d:'T1→T2→T3→T4→T5. Solo si quedan piernas y tiempo.',tag:'5 zonas×40',z:'T1·T2·T3·T4·T5'},
+      {id:'soff',title:'Off-the-Dribble Controlado',sub:'15 min · aprovecha tu comodidad natural',icon:'🏀',drills:[
+        {id:'soff1',n:'1 bote → pull-up M2 y M4',d:'Un bote fuerte → para en seco → tira. Sin salto, set shot. La parada es el 90% del ejercicio. 5 reps cada codo.',tag:'5+5 reps',z:'M2·M4'},
+        {id:'soff2',n:'Ball pickup triples',d:'Recoge del suelo simulando pase, 1-2 step, dispara. T1→T2→T3→T4→T5. Solo si quedan piernas.',tag:'5 zonas × 10 · opcional',z:'T1·T2·T3·T4·T5'},
+      ]},
+      {id:'sd',title:'Registro de Zonas',sub:'Zonas prioritarias según datos actuales',icon:'🗺️',drills:[
+        {id:'sd1',n:'40 tiros — M4 primero',d:'Empieza por M4 (10%) con la mecánica correcta: base ancha, puntas, pie derecho adelante. Objetivo: superar el 20% hoy.',tag:'40 tiros',z:'M4'},
+        {id:'sd2',n:'40 tiros — resto mid range',d:'M1→M2→M3→M5. Registra en el mapa antes de moverte a la siguiente zona.',tag:'4 zonas × 40',z:'M1·M2·M3·M5'},
       ]},
       {id:'se',title:'Cierre Competitivo',sub:'10 min · con piernas cargadas',icon:'🏆',drills:[
         {id:'se1',n:'Juego del 21',d:'Desde M2 o M4. Entra → 2 puntos, repites. Falla → bandeja al vuelo desde C (1 punto). Llegar a 21. 3 rondas contra tu récord.',tag:'3 rondas',z:'M2·M4·C'},
@@ -431,24 +534,40 @@ const PROGS=[
     ]},
   ]},
   {id:'fis',title:'Físico Específico',icon:'⚡',levels:[
-    {n:'Nivel 1 — Explosividad base',d:'El baloncesto son sprints de 2-4 segundos, no resistencia de fondo. Trabaja la explosividad desde el primer día — es tu mayor ventaja siendo atlético.',cur:true,exs:[
-      {n:'Saltos máximos verticales',d:'Desde parado, salto vertical máximo con ambas pies. 5 series de 5 saltos con 30 segundos de descanso entre series. Cada salto con máxima intención — no hagas series "de calentamiento". La calidad importa más que la cantidad.',tip:'Mide tu altura con una marca en la pared. El progreso en cm de salto vertical es el indicador más honesto de la mejora explosiva.'},
-      {n:'Sprint stops',d:'Arrancada explosiva de 5-6 pasos a máxima velocidad y parada BRUSCA en seco con los dos pies. La parada es tan importante como la arrancada — simula los cortes en partido. 10 repeticiones con 20 segundos de descanso.',tip:'Si al parar pierdes el equilibrio hacia delante, necesitas fortalecer los cuádriceps. Si te vas hacia atrás, los isquios.'},
-      {n:'Lateral quickness',d:'2 conos o marcas separados 3-4 metros. Desplazamiento lateral máximo entre ellos sin cruzar los pies (igual que defensive slides pero al máximo de velocidad). 6 series de 10 segundos con 20 de descanso.',tip:'Cronométrate. ¿Cuántos toques haces en 10 segundos? Ese número mejorará con las semanas.'},
+    {n:'Nivel 1 — Explosividad base (post-LCA: prehab)',d:'Con el LCA roto, el físico explosivo se trabaja mediante la prehabilitación. Cuando estés recuperado, aquí están los ejercicios de vuelta.',cur:true,exs:[
+      {n:'Saltos máximos verticales',d:'PAUSADO hasta recuperación LCA. Cuando vuelvas: salto vertical máximo con ambos pies, 5×5 con 30 seg descanso.',tip:'Pre-op y post-op: reemplazado por prehab (quad sets, TKE, equilibrio) en el screen LCA.'},
+      {n:'Sprint stops',d:'PAUSADO hasta recuperación LCA. Arrancada explosiva de 5-6 pasos + parada en seco. Simula cortes en partido.',tip:'El lateral quickness a velocidad moderada (sin explosividad máxima) está permitido ahora.'},
+      {n:'Lateral quickness controlado',d:'Desplazamiento lateral entre 2 puntos a velocidad moderada. Sin giros bruscos. Activa cadenas laterales sin comprometer el LCA.',tip:'Aumenta la velocidad progresivamente hasta que el fisio autorice el trabajo explosivo.'},
     ]},
-    {n:'Nivel 2 — Agilidad con balón',d:'Integrar el balón en los drills físicos. El objetivo es que el balón no frene tu velocidad de movimiento.',exs:[
-      {n:'Lateral quickness con bote',d:'Igual que el lateral quickness del nivel 1 pero botando el balón durante todo el ejercicio. La coordinación mano-pie es el reto. Empieza más lento y sube velocidad conforme la coordinación mejora.',tip:'Si el bote se descontrola al cambiar de dirección, tu bote básico todavía no es suficientemente automático. Vuelve al nivel 1 de dribling.'},
-      {n:'Sprint stop con catch and shoot',d:'Sprint de 5 metros, parada en seco, y lanza hacia un punto fijo (o dispara al aro si estás en pista). El equilibrio en la parada es lo que permite el tiro preciso tras movimiento explosivo.',tip:'Este drill une el físico y el tiro. Los jugadores que ejecutan bien esto son los más peligrosos en partido.'},
+    {n:'Nivel 2 — Agilidad con balón',d:'Integrar el balón en los drills físicos. Disponible cuando el fisio autorice cambios de dirección (aprox. mes 5-6 post-op).',exs:[
+      {n:'Lateral quickness con bote',d:'Desplazamiento lateral botando el balón. La coordinación mano-pie es el reto.',tip:'Si el bote se descontrola al cambiar de dirección, el bote básico aún no es automático.'},
+      {n:'Sprint stop con catch and shoot',d:'Sprint controlado → parada → tiro. Une el físico y el tiro.',tip:'Disponible cuando el fisio autorice carrera con cambio de ritmo.'},
     ]},
-    {n:'Nivel 3 — Condición específica',d:'Circuitos que simulan el trabajo real de un partido: ráfagas de intensidad máxima con recuperación parcial.',exs:[
-      {n:'Circuito completo',d:'Sprint 5m → parada → bote 5 segundos → tiro desde M2 → sprint a recuperar rebote → defensive slide 5m → repetir. 4 rondas de 3 minutos con 1 minuto de descanso entre rondas. Tu cuerpo y tu mecánica de tiro con fatiga máxima.',tip:'Si el % de tiro al final del circuito es similar al del principio, tu condición específica es buena. Si cae en picado, necesitas más base cardiovascular.'},
+    {n:'Nivel 3 — Condición específica',d:'Circuitos simulando partido. Disponible en los últimos meses de recuperación (mes 8-10 post-op).',exs:[
+      {n:'Circuito completo',d:'Sprint 5m → parada → bote → tiro M2 → rebote → defensive slide → repetir. 4 rondas × 3 min.',tip:'Si el % de tiro al final del circuito es similar al del principio, la condición específica es buena.'},
+    ]},
+  ]},
+  {id:'iq',title:'IQ de Juego',icon:'🧠',levels:[
+    {n:'Nivel 1 — El idioma del baloncesto',d:'Dominar las reglas, las posiciones y los conceptos básicos. Sin este vocabulario no se puede entender lo que pasa en cancha.',cur:true,exs:[
+      {n:'Reglas FIBA completas',d:'Violaciones (pasos, doble bote, campo atrás, 3 seg, 8 seg, 24 seg), faltas personales, técnicas, antideportivas. Diferencias con NBA.',tip:'Objetivo: ver un partido y entender TODAS las decisiones del árbitro sin tener que buscarlas.'},
+      {n:'Posiciones y geometría',d:'Las 5 posiciones y su función. Las líneas de la cancha. El spacing básico: 3.5-4.5m entre jugadores.',tip:'Dibuja la cancha de memoria con todas las líneas y zonas nombradas. Si puedes hacerlo, lo tienes.'},
+      {n:'Pick and roll — lo más importante',d:'La acción más usada del baloncesto moderno. Qué hace el bloqueador, qué hace el manejador, cuándo se usa. Ver compilaciones de Chris Paul.',tip:'Modelo a estudiar: Chris Paul. El base con mayor IQ de la historia. Pausa cada decisión suya y entiende por qué.'},
+    ]},
+    {n:'Nivel 2 — Táctica aplicada',d:'Entender el juego lo suficientemente bien como para tomar decisiones correctas bajo presión.',exs:[
+      {n:'Coberturas del pick and roll',d:'Las 6 defensas: pasar por debajo, por encima, hedge, switch, trap, drop. Qué permites y qué sacrificas en cada una.',tip:'Objetivo: ver un P&R y saber qué cobertura está usando el defensor antes de que se desarrolle la jugada.'},
+      {n:'Cortes sin balón',d:'V-cut, L-cut, backdoor, curl cut. Cómo crearte una ventaja antes de recibir el balón.',tip:'Fíjate en el defensor, no en el balón. El corte se hace cuando el defensor está mirando hacia el balón.'},
+      {n:'Transición y zonas',d:'Los 3 carriles ofensivos. Cómo atacar la zona 2-3 y 3-2.',tip:'La zona se rompe con balón rápido y skip passes, no con dribling.'},
+    ]},
+    {n:'Nivel 3 — Lectura en tiempo real',d:'Tomar la decisión correcta antes de que el defensor reaccione. Disponible en los últimos meses antes de competir.',exs:[
+      {n:'Pausar y predecir',d:'Ver partidos pausando antes de cada jugada y decidiendo qué harías tú. Luego comparar con lo que hace el jugador.',tip:'Cuando predices correctamente el 70%+ de las veces, estás en nivel 3.'},
+      {n:'HooperIQ app',d:'Quizzes de decisiones con presión de reloj de posesión. Desarrolla la velocidad de lectura real.',tip:'Juega 15 min diarios durante 4 semanas. La mejora en decisiones será notable.'},
     ]},
   ]},
 ];
 
 /* ── STORAGE ── */
 const KEY='eh_v1';
-function dbLoad(){try{return JSON.parse(localStorage.getItem(KEY))||dbDefault()}catch{return dbDefault()}}
+function dbLoad(){try{const d=JSON.parse(localStorage.getItem(KEY));return d?{...dbDefault(),...d,zones:{...dbDefault().zones,...d.zones}}:dbDefault()}catch{return dbDefault()}}
 function dbSave(d){localStorage.setItem(KEY,JSON.stringify(d))}
 function today(){return new Date().toISOString().split('T')[0]}
 function dbDefault(){
@@ -469,6 +588,10 @@ function dbDefault(){
       t5:{records:[{date:t,made:2,att:10}],target:35},
     },
     sessions:[],
+    phase:1,
+    iqStart:t,
+    benchmarks:[],
+    criteria:{ext:false,flex:false,slr:false,swelling:false,pain:false,squat:false},
   };
 }
 
@@ -497,6 +620,7 @@ function nav(sc){
   if(sc==='mapa')renderMapa();
   if(sc==='progreso')renderProg();
   if(sc==='plan')renderPlan();
+  if(sc==='lca')renderLCA();
 }
 
 /* ── TOAST ── */
@@ -518,12 +642,32 @@ function renderHoy(){
   const MN=['enero','feb','marzo','abril','mayo','junio','julio','ago','sept','oct','nov','dic'];
   const now=new Date();
   const ds=now.getDate()+' de '+MN[now.getMonth()];
+  const iqW=getIQWeek();
+  const iqN=IQ_CURRICULUM.indexOf(iqW)+1;
   let h=`<div class="ph fu"><div class="ptitle">${DN[day].toUpperCase()}</div><div class="psub">${ds} · ${plan.title}</div></div>
   <div class="typetag ${plan.type}">${plan.icon} ${plan.type==='cancha'?'Sesión en cancha':'Entrenamiento en casa'}</div>`;
+  // Prehab reminder banner
+  const qKey='quads_'+t;
+  const qDone=parseInt(localStorage.getItem(qKey)||'0');
+  if(db.phase===1||db.phase===2){
+    h+=`<div style="background:rgba(76,175,106,.08);border:1px solid rgba(76,175,106,.25);border-radius:10px;padding:10px 14px;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;gap:8px">
+      <div style="font-size:12px;color:#ccc">🦵 Quad sets hoy: <b style="color:${qDone>=100?'#4CAF6A':'var(--or)'}">${qDone}/100</b></div>
+      <button onclick="nav('lca')" style="background:rgba(76,175,106,.15);border:1px solid rgba(76,175,106,.3);color:#4CAF6A;font-size:11px;padding:4px 10px;border-radius:6px;cursor:pointer">Ver prehab</button>
+    </div>`;
+  }
   plan.blocks.forEach(bl=>{
     const done=bl.drills.filter(d=>(sess.completedDrills||[]).includes(d.id)).length;
     h+=`<div class="card fu"><div class="ch"><div><div class="ct">${bl.icon} ${bl.title}${bl.opt?'<span class="opttag">opcional</span>':''}</div><div class="cs">${bl.sub}</div></div>
     <span style="font-family:'Bebas Neue',sans-serif;font-size:18px;color:${done===bl.drills.length?'#4CAF6A':'var(--mu)'};">${done}/${bl.drills.length}</span></div><div class="cb">`;
+    // IQ weekly block: inject current week topic
+    if(bl.iqWeekly){
+      h+=`<div style="padding:10px 16px;border-bottom:1px solid #1e1e1e;background:#0d0d0d">
+        <div class="iq-week-badge">📚 Semana ${iqN} de ${IQ_CURRICULUM.length}</div>
+        <div style="font-weight:600;font-size:13px;color:#fff;margin-bottom:4px">${iqW.title}</div>
+        <div style="font-size:11px;color:var(--mu);line-height:1.6;margin-bottom:6px">${iqW.tema}</div>
+        <div style="font-size:10px;color:#555">📎 ${iqW.rec}</div>
+      </div>`;
+    }
     bl.drills.forEach(dr=>{
       const dn=(sess.completedDrills||[]).includes(dr.id);
       h+=`<div class="dr"><div class="dck ${dn?'done':''}" onclick="toggleDrill('${dr.id}')"></div>
@@ -535,7 +679,7 @@ function renderHoy(){
     h+=`</div></div>`;
   });
   h+=`<div class="card fu"><div class="ch"><div class="ct">📝 Notas de sesión</div></div>
-  <div style="padding:12px"><textarea class="notes" id="snotes" rows="4" placeholder="¿Cómo ha ido? Zonas que mejoran, sensaciones, qué trabajar la próxima...">${sess.notes||''}</textarea>
+  <div style="padding:12px"><textarea class="notes" id="snotes" rows="4" placeholder="¿Cómo ha ido? Mecánica, sensaciones, qué mejorar...">${sess.notes||''}</textarea>
   <button class="btnp" onclick="saveSession()">GUARDAR SESIÓN</button></div></div>`;
   document.getElementById('hoy-root').innerHTML=h;
 }
@@ -759,6 +903,21 @@ function renderProg(){
     h+=`</div>`;
   }
   h+=`<button class="btnp" style="background:#1e1e1e;border:1px solid var(--bd);color:var(--tx);margin-bottom:8px" onclick="exportData()">📤 Exportar datos para Claude</button>`;
+
+  // Dribbling benchmarks
+  const db2=dbLoad();
+  const benches=(db2.benchmarks||[]).slice(-8).reverse();
+  h+=`<div class="card fu"><div class="ch"><div class="ct">🏀 Test Dribling</div></div>
+  <div class="bench-row">
+    <div><div class="bench-lbl">Crossovers / 30 seg</div><input type="number" class="bench-in" id="bench-cr" placeholder="—" min="0"></div>
+    <div><div class="bench-lbl">Between-legs (seg)</div><input type="number" class="bench-in" id="bench-bl" placeholder="—" min="0"></div>
+  </div>
+  <div style="padding:8px 16px"><button class="btnp" onclick="saveBenchmark()" style="margin-top:0">GUARDAR TEST</button></div>
+  ${benches.length>0?`<div class="bench-hist"><div style="display:flex;justify-content:space-between;font-size:9px;color:var(--mu);text-transform:uppercase;letter-spacing:.07em;margin-bottom:4px"><span>Fecha</span><span>Cross/30s</span><span>BtL (seg)</span></div>
+  ${benches.map(b=>`<div class="bench-hr"><span style="color:var(--mu)">${b.date}</span><span style="color:var(--or);font-family:'Bebas Neue',sans-serif;font-size:15px">${b.crossovers||'—'}</span><span style="color:#7aaeee;font-family:'Bebas Neue',sans-serif;font-size:15px">${b.betweenLegs||'—'}</span></div>`).join('')}
+  </div>`:''}
+  </div>`;
+
   document.getElementById('prog-root').innerHTML=h;
 }
 
@@ -915,6 +1074,158 @@ const T={
   reset(){clearInterval(_tInt);_tRun=false;_tSec=_tTgt;document.getElementById('td').textContent=T.fmt(_tTgt);document.getElementById('ttog').textContent='INICIAR';},
   fmt(s){const m=Math.floor(Math.abs(s)/60);const sc=Math.abs(s)%60;return(m<10?'0':'')+m+':'+(sc<10?'0':'')+sc;}
 };
+
+/* ── LCA & FASES ── */
+const PHASES=[
+  {n:1,title:'Fase 1 — Pre-operación',sub:'Tiro estático · Dribling controlado · Prehab LCA diario',desc:'Sigue entrenando tiro y dribling con las restricciones del LCA. Prehab diario obligatorio. Sin sprint stops, sin saltos con aterrizaje unilateral, sin pivotes bruscos sobre la rodilla derecha.',col:'var(--or)'},
+  {n:2,title:'Fase 2 — Post-operación',sub:'Reposo · Dribling sentado · IQ intensivo · Tren superior',desc:'Los primeros 3 meses post-op son críticos. Reposo de cancha. Dribling sentado. IQ 45-60 min diarios. Tren superior cuando el cirujano lo autorice. La prehabilitación continúa como rehabilitación.',col:'#7aaeee'},
+  {n:3,title:'Fase 3 — Recuperación progresiva',sub:'Reintegración gradual según hitos del fisio',desc:'Reintegración por sub-fases: primero movimiento controlado (mes 3-5), luego actividades específicas (mes 5-7), luego retorno progresivo al juego (mes 7-12). Cada progresión requiere el visto bueno del fisio.',col:'#4CAF6A'},
+];
+const PREHAB_ITEMS=[
+  {id:'heelprops',n:'Heel props',s:'20 min hoy · talón elevado en toalla, rodilla se extiende por gravedad'},
+  {id:'bridges',n:'Puentes de glúteo',s:'3×15 · bilateral o unilateral según control'},
+  {id:'slr',n:'SLR — Straight Leg Raise',s:'3×10 c/pierna · solo sin lag'},
+  {id:'wallsit',n:'Wall sit',s:'3×30 seg · espalda en pared, 90° de rodilla'},
+  {id:'balance',n:'Equilibrio unipodal',s:'3×45 seg · pierna derecha · ojos cerrados'},
+  {id:'tke',n:'TKE — Terminal Knee Extension',s:'3×15 · polea baja · últimos 20-30° rodilla'},
+  {id:'hipab',n:'Hip Abduction',s:'3×15 c/lado · polea baja · glúteo medio'},
+];
+const CRITERIA=[
+  {id:'ext',txt:'Extensión completa de rodilla (0°) igual a pierna sana'},
+  {id:'flex',txt:'Flexión sin diferencia significativa con pierna sana'},
+  {id:'slrc',txt:'SLR sin lag — cuádriceps soporta el peso sin que la rodilla se doble'},
+  {id:'swelling',txt:'Hinchazón mínima (1+ o menos en escala clínica)'},
+  {id:'pain',txt:'Dolor ≤ 3/10 en actividad cotidiana'},
+  {id:'squat',txt:'Sentadilla unipodal ×10 hasta 60° con buena forma'},
+];
+
+function renderLCA(){
+  const db=dbLoad();
+  const t=today();
+  const ph=db.phase||1;
+  const qKey='quads_'+t;
+  const qDone=parseInt(localStorage.getItem(qKey)||'0');
+  const pKey='prehab_'+t;
+  let pDone={};try{pDone=JSON.parse(localStorage.getItem(pKey)||'{}')}catch{}
+  const iqW=getIQWeek();
+  const iqN=IQ_CURRICULUM.indexOf(iqW)+1;
+  const crit=db.criteria||{};
+
+  let h=``;
+  // Phase selector
+  h+=`<div class="phase-pills fu">`;
+  PHASES.forEach(p=>{
+    h+=`<button class="ppill ${ph===p.n?'active':''}" onclick="setPhase(${p.n})" style="${ph===p.n?'border-color:'+p.col+';background:'+p.col.replace(')',',0.1)'):''}">
+      Fase ${p.n}<span class="ppill-sub">${ph===p.n?'Actual':'→'}</span></button>`;
+  });
+  h+=`</div>`;
+  const curPhase=PHASES.find(p=>p.n===ph);
+  h+=`<div class="phase-desc fu"><strong style="color:${curPhase.col}">${curPhase.title}</strong>${curPhase.desc}</div>`;
+
+  // IQ semana actual
+  h+=`<div class="card fu"><div class="prehab-head"><div class="prehab-title">🧠 IQ — Semana ${iqN}</div><span style="font-size:11px;color:var(--mu)">${iqN}/${IQ_CURRICULUM.length} semanas</span></div>
+  <div style="padding:12px 16px">
+    <div class="iq-week-badge">Tema actual</div>
+    <div style="font-weight:600;font-size:14px;color:#fff;margin-bottom:5px">${iqW.title}</div>
+    <div style="font-size:12px;color:var(--mu);line-height:1.6;margin-bottom:8px">${iqW.tema}</div>
+    <div style="font-size:11px;color:#555;margin-bottom:10px">📎 ${iqW.rec}</div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      ${iqN>1?`<button onclick="adjIQ(-1)" style="background:var(--bd);border:none;color:var(--mu);font-size:11px;padding:5px 10px;border-radius:6px;cursor:pointer">← Sem anterior</button>`:''}
+      ${iqN<IQ_CURRICULUM.length?`<button onclick="adjIQ(1)" style="background:var(--bd);border:none;color:var(--mu);font-size:11px;padding:5px 10px;border-radius:6px;cursor:pointer">Sem siguiente →</button>`:''}
+    </div>
+  </div></div>`;
+
+  // Quad sets counter
+  h+=`<div class="prehab-card fu"><div class="prehab-head"><div class="prehab-title">🦵 Prehab Diario</div><div class="prehab-date">${t}</div></div>
+  <div class="quad-row">
+    <div>
+      <div style="font-size:10px;color:var(--mu);text-transform:uppercase;letter-spacing:.08em;margin-bottom:2px">Quad Sets</div>
+      <div class="quad-num">${qDone}</div>
+      <div class="quad-goal">de 100 hoy · en tandas de 10 a lo largo del día</div>
+      <div class="quad-btns">
+        <button class="qbtn" onclick="addQuads(10)">+10</button>
+        <button class="qbtn" onclick="addQuads(25)">+25</button>
+        <button class="qbtn" onclick="addQuads(-10)" style="background:#1a1a1a;color:var(--mu)">−10</button>
+      </div>
+      <div class="quad-bar"><div class="quad-fill" id="quad-fill" style="width:${Math.min(qDone,100)}%"></div></div>
+    </div>
+  </div>`;
+
+  // Prehab exercises
+  PREHAB_ITEMS.forEach(item=>{
+    const done=pDone[item.id]||false;
+    h+=`<div class="prehab-item"><div class="pck ${done?'done':''}" onclick="togglePrehab('${item.id}')"></div>
+    <div class="prehab-itxt"><div class="prehab-in">${item.n}</div><div class="prehab-is">${item.s}</div></div></div>`;
+  });
+  h+=`</div>`;
+
+  // Pre-surgery criteria
+  const critDone=CRITERIA.filter(c=>crit[c.id]).length;
+  h+=`<div class="prehab-card fu"><div class="prehab-head">
+    <div class="prehab-title">✅ Criterios Pre-Cirugía</div>
+    <span style="font-family:'Bebas Neue',sans-serif;font-size:16px;color:${critDone===CRITERIA.length?'#4CAF6A':'var(--mu)'}">${critDone}/${CRITERIA.length}</span>
+  </div>
+  <div style="padding:8px 16px 6px;font-size:11px;color:var(--mu);border-bottom:1px solid var(--bd)">Marca cuando el fisioterapeuta confirme cada criterio. No los evalúes solo.</div>`;
+  CRITERIA.forEach(c=>{
+    const done=crit[c.id]||false;
+    h+=`<div class="crit-item"><div class="critck ${done?'done':''}" onclick="toggleCrit('${c.id}')"></div>
+    <div class="crit-txt" style="${done?'opacity:.4;text-decoration:line-through':''}">${c.txt}</div></div>`;
+  });
+  h+=`</div>`;
+
+  document.getElementById('lca-root').innerHTML=h;
+}
+
+function setPhase(n){
+  const db=dbLoad();db.phase=n;dbSave(db);renderLCA();toast('Fase '+n+' activada');
+}
+function addQuads(n){
+  const k='quads_'+today();
+  const cur=parseInt(localStorage.getItem(k)||'0');
+  const nv=Math.max(0,cur+n);
+  localStorage.setItem(k,String(nv));
+  const el=document.getElementById('quad-fill');
+  if(el)el.style.width=Math.min(nv,100)+'%';
+  // update counter live
+  renderLCA();
+}
+function togglePrehab(id){
+  const k='prehab_'+today();
+  let d={};try{d=JSON.parse(localStorage.getItem(k)||'{}')}catch{}
+  d[id]=!d[id];
+  localStorage.setItem(k,JSON.stringify(d));
+  renderLCA();
+}
+function toggleCrit(id){
+  const db=dbLoad();
+  if(!db.criteria)db.criteria={};
+  db.criteria[id]=!db.criteria[id];
+  dbSave(db);renderLCA();
+}
+function adjIQ(delta){
+  const db=dbLoad();
+  const cur=IQ_CURRICULUM.indexOf(getIQWeek());
+  const nIdx=Math.max(0,Math.min(IQ_CURRICULUM.length-1,cur+delta));
+  // adjust iqStart so the calculated week lands on nIdx
+  const daysBack=nIdx*7;
+  const newStart=new Date();
+  newStart.setDate(newStart.getDate()-daysBack);
+  db.iqStart=newStart.toISOString().split('T')[0];
+  dbSave(db);renderLCA();
+}
+
+/* ── BENCHMARKS (dribling) ── */
+function saveBenchmark(){
+  const cr=parseInt(document.getElementById('bench-cr')?.value)||0;
+  const bl=parseInt(document.getElementById('bench-bl')?.value)||0;
+  if(!cr&&!bl)return;
+  const db=dbLoad();
+  if(!db.benchmarks)db.benchmarks=[];
+  db.benchmarks.push({date:today(),crossovers:cr,betweenLegs:bl});
+  dbSave(db);
+  renderProg();
+  toast('✓ Test guardado');
+}
 
 /* ── EXPORT ── */
 function exportData(){
